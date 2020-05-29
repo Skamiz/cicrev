@@ -1,0 +1,11 @@
+
+local MODNAME = minetest.get_current_modname()
+dofile(minetest.get_modpath(MODNAME).."/misc.lua")
+dofile(minetest.get_modpath(MODNAME).."/trees.lua")
+dofile(minetest.get_modpath(MODNAME).."/abms.lua")
+dofile(minetest.get_modpath(MODNAME).."/nodes.lua")
+dofile(minetest.get_modpath(MODNAME).."/craftitems.lua")
+dofile(minetest.get_modpath(MODNAME).."/tools.lua")
+dofile(minetest.get_modpath(MODNAME).."/crafts.lua")
+dofile(minetest.get_modpath(MODNAME).."/mapgen.lua")
+dofile(minetest.get_modpath(MODNAME).."/debug.lua")

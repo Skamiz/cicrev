@@ -1,0 +1,75 @@
+=====
+TODO:
+=====
+add water chestnut to marches
+
+geode - blob ore with a smaler blob ore inside
+	the outer one acts as a barier for the valuable material inside
+
+Slow but powerfull enemies, focus on mechanics not direct hitting
+
+ore generation
+
+?in-between space before respawn
+
+distinct stick and tool rod
+
+maybe try something like unstable ingots as training for an eventual AIM mod
+
+To make a brick block place individual bricks one afer another into a node and then add mortar, on mining returns loose bricks
+
+kill the player if they stay too long in complete darknes
+	provide warning signs
+	"You have been eaten by a ..."
+
+hunger and thirst
+	comunicated through warning signs, not directly displayed
+	penaties for too hight/low bar fullness
+	soft cap, hard cap
+	if you stuff yourself over the hard cap with food you puke most of it out
+
+Cooking stone
+	place over fire
+	needs to be supported on both ends to be placable
+		ends just a bit into the adjenced nodes
+	cooking food as an entity on the stone?
+=====
+DONE:
+=====
+leaves
+	-_grows_on
+	-change back from nodetimer to custom activation
+
+ropes made out of grass
+
+caves
+	-make largesacale cave density varry with a perlin noise
+	-also do something about cave diameter at some point
+
+lantern mod
+	viz Piezos_ illumination, but done with nodetimers
+	has own inventory slot
+
+cavegen mod
+	-select two random points within each chunk, connect them with a cave,
+		generate two poins for each touching chunk and conect the closest points
+		from each
+
+arrows drawn with coal
+
+random path conecting two positions
+
+_on_update() for leaves
+	- maybe with nodetimers to schedule an update
+	--turned out to be suprisingly simple, the main issue was bad code for change detection
+
+torches which compleately burn down
+
+chiselable stones
+	- adds 21 variants per block
+
+slabs mod
+	- lol chisel mod prety-much replaces it
+
+crates
+	- 4 * 4 slots
