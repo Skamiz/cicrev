@@ -135,6 +135,20 @@ local function matrix_equality(matrix_a, matrix_b)
     return same
 end
 
+-- returns the first position on which look direction vector intersects something or nil
+-- doesn't detect objects since the result would always be the eye_pos
+local function pointing_pos(player, distance, liquids)
+    local eye_height = player:get_properties().eye_height
+    local eye_pos = player:get_pos()
+        eye_pos.y = eye_pos.y + eye_height
+    local look_dir = player:get_look_dir()
+    local ray_end = vector.multiply(look_dir, distance or 5)
+        ray_end = vector.add(eye_pos, ray_end)
+
+    local ray = minetest.raycast(eye_pos, ray_end, false, liquids)
+    return ray:next().intersection_point
+end
+
 -- TODO this needs SO much refactoring to be legible
 
 minetest.register_craftitem("chisel:chisel", {

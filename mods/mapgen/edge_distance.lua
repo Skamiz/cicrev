@@ -23,11 +23,15 @@ local function get_biome_point(minp)
     end
 
 	local biome_point = {
+		-- for some reason this breaks
+		-- x = minp.x + 40,
+		-- z = minp.z + 40 ,--* (math.ceil(minp.z/80) % 2),
 		x = math.random(minp.x, minp.x + 79),
 		z = math.random(minp.z, minp.z + 79),
 		y = math.random(-10, 10),
 		stone = stone,
 	}
+	-- minetest.chat_send_all(math.floor(minp.z/80) % 2)
 	return biome_point
 end
 

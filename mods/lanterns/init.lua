@@ -25,8 +25,6 @@ for i = 1, minetest.LIGHT_MAX do
     minetest.register_node("lanterns:light_" .. i, light_def)
 end
 
-minetest.register_node("lanterns:light", glowing_air)
-
 local orig_get = sfinv.pages["sfinv:crafting"].get
 sfinv.override_page("sfinv:crafting", {
     get = function(self, player, context)

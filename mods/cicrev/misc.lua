@@ -62,23 +62,6 @@ function cicrev.detect_cluster(pos, max_cluster)
 	return cluster
 end
 
-function cicrev.update_touching_nodes(pos_center)
-	local touching = cicrev.get_touching_nodes(pos_center)
-	for k, pos in pairs(touching) do
-		local node = minetest.get_node(pos)
-		local node_def = minetest.registered_nodes[node.name]
-		-- minetest.chat_send_all(minetest.get_node(v).name)
-		-- minetest.chat_send_all(tostring(node_def._on_update))
-
-		-- get_and_set_timer(pos, k*0.01)
-		if node_def._on_update then
-			node_def._on_update(pos)
-		    -- minetest.after(k * 0.1, node_def._on_update, pos)
-		end
-	end
-	return positions
-end
-
 function cicrev.leaf_decay(pos)
 	local node = minetest.get_node(pos)
 	local node_name = node.name
@@ -103,8 +86,8 @@ function cicrev.leaf_decay(pos)
 		else
 			minetest.set_node(pos, {name = node_name, param2 = distance})
 		end
-		cicrev.update_touching_nodes(pos)
 	end
+	return change
 end
 
 local function get_arrow_direction(u, v)
@@ -176,8 +159,6 @@ local fence_prototype = {
 	node_box = {
 		type = "connected",
 		fixed = {{-1/8, -1/2, -1/8, 1/8, 1/2, 1/8}},
-		-- connect_top =
-		-- connect_bottom =
 		connect_front = {{-1/16,3/16,-1/2,1/16,5/16,-1/8},
 			{-1/16,-5/16,-1/2,1/16,-3/16,-1/8}},
 		connect_left = {{-1/2,3/16,-1/16,-1/8,5/16,1/16},
@@ -187,7 +168,7 @@ local fence_prototype = {
 		connect_right = {{1/8,3/16,-1/16,1/2,5/16,1/16},
 			{1/8,-5/16,-1/16,1/2,-3/16,1/16}},
 	},
-	connects_to = {"group:fence", "group:wood"},
+	connects_to = {"group:fence", "group:wood", "group:wall"},
 	groups = {}
 }
 
@@ -196,12 +177,42 @@ local fence_prototype = {
 -- 		tiles
 -- 		groups
 
-function cicrev.regster_fence(name, def)
+function cicrev.register_fence(name, def)
 	-- This probably won't beak anything as long as nobody treis to redefine a fence
 	for k, v in pairs(fence_prototype) do
-		if not def[k] then def[k] = v end
+		if def[k] == nil then
+			def[k] = v
+		end
 	end
 	def.groups["fence"] = 1
+
+	minetest.register_node(name, def)
+end
+
+local wall_prototype = {
+	description = "This wall is missing a descripttion.",
+	paramtype = "light",
+	sunlight_propagates = true,
+	drawtype = "nodebox",
+	node_box = {
+		type = "connected",
+		fixed = 		{-3/16, -1/2, -3/16, 3/16, 1/2, 3/16},
+		connect_front = {-3/16, -1/2, -1/2, 3/16, 1/2, -3/16},
+		connect_left = 	{-1/2, -1/2, -3/16, -3/16, 1/2, 3/16},
+		connect_back = 	{-3/16, -1/2, 3/16, 3/16, 1/2, 1/2},
+		connect_right = {3/16, -1/2, -3/16, 1/2, 1/2, 3/16},
+	},
+	connects_to = {"group:wall", "group:stone", "group:fence"},
+	groups = {},
+}
+
+function cicrev.register_wall(name, def)
+	for k, v in pairs(wall_prototype) do
+		if def[k] == nil then
+			def[k] = v
+		end
+	end
+	def.groups["wall"] = 1
 
 	minetest.register_node(name, def)
 end

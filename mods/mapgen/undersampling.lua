@@ -68,7 +68,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
                 local nv_terrain_height = nvs_terrain_height[(z-minp.z) * chunk_size.x + x-minp.x + 1]
 
                 if y < 0 then
-                    -- data[vi] = c_water
+                    data[vi] = c_water
                 end
 
                 if nv_3d - (y / 20) + nv_terrain_height > 0 then
