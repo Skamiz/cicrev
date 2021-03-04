@@ -1,14 +1,47 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+--[[
+cicrev:tall_grass_1
+cicrev:tall_grass_2
+cicrev:tall_grass_3
+cicrev:sawgrass
+cicrev:sedge
+
+
+cicrev:fence_dark
+cicrev:wall_dark
+
+cicrev:peat
+cicrev:loam
+cicrev:soil
+cicrev:clay
+cicrev:silt
+cicrev:sand
+cicrev:gravel
+cicrev:dirt_with_grass
+cicrev:peat_with_moss
+
+cicrev:tetrahedrite
+cicrev:bituminous_coal
+
+cicrev:water_source
+cicrev:water_flowing
+
+cicrev:coal_arrow
+cicrev:crate
+cicrev:ladder
+cicrev:torch
+--]]
+
 -- ======
 -- PLANTS
 -- ======
 
 minetest.register_node("cicrev:tall_grass_1", {
+	description = "Grass",
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
-	description = "Grass",
 	tiles = {"cicrev_tall_grass.png"},
 	groups = {hand = 1, attached_node = 1},
 	paramtype = "light",
@@ -21,9 +54,9 @@ minetest.register_node("cicrev:tall_grass_1", {
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
 minetest.register_node("cicrev:tall_grass_2", {
+	description = "Grass",
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
-	description = "Grass",
 	tiles = {"cicrev_tall_grass_2.png"},
 	groups = {hand = 1, attached_node = 1},
 	paramtype = "light",
@@ -36,9 +69,9 @@ minetest.register_node("cicrev:tall_grass_2", {
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
 minetest.register_node("cicrev:tall_grass_3", {
+	description = "Grass",
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
-	description = "Grass",
 	tiles = {"cicrev_tall_grass_3.png"},
 	groups = {hand = 1, attached_node = 1},
 	paramtype = "light",
@@ -52,9 +85,9 @@ minetest.register_node("cicrev:tall_grass_3", {
 })
 
 minetest.register_node("cicrev:sawgrass", {
+	description = "Sawgrass",
 	drawtype = "plantlike",
 	visual_scale = 2.0,
-	description = "Sawgrass",
 	tiles = {"cicrev_sawgrass.png"},
 	groups = {hand = 1, attached_node = 1},
 	paramtype = "light",
@@ -67,9 +100,9 @@ minetest.register_node("cicrev:sawgrass", {
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
 minetest.register_node("cicrev:sedge", {
+	description = "Sedge",
 	drawtype = "plantlike",
 	-- visual_scale = 1.0,
-	description = "Sedge",
 	tiles = {"cicrev_sedge.png"},
 	groups = {hand = 1, attached_node = 1},
 	paramtype = "light",
@@ -86,160 +119,16 @@ minetest.register_node("cicrev:sedge", {
 -- TREES
 -- =====
 
--- tree
-minetest.register_node("cicrev:sapling_oak", {
-	description = "Oak Sapling",
-	drawtype = "plantlike",
-	paramtype = "light",
-	tiles = {"cicrev_sapling.png"},
-	groups = {hand = 1},
-	walkable = false,
-	drop = "",
-	selection_box = {
-            type = "fixed",
-            fixed = {
-                {-4 / 16, -0.5, -4 / 16, 4 / 16, 6 / 16, 4 / 16},
-            },
-        },
-	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		local t = minetest.get_node_timer(pos)
-		t:start(math.random(60 * 20, 60 * 60))
-	end,
-	on_timer = function(pos, elapsed) -- TODO: replace with a 'grow_tree' function
-		minetest.place_schematic(vector.add(pos, {x = -2, z = -2, y = 0}), modpath .. "/schematics/tree_oak.mts", "random", nil, false)
-	end,
-})
+cicrev.register_tree("oak", "Oak", 3)
+cicrev.register_tree("dark", "Dark", 4)
+cicrev.register_tree("chaktekok", "Chakte Kok", 4)
+cicrev.register_tree("chestnut", "Chestnut", 4)
 
-minetest.register_node("cicrev:log_oak", {
-	description = "Oak Log",
-	tiles = {"cicrev_log_top.png", "cicrev_log_top.png", "cicrev_log.png"},
-	paramtype2 = "facedir",
-	groups = {choppy = 1, log = 1, wood = 1},
-	on_place = place_pillar,
-	node_placement_prediction = "",
-})
-
-minetest.register_node("cicrev:leaves_oak", {
-	description = "Oak Leaves",
-	drawtype = "allfaces",
-	paramtype = "light",
-	tiles = {"cicrev_leaves.png"},
-	groups = {hand = 1},
-	walkable = false,
-	drop = {
-		max_items = 1,
-		items = {
-			{
-				rarity = 50,
-				items = {"cicrev:sapling_oak"}
-			},
-			{
-				rarity = 2,
-				items = {"cicrev:stick"},
-			},
-		}
-	},
-	_leaves = {
-		grows_on = "cicrev:log_oak",
-		grow_distance = 3,
-	},
-	_on_update = cicrev.leaf_decay
-})
-
--- dark tree
-minetest.register_node("cicrev:sapling_dark", {
-	description = "Dark Sapling",
-	drawtype = "plantlike",
-	paramtype = "light",
-	tiles = {"cicrev_sapling_dark.png"},
-	groups = {hand = 1},
-	walkable = false,
-	drop = "",
-	selection_box = {
-            type = "fixed",
-            fixed = {
-                {-4 / 16, -0.5, -4 / 16, 4 / 16, 6 / 16, 4 / 16},
-            },
-        },
-	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		local t = minetest.get_node_timer(pos)
-		t:start(math.random(60 * 20, 60 * 60))
-	end,
-	on_timer = function(pos, elapsed) -- TODO: replace with a 'grow_tree' function
-		minetest.place_schematic(vector.add(pos, {x = -3, z = -3, y = 0}), modpath .. "/schematics/tree_dark.mts", "random", nil, false)
-	end,
-})
-
-minetest.register_node("cicrev:log_dark", {
-	description = "Dark Log",
-	tiles = {"cicrev_log_top_dark.png", "cicrev_log_top_dark.png", "cicrev_log_dark.png"},
-	paramtype2 = "facedir",
-	groups = {choppy = 1, log = 1, wood = 1},
-	on_place = place_pillar,
-	node_placement_prediction = "",
-})
-
-minetest.register_node("cicrev:leaves_dark", {
-	description = "Dark Leaves",
-	drawtype = "allfaces",
-	paramtype = "light",
-	tiles = {{name = "cicrev_leaves_dark.png"}},
-	groups = {hand = 1},
-	walkable = false,
-	drop = {
-		max_items = 1,
-		items = {
-			{
-				rarity = 50,
-				items = {"cicrev:sapling_dark"}
-			},
-			{
-				rarity = 2,
-				items = {"cicrev:stick"},
-			},
-		}
-	},
-	_leaves = {
-		grows_on = "cicrev:log_dark",
-		grow_distance = 4,
-	},
-	_on_update = cicrev.leaf_decay
-})
 
 -- ====
 -- WOOD
 -- ====
 
-
-minetest.register_node("cicrev:log_stripped_oak", {
-	description = "Stripped Oak Log",
-	tiles = {"cicrev_log_top_stripped.png", "cicrev_log_top_stripped.png", "cicrev_log_stripped.png"},
-	paramtype2 = "facedir",
-	groups = {choppy = 1, log = 1, wood = 1},
-	on_place = place_pillar,
-	node_placement_prediction = "",
-})
-minetest.register_node("cicrev:planks_oak", {
-	description = "Oak Planks",
-	tiles = {{name = "cicrev_planks.png", align_style = "world"}},
-	groups = {choppy = 1, planks = 1, wood = 1},
-})
-
-
-
-minetest.register_node("cicrev:log_stripped_dark", {
-	description = "Stripped Dark Log",
-	tiles = {"cicrev_log_top_stripped_dark.png", "cicrev_log_top_stripped_dark.png", "cicrev_log_stripped_dark.png"},
-	paramtype2 = "facedir",
-	groups = {choppy = 1, log = 1, wood = 1},
-	on_place = place_pillar,
-	node_placement_prediction = "",
-})
-minetest.register_node("cicrev:planks_dark", {
-	description = "Dark Planks",
-	tiles = {"cicrev_planks_dark.png"},
-	groups = {choppy = 1, planks = 1, wood = 1},
-})
 cicrev.register_fence("cicrev:fence_dark", {
 	description = "Dark Fence",
 	tiles = {"cicrev_fence_dark_top.png", "cicrev_fence_dark_top.png", "cicrev_fence_dark_side.png"},
@@ -256,16 +145,62 @@ cicrev.register_wall("cicrev:wall_dark", {
 -- SOILS
 -- =====
 
-minetest.register_node("cicrev:dirt_with_grass", {
-	description = "Grass",
-	tiles = {"cicrev_grass_top.png", "cicrev_dirt.png", "cicrev_dirt.png^cicrev_grass_side.png"},
-	groups = {hand = 1},
+-- TODO: add loam, a source of clay(clay loam)
+-- anorganic
+-- sand + silt + clay = loam
+-- mud + grass = adobe
+
+-- organic
+-- peat
+-- soil?
+
+minetest.register_node("cicrev:peat", {
+	description = "Peat",
+	tiles = {"cicrev_peat.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
 })
 
-minetest.register_node("cicrev:dirt", {
-	description = "Dirt",
-	tiles = {"cicrev_dirt.png"},
-	groups = {hand = 2},
+minetest.register_node("cicrev:loam", {
+	description = "Loam",
+	tiles = {"cicrev_loam.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+})
+
+minetest.register_node("cicrev:soil", {
+	description = "Soil",
+	tiles = {"cicrev_soil.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+})
+
+minetest.register_node("cicrev:clay", {
+	description = "Clay",
+	tiles = {"cicrev_clay.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+})
+
+minetest.register_node("cicrev:silt", {
+	description = "Silt",
+	tiles = {"cicrev_silt.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+})
+
+minetest.register_node("cicrev:sand", {
+	description = "Sand",
+	tiles = {"cicrev_sand.png"},
+	groups = {crumbly = 1, hand = 2, falling_node = 1},
+})
+
+minetest.register_node("cicrev:gravel", {
+	description = "Gravel",
+	tiles = {"cicrev_gravel.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+})
+
+minetest.register_node("cicrev:dirt_with_grass", {
+	description = "Grass",
+	tiles = {"cicrev_grass_top.png", "cicrev_loam.png", "cicrev_soil.png^cicrev_grass_side.png"},
+	groups = {crumbly = 1, hand = 3},
+	drop = "cicrev:soil",
 })
 
 minetest.register_node("cicrev:peat_with_moss", {
@@ -274,24 +209,6 @@ minetest.register_node("cicrev:peat_with_moss", {
 	groups = {hand = 1},
 })
 
-
-minetest.register_node("cicrev:peat", {
-	description = "Peat",
-	tiles = {"cicrev_peat.png"},
-	groups = {hand = 2},
-})
-
-minetest.register_node("cicrev:sand", {
-	description = "Sand",
-	tiles = {"cicrev_sand.png"},
-	groups = {hand = 2, falling_node = 1},
-})
-
-minetest.register_node("cicrev:gravel", {
-	description = "Gravel",
-	tiles = {"cicrev_gravel.png"},
-	groups = {hand = 2, falling_node = 1},
-})
 
 -- ====
 -- ORES
@@ -314,10 +231,11 @@ minetest.register_node("cicrev:bituminous_coal", {
 -- =======
 
 minetest.register_node("cicrev:water_source", {
-	drawtype = "liquid",
 	description = "Water",
+	drawtype = "liquid",
+	-- tiles = {"cicrev_water.png^[opacity:150"},
 	tiles = {{
-		name = "cicrev_water_still.png",
+		name = "cicrev_water_still.png^[opacity:150",
 		animation = {
 			type = "vertical_frames",
 			aspect_w = 16,
@@ -325,6 +243,7 @@ minetest.register_node("cicrev:water_source", {
 			length = 3,
 		}
 	}},
+	use_texture_alpha = "blend",
 	groups = {water = 1},
 	paramtype = "light",
 	pointable = false,
@@ -333,18 +252,17 @@ minetest.register_node("cicrev:water_source", {
 	liquidtype = "source",
 	liquid_alternative_flowing = "cicrev:water_flowing",
 	liquid_viscosity = 0,
-	alpha = 200, --undocumented feature
 	post_effect_color = {a = 103, r = 30, g = 60, b = 90},
 	-- liquid_renewable = true,
 	-- liquid_range = 3,
 })
 minetest.register_node("cicrev:water_flowing", {
-	drawtype = "flowingliquid",
 	description = "Flowing water",
-	tiles = {"cicrev_water.png"},
+	drawtype = "flowingliquid",
+	-- tiles = {"cicrev_water.png^[opacity:150"},
 	-- special_tiles = {"cicrev_water.png", "cicrev_water.png"},
 	special_tiles = {{
-		name = "cicrev_water_flowing.png",
+		name = "cicrev_water_flowing.png^[opacity:150",
 		animation = {
 			type = "vertical_frames",
 			aspect_w = 16,
@@ -353,7 +271,7 @@ minetest.register_node("cicrev:water_flowing", {
 		}
 	},
 	{
-		name = "cicrev_water_flowing.png",
+		name = "cicrev_water_flowing.png^[opacity:150",
 		animation = {
 			type = "vertical_frames",
 			aspect_w = 16,
@@ -361,6 +279,7 @@ minetest.register_node("cicrev:water_flowing", {
         	length = 1,
 		}
 	}},
+	use_texture_alpha = "blend",
 	groups = {water = 1},
 	paramtype = "light",
 	pointable = false,
@@ -372,7 +291,6 @@ minetest.register_node("cicrev:water_flowing", {
 	liquid_viscosity = 0,
 	liquid_renewable = true,
 	liquid_range = 3,
-	alpha = 200, --undocumented feature
 	post_effect_color = {a = 103, r = 30, g = 60, b = 90},
 })
 
@@ -431,7 +349,7 @@ minetest.register_node("cicrev:ladder", {
 })
 
 minetest.register_node("cicrev:torch", {
-	description = "torch",
+	description = "Torch",
 	drawtype = "nodebox",
 	tiles = {"cicrev_torch.png"},
 	groups = {hand = 1, attached_node = 1},
@@ -447,13 +365,20 @@ minetest.register_node("cicrev:torch", {
 	end,
 })
 
-make_chiseable("cicrev:planks_oak")
-make_chiseable("cicrev:planks_dark")
-
 local stones = {"andesite", "basalt", "chalk", "chert", "claystone",
     "conglomerate", "dacite", "diorite", "dolomite", "gabbro", "gneiss", "granite", "limestone",
     "marble", "mudstone", "obsidian", "phyllite", "quartzite", "rhyolite",
     "rocksalt", "sandstone", "schist", "shale", "siltstone", "slate"}
 for _, v in pairs(stones) do
-	make_chiseable("df_stones:" .. v)
+	local stone = "df_stones:" .. v
+	make_chiseable(stone)
+	minetest.override_item(stone, {
+		_on_update = function(pos_center)
+			for _, pos in pairs(cicrev.get_touching_nodes(pos_center)) do
+				if minetest.registered_nodes[minetest.get_node(pos).name].walkable then return end
+			end
+			minetest.remove_node(pos_center)
+			minetest.add_item(pos_center, stone)
+		end
+	})
 end

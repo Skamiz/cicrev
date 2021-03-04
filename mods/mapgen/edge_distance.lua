@@ -1,11 +1,13 @@
 -- TODO: put constants in thier own file, into the table c
 local c_grass = minetest.get_content_id("cicrev:dirt_with_grass")
-local c_dirt = minetest.get_content_id("cicrev:dirt")
+local c_dirt = minetest.get_content_id("cicrev:loam")
 local c_moss = minetest.get_content_id("cicrev:peat_with_moss")
 local c_peat = minetest.get_content_id("cicrev:peat")
 local c_sand = minetest.get_content_id("cicrev:sand")
 local c_gravel = minetest.get_content_id("cicrev:gravel")
 local c_water = minetest.get_content_id("cicrev:water_source")
+
+local soils = {"soil", "loam", "clay", "silt", "sand", "peat"}
 
 minetest.set_mapgen_setting("water_level", "0", true)
 local world_seed = minetest.get_mapgen_setting("seed")
@@ -21,6 +23,7 @@ local function get_biome_point(minp)
     if minp.y < -160 then
         stone = minetest.get_content_id("df_stones:" .. cicrev.random_from_table(i_intrusive))
     end
+	local soil = minetest.get_content_id("cicrev:" .. cicrev.random_from_table(soils))
 
 	local biome_point = {
 		-- for some reason this breaks
@@ -30,6 +33,7 @@ local function get_biome_point(minp)
 		z = math.random(minp.z, minp.z + 79),
 		y = math.random(-10, 10),
 		stone = stone,
+		soil = soil,
 	}
 	-- minetest.chat_send_all(math.floor(minp.z/80) % 2)
 	return biome_point
@@ -97,6 +101,7 @@ local function get_nearest_biome_point(x, z, biome_points)
 	return closest, second_closest
 end
 
+-- distance to edge
 local distance_buffer = {}
 local function get_distance_map(minp)
 	local biome_points = get_biome_points(minp)
@@ -120,7 +125,8 @@ local function get_height_map(minp, noise)
 			local bp1, bp2 = get_nearest_biome_point(x, z, biome_points)
 			local dist = distance_map[(z-minp.z) * 80 + x-minp.x + 1]
 			local height = bp1.y
-			local lim = 5 --+ nv*3
+			-- local lim = 5 --+ nv*3
+			local lim = (math.abs(bp1.y - bp2.y) / 2) + math.abs(nv*3)-0.5
 			if dist < lim then
 				height = ((dist/lim) * bp1.y) + ((1 - (dist/lim)) * ((bp1.y + bp2.y) / 2))
 			end
@@ -211,27 +217,29 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				local t_height = terrain_height
 
                 if y <= 0 then
-                    data[vi] = c_water
+                    -- data[vi] = c_water
                 end
 
 				if biome.y == 1 and y == 0 and y < t_height then
 					if math.random() < 0.6 then
-						data[vi] = c_moss
+						data[vi] = c_peat
 					end
 				elseif biome.y == 1 and y < 0 and y < t_height then
 	                    data[vi] = c_peat
 				else
 
-	                if y < t_height and y > 0 then
-	                    data[vi] = c_grass
+	                if y < t_height and y >= 0 then
+	                    data[vi] = biome.soil
+						-- data[vi] = c_grass
 	                end
 
 	                if y < t_height and y < 0 then
-	                    data[vi] = c_gravel
+						data[vi] = biome.soil
+	                    -- data[vi] = c_gravel
 	                end
 
 					if y < t_height - 1 then
-	                    data[vi] = c_dirt
+	                    data[vi] = biome.soil
 	                end
 				end
 

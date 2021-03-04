@@ -1,6 +1,6 @@
 -- TODO: put constants in thier own file, into the table c
 local c_grass = minetest.get_content_id("cicrev:dirt_with_grass")
-local c_dirt = minetest.get_content_id("cicrev:dirt")
+local c_dirt = minetest.get_content_id("cicrev:soil")
 local c_sand = minetest.get_content_id("cicrev:sand")
 local c_water = minetest.get_content_id("cicrev:water_source")
 
@@ -49,7 +49,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
                 end
 
                 if noise_value_3d - y / 20 > 0 then
-                    data[vi] = c_sand
+                    -- data[vi] = c_sand
                     if noise_value_3d_1 - (y + 1) / 20 > 0 then
                         data[vi] = c_dirt
                     end

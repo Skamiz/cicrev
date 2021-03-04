@@ -2,10 +2,21 @@ minetest.register_craftitem("cicrev:stick", {
 	description = "Stick",
 	inventory_image = "cicrev_stick.png",
 	stack_max = 64,
+	groups = {stick = 1},
 })
 minetest.register_craftitem("cicrev:flint", {
 	description = "Flint stone",
 	inventory_image = "cicrev_flint.png",
+	stack_max = 64,
+})
+minetest.register_craftitem("cicrev:axe_head_flint", {
+	description = "Axe head (flint)",
+	inventory_image = "cicrev_axe_head_flint.png",
+	stack_max = 64,
+})
+minetest.register_craftitem("cicrev:knife_head_flint", {
+	description = "Knife head (flint)",
+	inventory_image = "cicrev_knife_head_flint.png",
 	stack_max = 64,
 })
 minetest.register_craftitem("cicrev:grass", {

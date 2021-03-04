@@ -19,6 +19,28 @@ minetest.register_decoration({
 	place_offset_y = 1,
 })
 
+minetest.register_decoration({
+	deco_type = "schematic",
+	place_on = "cicrev:dirt_with_grass",
+	y_min = 0,
+    y_max = 50,
+	fill_ratio = 0.001,
+	schematic = "schematics/tree_chaktekok.mts",
+	flags = "place_center_x, place_center_z",
+	place_offset_y = 1,
+})
+
+minetest.register_decoration({
+	deco_type = "schematic",
+	place_on = "cicrev:dirt_with_grass",
+	y_min = 0,
+    y_max = 50,
+	fill_ratio = 0.001,
+	schematic = "schematics/tree_chestnut.mts",
+	flags = "place_center_x, place_center_z",
+	place_offset_y = 1,
+})
+
 
 minetest.register_decoration({
 	deco_type = "simple",

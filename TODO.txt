@@ -1,6 +1,29 @@
 =====
 TODO:
 =====
+equivalent to player_monoids
+	first evaluate +- then */
+
+cart
+	rightclick - opens inventory
+	shift + rightclick begin/stop pulling it
+	while pulling decrease movement speed and prevent jumping
+
+warry walking speed depending on what the player is standing on
+
+figure out what this means: Nodes are now allowed to have the "liquid" or "flowingliquid" drawtype for non-liquids (liquidtype=none)
+
+replace craosshairs with ones with better visibility against dark/bright backgrounds
+
+a group which signifies that time should be simulated for that node after it is loaded again
++ the actual mechanics of it
+
+"instead of making leaves nonexistent in the winter, just re-texture them as branches with no leaves. then you won't have any leaf respawning troubles."
+
+sufocation from water
+
+get rid of sfinv and creative
+
 add water chestnut to marches
 
 geode - blob ore with a smaler blob ore inside
@@ -23,7 +46,7 @@ kill the player if they stay too long in complete darknes
 	"You have been eaten by a ..."
 
 hunger and thirst
-	comunicated through warning signs, not directly displayed
+	comunicated through warning signs, not directly displayed - might be to frustrating
 	penaties for too hight/low bar fullness
 	soft cap, hard cap
 	if you stuff yourself over the hard cap with food you puke most of it out
@@ -73,3 +96,18 @@ slabs mod
 
 crates
 	- 4 * 4 slots
+
+
+=====
+OTHER
+=====
+enchanting
+	don't enchant items directly, instead create an item which holds the enchantment
+	(like MC enchanted book) but only one at lowest level of strenght
+	that can be made storonger
+
+	once enchantment is placed on tool it can't be changed
+
+	provide a use for enchantments wich are left over
+
+	different tools have a diffreent capacity to hold enchantments

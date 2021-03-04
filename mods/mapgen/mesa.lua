@@ -1,6 +1,6 @@
 -- TODO: put constants in thier own file, into the table c
 local c_grass = minetest.get_content_id("cicrev:dirt_with_grass")
-local c_dirt = minetest.get_content_id("cicrev:dirt")
+local c_dirt = minetest.get_content_id("cicrev:loam")
 local c_sand = minetest.get_content_id("cicrev:sand")
 local c_water = minetest.get_content_id("cicrev:water_source")
 

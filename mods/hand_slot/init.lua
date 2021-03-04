@@ -27,11 +27,11 @@ minetest.register_tool("hand_slot:admin_tool", {
 
     tool_capabilities = {
         full_punch_interval = 1,
-        -- max_drop_level = 1,
         groupcaps = {
             hand = {times = { [1]=0.3, [2]=0.3, [3]=0.3 }},
             cracky = {times = { [1]=0.3 }},
             choppy = {times = { [1]=0.3 }},
+            crumbly = {times = { [1]=0.3 }},
         },
     },
 })

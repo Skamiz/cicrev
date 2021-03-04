@@ -47,7 +47,6 @@ if creative_mode_cache then
 		range = 10,
 		tool_capabilities = {
 			full_punch_interval = 0.5,
-			max_drop_level = 3,
 			groupcaps = {
 				crumbly = caps,
 				cracky  = caps,

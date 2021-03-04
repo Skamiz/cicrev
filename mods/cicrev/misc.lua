@@ -135,8 +135,15 @@ function place_pillar(itemstack, placer, pointed_thing)
 end
 
 local barks_to_strip = {
+	["cicrev:log_oak"] = "cicrev:log_stripped_oak",
 	["cicrev:log_dark"] = "cicrev:log_stripped_dark",
-	["cicrev:log"] = "cicrev:log_stripped",
+	["cicrev:log_chaktekok"] = "cicrev:log_stripped_chaktekok",
+	["cicrev:log_chestnut"] = "cicrev:log_stripped_chestnut",
+
+	["cicrev:bark_oak"] = "cicrev:bark_stripped_oak",
+	["cicrev:bark_dark"] = "cicrev:bark_stripped_dark",
+	["cicrev:bark_chaktekok"] = "cicrev:bark_stripped_chaktekok",
+	["cicrev:bark_chestnut"] = "cicrev:bark_stripped_chestnut",
 }
 
 -- if pointed_thing.under is a suitable block, replace it with a stripped variant

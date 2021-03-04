@@ -2,7 +2,7 @@ local mod_name = minetest.get_current_modname()
 local mod_path = minetest.get_modpath(mod_name)
 
 local c_air = minetest.CONTENT_AIR
-local c_dirt = minetest.get_content_id("cicrev:dirt")
+local c_dirt = minetest.get_content_id("cicrev:loam")
 local c_gneis = minetest.get_content_id("df_stones:gneiss")
 
 local data = {}

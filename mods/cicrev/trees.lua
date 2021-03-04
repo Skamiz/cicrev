@@ -1,102 +1,158 @@
-trees = {}
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 
-function trees.get_valid_growth_positions(pos)
-    local candidates = cicrev.get_touching_nodes(pos)
-    for k, v in pairs(candidates) do
-        if minetest.get_node(v).name ~= "air" then
-            candidates[k] = nil
-        end
-        if #minetest.find_nodes_in_area(vector.add(v, 1), vector.add(v, -1), tree_1.trunk) > 3 then
-            candidates[k] = nil
-        end
-    end
-    return candidates
+--[[
+registers:
+	sapling
+	leaves
+	log
+	stripped log
+	planks
+--]]
+
+function cicrev.register_tree(name, description, leaf_distance)
+	assert(name and type(name) == "string", "A tree registration doesn't provide a valid name.")
+	local description = description or "Unspecified"
+	local leaf_distance = leaf_distance or 3
+
+	-- I could save me some concatations by doing them once here, istead everytime I need them
+
+	minetest.register_node("cicrev:sapling_" .. name, {
+		description = description .. " Sapling",
+		drawtype = "plantlike",
+		paramtype = "light",
+		tiles = {"cicrev_sapling_" .. name .. ".png"},
+		groups = {hand = 1},
+		walkable = false,
+		drop = "",
+		selection_box = {
+	            type = "fixed",
+	            fixed = {
+	                {-4 / 16, -0.5, -4 / 16, 4 / 16, 6 / 16, 4 / 16},
+	            },
+	        },
+		after_place_node = function(pos, placer, itemstack, pointed_thing)
+			local t = minetest.get_node_timer(pos)
+			-- t:start(math.random(60 * 20, 60 * 60))
+			t:start(math.random(1, 5))
+		end,
+		on_timer = function(pos, elapsed) -- TODO: replace with a 'grow_tree' function or at the very least make tree grow through leaves
+			minetest.remove_node(pos)
+			minetest.place_schematic(pos, modpath .. "/schematics/tree_" .. name .. ".mts", "random", nil, false, "place_center_x, place_center_z")
+		end,
+	})
+
+	minetest.register_node("cicrev:leaves_" .. name, {
+		description = description .. " Leaves",
+		drawtype = "allfaces",
+		paramtype = "light",
+		tiles = {"cicrev_leaves_" .. name .. ".png"},
+		groups = {hand = 1},
+		walkable = false,
+		drop = {
+			max_items = 1,
+			items = {
+				{
+					rarity = 50,
+					items = {"cicrev:sapling_" .. name}
+				},
+				{
+					rarity = 2,
+					items = {"cicrev:stick"},
+				},
+			}
+		},
+		_leaves = {
+			grows_on = "cicrev:log_" .. name,
+			grow_distance = leaf_distance,
+		},
+		_on_update = cicrev.leaf_decay
+	})
+
+	minetest.register_node("cicrev:log_" .. name, {
+		description = description .. " Log",
+		tiles = {"cicrev_log_top_" .. name .. ".png", "cicrev_log_top_" .. name .. ".png", "cicrev_log_" .. name .. ".png"},
+		paramtype2 = "facedir",
+		groups = {choppy = 1, log = 1, wood = 1},
+		on_place = place_pillar,
+		node_placement_prediction = "",
+	})
+
+	minetest.register_node("cicrev:log_stripped_" .. name, {
+		description = "Stripped " .. description .. " Log",
+		tiles = {"cicrev_log_top_stripped_" .. name .. ".png", "cicrev_log_top_stripped_" .. name .. ".png", "cicrev_log_stripped_" .. name .. ".png"},
+		paramtype2 = "facedir",
+		groups = {choppy = 1, log = 1, wood = 1},
+		on_place = place_pillar,
+		node_placement_prediction = "",
+	})
+
+	minetest.register_node("cicrev:bark_" .. name, {
+		description = description .. " Bark",
+		tiles = {"cicrev_log_" .. name .. ".png"},
+		paramtype2 = "facedir",
+		groups = {choppy = 1, log = 1, wood = 1},
+		on_place = place_pillar,
+		node_placement_prediction = "",
+	})
+
+	minetest.register_node("cicrev:bark_stripped_" .. name, {
+		description = "Stripped " .. description .. " Bark",
+		tiles = {"cicrev_log_stripped_" .. name .. ".png"},
+		paramtype2 = "facedir",
+		groups = {choppy = 1, log = 1, wood = 1},
+		on_place = place_pillar,
+		node_placement_prediction = "",
+	})
+
+	minetest.register_node("cicrev:planks_" .. name, {
+		description = description .. " Planks",
+		tiles = {{name = "cicrev_planks_" .. name .. ".png", align_style = "world"}},
+		groups = {choppy = 1, planks = 1, wood = 1},
+	})
+
+	make_chiseable("cicrev:planks_" .. name)
+
+	-- Recipes
+	-- Bark
+	minetest.register_craft({
+	    output = "cicrev:bark_" .. name .. " 3",
+	    recipe = {
+	            {"cicrev:log_" .. name, "cicrev:log_" .. name},
+	            {"cicrev:log_" .. name, "cicrev:log_" .. name},
+	        },
+	})
+	-- Planks
+	minetest.register_craft({
+	    output = "cicrev:planks_" .. name .. " 4",
+	    recipe = {
+	            {"cicrev:log_" .. name},
+	        },
+	})
+	minetest.register_craft({
+	    output = "cicrev:planks_" .. name .. " 4",
+	    recipe = {
+	            {"cicrev:log_stripped_" .. name},
+	        },
+	})
+	minetest.register_craft({
+	    output = "cicrev:planks_" .. name .. " 4",
+	    recipe = {
+	            {"cicrev:bark_" .. name},
+	        },
+	})
+	minetest.register_craft({
+	    output = "cicrev:planks_" .. name .. " 4",
+	    recipe = {
+	            {"cicrev:bark_stripped_" .. name},
+	        },
+	})
+
+	if minetest.get_modpath("falling_trees") then
+		falling_trees.register_tree({
+			logs = {"cicrev:log_" .. name, "cicrev:bark_" .. name},
+			leaves = {"cicrev:leaves_" .. name}
+		})
+	end
+
 end
-
-tree_1 = {
-    trunk = "cicrev:log",
-    leaves = "cicrev:leaves",
-    leav_range = 4,
-    energy = 10,
-    branch_chance = 0.1,
-    sidways_chance = 0.2,
-}
-
-
-minetest.register_craftitem("cicrev:axe_of_trees", {
-    description = "axe of trees",
-    inventory_image = "cicrev_axe_of_trees.png",
-    wield_image = "cicrev_axe_of_trees.png",
-    stack_max = 1,
-    on_place = function(itemstack, placer, pointed_thing)
-        local pos = pointed_thing.under
-        local under_name = minetest.get_node(pos).name
-        if under_name == "cicrev:dirt_with_grass" then
-            local pos = pointed_thing.above
-            minetest.set_node(pos, {name = tree_1.trunk, param2 = tree_1.energy})
-        elseif under_name == tree_1.trunk then
-            local energy = minetest.get_node(pos).param2
-            if energy > 1 then --branching
-                if math.random() < tree_1.branch_chance then
-                    local r = math.random(3, 6)
-                    v = cicrev.get_touching_nodes(pos)[r]
-                    if minetest.get_node(v).name == "air" then
-                        minetest.set_node(v, {name = tree_1.trunk, param2 = math.ceil(energy/2)})
-                        minetest.set_node(pos, {name = tree_1.trunk, param2 = 0})
-                    end
-                    for _, v in pairs(trees.get_valid_growth_positions(pos)) do
-                        --always branches to the same side
-                            minetest.set_node(v, {name = tree_1.trunk, param2 = math.ceil(energy/2)})
-                            minetest.set_node(pos, {name = tree_1.trunk, param2 = 0})
-                            break
-                    end
-                elseif math.random() < tree_1.sidways_chance then --growing to the side
-                    local posi = trees.get_valid_growth_positions(pos)
-                    local g = cicrev.random_from_table(posi)
-                        minetest.set_node(g, {name = tree_1.trunk, param2 = energy - 1})
-                        minetest.set_node(pos, {name = tree_1.trunk, param2 = 0})
-                else --just growing upwarsd, or to the side if there isn't enough space
-                    for _, v in pairs(trees.get_valid_growth_positions(pos)) do
-                        minetest.set_node(v, {name = tree_1.trunk, param2 = energy - 1})
-                        minetest.set_node(pos, {name = tree_1.trunk, param2 = 0})
-                        break
-                    end
-                end
-            elseif energy == 1 then
-                minetest.set_node(pos, {name = tree_1.trunk, param2 = 0})
-                pos.y = pos.y + 1
-                local airspace = cicrev.detect_cluster(pos, 99)
-                for _, v in pairs(airspace) do
-                    minetest.set_node(v, {name = tree_1.leaves, param2 = 1})
-                end
-                -- for _, v in pairs(cicrev.get_touching_nodes(pos)) do
-                --     if minetest.get_node(v).name == "air" then
-                --         minetest.set_node(v, {name = tree_1.leaves, param2 = 1})
-                --         minetest.set_node(pos, {name = tree_1.trunk, param2 = 0})
-                --     end
-                -- end
-            end
-        elseif under_name == tree_1.leaves then
-            local touching = cicrev.get_touching_nodes(pos)
-            local min_distance = minetest.get_node(pos).param2
-            for _, v in pairs(touching) do
-                if minetest.get_node(v).name == tree_1.trunk then
-                    minetest.set_node(pos, {name = tree_1.leaves, param2 = 1})
-                    min_distance = 1
-                elseif minetest.get_node(v).name == tree_1.leaves and
-                   minetest.get_node(v).param2 < min_distance then
-                       min_distance = minetest.get_node(v).param2
-                       minetest.set_node(pos, {name = tree_1.leaves, param2 = min_distance + 1})
-                end
-            end
-        end
-    end,
-    on_use = function(itemstack, user, pointed_thing)
-        if pointed_thing and pointed_thing.under then --and minetest.get_node(pointed_thing.under).name == tree_1.trunk then
-            local tree = cicrev.detect_cluster(pointed_thing.under, 50)
-            for _, v in pairs(tree) do
-                minetest.remove_node(v)
-            end
-        end
-    end
-})

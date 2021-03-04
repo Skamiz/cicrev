@@ -15,9 +15,40 @@ i_intrusive = {"diorite", "gabbro", "granite"}
 
 for _, v in pairs(stones) do
     local lower = string.lower(v)
-    minetest.register_node(mod_name .. ":" .. lower, {
+	local name = mod_name .. ":" .. lower
+	local cobble_name = name .. "_cobblestone"
+	local rock_name = name .. "_rock"
+
+	local texture_name = mod_name .. "_" .. lower
+
+    minetest.register_node(name, {
         description = v,
-        tiles = {mod_name .. "_" .. lower .. ".png"},
+        tiles = {texture_name .. ".png"},
+        groups = {cracky = 1},
+		drop = rock_name,
+    })
+
+
+    minetest.register_node(cobble_name, {
+        description = v .. " Cobblestone",
+        tiles = {texture_name .. ".png^df_stones_cobble.png"},
         groups = {cracky = 1},
     })
+
+	minetest.register_craftitem(rock_name, {
+		description = v .. " Rock",
+		inventory_image = texture_name .. ".png^df_stones_rock.png^[makealpha:255,0,255",
+		stack_max = 64,
+	})
+
+	minetest.register_craft({
+	    output = cobble_name,
+	    recipe = {
+	        {rock_name, rock_name},
+	        {rock_name, rock_name},
+	    },
+	})
+
+
+
 end

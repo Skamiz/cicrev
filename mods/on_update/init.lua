@@ -29,7 +29,7 @@ local function update_touching_nodes(pos_center)
 	for _, pos in pairs(touching) do
 		local node_def = minetest.registered_nodes[minetest.get_node(pos).name]
 		local propagate
-		if node_def._on_update then
+		if node_def and node_def._on_update then
 			propagate = node_def._on_update(pos)
 		end
 		-- TODO: turn this into a queue so it doesn't crash the server by overflow
