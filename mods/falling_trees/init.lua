@@ -124,6 +124,8 @@ end
 -- to the apropriate rotation so the transition between node and object is even smoother.
 -- Turns out it is impossible to aply rotation to attached objects.
 
+-- BTW the rotation hirearchy is Y > X > Z
+
 local function rotate_to_param2(object, param2)
 	local rotation = param2 % 4
 	local direction = (param2 - rotation) / 4
@@ -181,7 +183,7 @@ end
 local function create_tree_object(tree, fall_direction)
 	local pivot_pos = tree.pivot
 	local pivot = minetest.add_entity(pivot_pos, modname .. ":pivot_object")
-	pivot:set_acceleration({x=0, y=-9.81, z=0})
+	-- pivot:set_acceleration({x=0, y=-9.81, z=0})
 	local luaent = pivot:get_luaentity()
 	luaent._dir = fall_direction
 	luaent._tree = tree
@@ -213,6 +215,7 @@ local function get_rotated_param2(param2, dir)
 	return param2
 end
 
+-- TODO: break this up
 local function place_tree(pivot)
 	local tree = pivot._tree
 	local o_pos = pivot.object:get_pos()
@@ -296,12 +299,12 @@ minetest.register_entity(modname .. ":pivot_object", {
 		static_save = false,
 	},
 	on_activate = function(self, staticdata, dtime_s)
+		self.object:set_acceleration({x=0, y=-9.81, z=0})
 		self._rotating = true
 		self._falling = true
 		self._falling_speed = 3
 	end,
 
-	-- TODO: break this up
 	on_step = function(self, dtime, moveresult)
 		local dir = self._dir
 

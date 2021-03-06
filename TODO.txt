@@ -56,6 +56,15 @@ Cooking stone
 	needs to be supported on both ends to be placable
 		ends just a bit into the adjenced nodes
 	cooking food as an entity on the stone?
+
+
+Dungeon
+	3*5*3 node tilles
+	randomly choose between stone/cobble
+	each depth level uses another stone type
+	keys and matching doors
+	fake walls
+	floor modifiers? - plantlife/water/fire/whatever
 =====
 DONE:
 =====

@@ -5,53 +5,27 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
+local storage = minetest.get_mod_storage()
 
-local x_rot = {
-	13, 14, 15, 7, 4, 5, 6, 9,
-	10, 11, 8, 20, 21, 22, 23, 0,
-	1, 2, 3, 16, 17, 18, 19, 12,
-}
-local function rotate_towards_x(pos)
-	local node = minetest.get_node(pos)
-	node.param2 = x_rot[node.param2] or 12
-	minetest.set_node(pos, node)
+local function place_slice(pos)
+	for i = 0, 2 do
+		for j = 0, 2 do
+			minetest.set_node({x = pos.x + i, y = pos.y, z = pos.z + j}, {name = "df_stones:slate"})
+		end
+	end
 end
 
-local z_rot = {
-	5, 6, 7, 22, 23, 20, 21, 0,
-	1, 2, 3, 13, 14, 15, 12, 19,
-	16, 17, 18, 10, 11, 8, 9, 4,
-}
-local function rotate_towards_z(pos)
-	local node = minetest.get_node(pos)
-	node.param2 = z_rot[node.param2] or 4
-	minetest.set_node(pos, node)
+local function place_tile(pos, tile_type)
+	if tile_type == "wall" then
+		for i = 0, 4 do
+			place_slice({x = pos.x, y = pos.y + i, z = pos.z})
+		end
+	elseif tile_type == "coridor" then
+		place_slice(pos)
+		place_slice({x = pos.x, y = pos.y + 4, z = pos.z})
+	end
 end
 
-minetest.register_entity(modname .. ":debug_object", {
-	initial_properties = {
-		visual = "item",
-		visual_size = {x = 2/3, y = 2/3, z = 2/3},
-		physical = true,
-		static_save = false,
-		wield_item = "df_stones:slate_chiseled_3_1",
-	},
-	-- rotation hirearchy is y > x > z
-	on_activate = function(self, staticdata, dtime_s)
-		local rot = self.object:get_rotation()
-		-- rot.x = rot.x + ((math.pi / 2))
-		-- rot.y = rot.y + ((math.pi / 2))
-		-- rot.z = rot.z + ((math.pi / 2))
-		self.object:set_rotation(rot)
-	end,
-	on_step = function(self, dtime, moveresult)
-		local rot = self.object:get_rotation()
-		-- rot.x = rot.x + ((math.pi / 2) * (dtime))
-		rot.y = rot.y + ((math.pi / 2) * (dtime))
-		-- rot.z = rot.z + ((math.pi / 2) * (dtime))
-		self.object:set_rotation(rot)
-	end,
-})
 
 minetest.register_craftitem("cicrev:axe_of_debug", {
 	description = "axe of debug",
@@ -63,21 +37,18 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 			test = {maxlevel=0, uses=20, times={[1]=1, [2]=2, [3]=3, [4]=4}},
 		},
 	},
-	-- TODO: see how droping node objects interact when spawned right on top of each other
 	on_place = function(itemstack, placer, pointed_thing)
-		local node_obj = minetest.add_entity(pointed_thing.above, modname .. ":debug_object")
-		-- local pos = pointed_thing.under
-		-- local node = minetest.get_node(pos)
-		-- node.param2 = node.param2 + 1
-		-- minetest.set_node(pos, node)
+		storage:set_string("foo", "bar")
+		-- local pos = placer:get_pos()
+		-- pos = vector.round(pos)
+		-- place_tile({x = pos.x - 1, y = pos.y - 5, z = pos.z - 1}, "wall")
 	end,
 	on_use = function(itemstack, user, pointed_thing)
-		if pointed_thing.under then
-			local pos = pointed_thing.under
-			local node = minetest.get_node(pos)
-			node.param2 = node.param2 - 1
-			minetest.set_node(pos, node)
-		end
+		minetest.chat_send_all(storage:get_string("foo"))
+		minetest.chat_send_all(type(minetest.get_inventory({type = "detached", name = "pull_cart:cart_fdg"})))
+		-- local pos = user:get_pos()
+		-- pos = vector.round(pos)
+		-- place_tile({x = pos.x - 1, y = pos.y - 5, z = pos.z - 1}, "coridor")
 	end,
 })
 

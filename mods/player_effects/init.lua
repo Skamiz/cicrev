@@ -11,5 +11,6 @@ local modpath = minetest.get_modpath(modname)
 -- physics overrides
 -- maxhealt override
 -- speed overrides
+	-- node group which specifies a speed multiplier in percentage
 -- dizzines - involuntary turning/walking/jumping
 -- whatever else

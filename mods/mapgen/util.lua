@@ -3,6 +3,7 @@ u = {}
 --[[
 	Undersmapling
 	TODO: only generate needed samples
+	Prety sure this whole thing is a bust since the builtin noise is already undersampled
 ]]
 
 local area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge={x = 80, y = 84, z = 80}}
