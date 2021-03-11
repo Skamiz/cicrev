@@ -133,6 +133,7 @@ cicrev.register_fence("cicrev:fence_dark", {
 	description = "Dark Fence",
 	tiles = {"cicrev_fence_dark_top.png", "cicrev_fence_dark_top.png", "cicrev_fence_dark_side.png"},
 	groups = {choppy = 1, wood = 1},
+	use_texture_alpha = "opaque",
 })
 
 cicrev.register_wall("cicrev:wall_dark", {
@@ -302,6 +303,7 @@ minetest.register_node("cicrev:coal_arrow", {
 	description = "_coal_arrow",
 	drawtype = "nodebox",
 	tiles = {"cicrev_arrow.png"},
+	use_texture_alpha = "clip",
 	groups = {hand = 1},
 	walkable = false,
 	buildable_to = true,
@@ -352,6 +354,7 @@ minetest.register_node("cicrev:torch", {
 	description = "Torch",
 	drawtype = "nodebox",
 	tiles = {"cicrev_torch.png"},
+	use_texture_alpha = "opaque",
 	groups = {hand = 1, attached_node = 1},
 	node_box = {type = "fixed", fixed = {-1/16, -8/16, -1/16, 1/16, 2/16, 1/16}},
 	walkable = false,

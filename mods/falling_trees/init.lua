@@ -5,6 +5,8 @@ local modpath = minetest.get_modpath(modname)
 tool wear
 code cleanup
 
+TODO: it crashes when the neares log to a leaf isn't part of the felled tree
+
 Stretch goals:
 make the objects rotate to the nodes rotation to stop jaring transition between node and object
 	- 6 of 24 positions are unreachable due to gimbal lock
@@ -90,7 +92,12 @@ local function detect_leaves(logs, leave_nodes, log_nodes)
 		local l_pos = minetest.get_position_from_hash(pos_hash)
 		local nearby_logs = minetest.find_nodes_in_area(
 				vector.add(l_pos, -leave_search_distance), vector.add(l_pos, leave_search_distance), log_nodes)
-		local nearest_log = nearby_logs[1]
+		-- must ensure that the first choosen log is also part of the tree
+		local n = 1
+		while not logs[minetest.hash_node_position(nearby_logs[n])] do
+			n = n + 1
+		end
+		local nearest_log = nearby_logs[n]
 		local shortest_distance = get_distance_2(nearest_log, l_pos)
 		for i, log_pos in ipairs(nearby_logs) do
 			local distance = get_distance_2(log_pos, l_pos)

@@ -1,0 +1,16 @@
+# Knapping timeout
+#
+# Time, in secconds, after which the knapping proccess is aborted.
+# Serves to prevent the wold getting kluttered with entities.
+knapping_timeout (Knapping timeout) int 300 1 3600
+
+# Knapping
+#
+# How many knapping proccess can be going on at once.
+# Serves to prevent the wold getting kluttered with entities.
+knapping_max_crafts (Knapping amount limit) int 25 1 100
+
+# Cart pulling speed
+#
+# How fast you move while pulling a cart.
+cart_speed_multiplier (Cart pulling speed) float 0.7
