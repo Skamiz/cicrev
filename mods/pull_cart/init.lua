@@ -9,6 +9,8 @@ things one might want to do in case of adaptation:
 - implement protection/ownership system for server play
 - more appropriate texture
 - add an inventory_image
+
+note that the player_effects mod this can depend on is the one mady by skamiz, not wuzzy
 --]]
 
 local pull_cart = {}
@@ -18,10 +20,26 @@ pull_cart.players = {}
 -- meant to be a multiplier, but with the current simple way of handling pysics overrides
 -- it just flat out sets the speed to this value
 local speed_multiplier = tonumber(minetest.settings:get("cart_speed_multiplier")) or 0.7
+-- if this is true, pulling a cart does not prevent going up whole blocks at once
+local offroad_cart = minetest.settings:get("offroad_cart") == "true"
+local jump_multiplier = offroad_cart and 0.9 or 0.5
 -- if you change this don't forget to also change the formspec
 local cart_inv_size = 2*8
 -- how far the cart stays behind the player
 local distance_to_cart = 1.2
+
+local slowdown = {
+	effect_name = "speed",
+	source = "pull_cart",
+	influence = function(speed) return speed * speed_multiplier end,
+	priority = 156,
+}
+local weightdown = {
+	effect_name = "jump",
+	source = "pull_cart",
+	influence = function(jump) return jump * jump_multiplier end,
+	priority = 156,
+}
 
 local function distance_2(v)
 	return v.x*v.x + v.y*v.y + v.z*v.z
@@ -79,6 +97,7 @@ minetest.register_entity(modname .. ":pull_cart", {
 		collide_with_objects = true,
 		static_save = true,
 		wield_item = modname .. ":pull_cart",
+		stepheight = offroad_cart and 1.1 or 0.6,
 	},
 
 	_attach = function(self, player)
@@ -89,11 +108,19 @@ minetest.register_entity(modname .. ":pull_cart", {
 		end
 		pull_cart.players[player_name] = self
 
-		-- TODO: naturally this shouldn't touch the PO so directly
-		local po = player:get_physics_override()
-		po.speed = speed_multiplier
-		po.jump = 0
-		player:set_physics_override(po)
+		if player_effects then
+			player_effects.add_effect(player, slowdown)
+			player_effects.add_effect(player, weightdown)
+		else
+			local po = player:get_physics_override()
+			po.speed = speed_multiplier
+			if offroad_cart then
+				po.jump = 0.9
+			else
+				po.jump = 0.5
+			end
+			player:set_physics_override(po)
+		end
 	end,
 
 	_detach = function(self, player)
@@ -105,10 +132,18 @@ minetest.register_entity(modname .. ":pull_cart", {
 		rot.x = -(math.pi / 8)
 		self.object:set_rotation(rot)
 
-		local po = player:get_physics_override()
-		po.speed = 1
-		po.jump = 1
-		player:set_physics_override(po)
+		local vel = self.object:get_velocity()
+		self.object:set_velocity({x=0,y=vel.y,z=0})
+
+		if player_effects then
+			player_effects.remove_effect(player,"speed", "pull_cart")
+			player_effects.remove_effect(player,"jump", "pull_cart")
+		else
+			local po = player:get_physics_override()
+			po.speed = 1
+			po.jump = 1
+			player:set_physics_override(po)
+		end
 	end,
 
 	-- attaches an object with the appearance of the item in the first inventory slot
@@ -139,15 +174,15 @@ minetest.register_entity(modname .. ":pull_cart", {
 
 	_show_formspec = function(self, player)
 		minetest.show_formspec(player:get_player_name(), modname .. ":inventory",
-		"formspec_version[4]" ..
-		"size[10.75,8.5]"..
-		"container[0.5,0.5]"..
-		"list[detached:" .. modname .. ":cart_" .. self.cart_number .. ";main;0,0;8,2;]" ..
-		"list[current_player;main;0,2.75;8,4;]" ..
-		"listring[]" ..
-		"container_end[]" ..
-		""
-	)
+			"formspec_version[4]" ..
+			"size[10.75,8.5]"..
+			"container[0.5,0.5]"..
+			"list[detached:" .. modname .. ":cart_" .. self.cart_number .. ";main;0,0;8,2;]" ..
+			"list[current_player;main;0,2.75;8,4;]" ..
+			"listring[]" ..
+			"container_end[]" ..
+			""
+		)
 	end,
 
 	_remove_children = function(self)
@@ -185,7 +220,9 @@ minetest.register_entity(modname .. ":pull_cart", {
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
-		self:_remove()
+		if not self.puller then
+			self:_remove()
+		end
 	end,
 
 	get_staticdata = function(self)
@@ -247,25 +284,37 @@ minetest.register_entity(modname .. ":pull_cart", {
 			p_pos.y = p_pos.y + 0.5
 			local direction = vector.subtract(p_pos, object:get_pos())
 
+			-- detach if the puller gets too far from the cart
 			if distance_2(direction) > (2.5*2.5) then
 				self:_detach(puller)
 				return
 			end
 
+			-- turn so the handles faces towards the puller
 			local rot = object:get_rotation()
 			rot.x = math.atan2(direction.y, distance_to_cart)
 			rot.y = minetest.dir_to_yaw(direction)
 			object:set_rotation(rot)
 
+			-- figure out where the cart should be in relation to the puller
 			direction.y = 0
 			local direction = vector.normalize(direction)
 			local o_pos = object:get_pos()
 			local pos = vector.subtract(p_pos, vector.multiply(direction, distance_to_cart))
 			pos.y = o_pos.y
-			if minetest.registered_nodes[minetest.get_node(vector.round(pos)).name].walkable then
-				pos.y = pos.y + 0.6
+
+			-- set velocity to move to that position
+			local direction_to_rest_pos = vector.subtract(pos, o_pos)
+			local vel = object:get_velocity()
+			if distance_2(direction_to_rest_pos) < 0.001 then
+				object:set_velocity({x=0,y=vel.y,z=0})
+			else
+				-- speed_multiplier should actually be replaced with the pullers movement speed
+				direction_to_rest_pos = vector.multiply(direction_to_rest_pos, speed_multiplier * (1/dtime))
+				-- this is important to preserve downwards movement due to gravity
+				direction_to_rest_pos.y = vel.y
+				object:set_velocity(direction_to_rest_pos)
 			end
-			object:move_to(pos, true)
 		end
 	end,
 })

@@ -92,26 +92,26 @@ local function detect_leaves(logs, leave_nodes, log_nodes)
 		local l_pos = minetest.get_position_from_hash(pos_hash)
 		local nearby_logs = minetest.find_nodes_in_area(
 				vector.add(l_pos, -leave_search_distance), vector.add(l_pos, leave_search_distance), log_nodes)
-		-- must ensure that the first choosen log is also part of the tree
-		local n = 1
-		while not logs[minetest.hash_node_position(nearby_logs[n])] do
-			n = n + 1
-		end
-		local nearest_log = nearby_logs[n]
+		local nearest_log = nearby_logs[1]
 		local shortest_distance = get_distance_2(nearest_log, l_pos)
 		for i, log_pos in ipairs(nearby_logs) do
 			local distance = get_distance_2(log_pos, l_pos)
 			-- for one the log must be nearer, for the other it must be part of the current tree
-			if distance < shortest_distance and logs[minetest.hash_node_position(log_pos)] then
+			if distance < shortest_distance then
 				nearest_log = log_pos
 				shortest_distance = distance
 			end
 		end
 
-		-- remember nearest log and relative distance to it
-		node.nearest_log = logs[minetest.hash_node_position(nearest_log)]
-		local d_log_pos = {x = l_pos.x-nearest_log.x, y = l_pos.y-nearest_log.y, z = l_pos.z-nearest_log.z}
-		node.d_log_pos = d_log_pos
+		if logs[minetest.hash_node_position(nearest_log)] then
+			-- remember nearest log and relative distance to it
+			node.nearest_log = logs[minetest.hash_node_position(nearest_log)]
+			local d_log_pos = {x = l_pos.x-nearest_log.x, y = l_pos.y-nearest_log.y, z = l_pos.z-nearest_log.z}
+			node.d_log_pos = d_log_pos
+		else
+			-- leave has a nearer log which isn't part of the current tree
+			leaves[pos_hash] = nil
+		end
 	end
 
 	return leaves

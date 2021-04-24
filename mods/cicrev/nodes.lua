@@ -129,6 +129,27 @@ cicrev.register_tree("chestnut", "Chestnut", 4)
 -- WOOD
 -- ====
 
+cicrev.register_fence("cicrev:fence_oak", {
+	description = "Oak Fence",
+	tiles = {"cicrev_fence_oak_top.png", "cicrev_fence_oak_top.png", "cicrev_fence_oak_side.png"},
+	groups = {choppy = 1, wood = 1},
+	use_texture_alpha = "opaque",
+})
+
+cicrev.register_fence("cicrev:fence_chestnut", {
+	description = "Chestnut Fence",
+	tiles = {"cicrev_fence_chestnut_top.png", "cicrev_fence_chestnut_top.png", "cicrev_fence_chestnut_side.png"},
+	groups = {choppy = 1, wood = 1},
+	use_texture_alpha = "opaque",
+})
+
+cicrev.register_fence("cicrev:fence_chaktekok", {
+	description = "Chakte Kok Fence",
+	tiles = {"cicrev_fence_chaktekok_top.png", "cicrev_fence_chaktekok_top.png", "cicrev_fence_chaktekok_side.png"},
+	groups = {choppy = 1, wood = 1},
+	use_texture_alpha = "opaque",
+})
+
 cicrev.register_fence("cicrev:fence_dark", {
 	description = "Dark Fence",
 	tiles = {"cicrev_fence_dark_top.png", "cicrev_fence_dark_top.png", "cicrev_fence_dark_side.png"},
@@ -188,7 +209,7 @@ minetest.register_node("cicrev:silt", {
 minetest.register_node("cicrev:sand", {
 	description = "Sand",
 	tiles = {"cicrev_sand.png"},
-	groups = {crumbly = 1, hand = 2, falling_node = 1},
+	groups = {crumbly = 1, hand = 2, falling_node = 1, walkover_speed = 90},
 })
 
 minetest.register_node("cicrev:gravel", {
@@ -323,9 +344,12 @@ minetest.register_node("cicrev:crate", {
 		local inv = meta:get_inventory()
     	inv:set_size("main", 8*4)
 		meta:set_string("formspec",
-            "size[8,9]"..
-            "list[context;main;2,0;4,4;]"..
-            "list[current_player;main;0,5;8,4;]"..
+            "formspec_version[4]"..
+            "size[10.25,10.5]"..
+            "container[0.25,0.25]" ..
+            "list[context;main;2.5,0;4,4;]"..
+            "list[current_player;main;0,5.25;8,4;]"..
+            "container_end[]"..
 			"listring[]")
 	end
 })

@@ -28,14 +28,6 @@ function get_distance_squared(p1, p2)
     return distance_squared
 end
 
--- cheap hash for making randomseeds
-local function string_to_number(str)
-	local number = 0
-	for i = 1, #str do
-		number = number + str:byte(i) * 10 ^ i
-	end
-	return number
-end
 
 -- something I can hopefully use to make interesting caves
 

@@ -51,7 +51,7 @@ local function reset_data(data, value)
 	return data
 end
 
-np_cave_roughnes = {
+local np_cave_roughnes = {
     offset = 0,
     scale = 1.5,
     spread = {x = 40, y = 40, z = 40},
@@ -63,7 +63,7 @@ np_cave_roughnes = {
 
 local nobj_cr
 
-np_caves = {
+local np_caves = {
     offset = 1.5,
     scale = 3,
     spread = {x = 300, y = 300, z = 300},

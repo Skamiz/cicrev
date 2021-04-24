@@ -1,3 +1,5 @@
+-- before adding third biome smoothing and general surface unevenes
+
 -- TODO: put constants in thier own file, into the table c
 local c_grass = minetest.get_content_id("cicrev:dirt_with_grass")
 local c_dirt = minetest.get_content_id("cicrev:loam")
@@ -12,11 +14,6 @@ local soils = {"soil", "loam", "clay", "silt", "sand", "peat"}
 minetest.set_mapgen_setting("water_level", "0", true)
 local world_seed = minetest.get_mapgen_setting("seed")
 world_seed = world_seed % 5000 -- necesary, otherwise it break things
-
--- increasing ratio moves from a to b
-local function lerp(a, b, ratio)
-	return (a * (1 - ratio)) + (b * ratio)
-end
 
 local function get_biome_point(minp)
 	math.randomseed(minetest.hash_node_position(minp) + world_seed)
@@ -65,7 +62,7 @@ end
 local function get_point_line_intersection(o_x, o_z, bp1, bp2)
 	local m_x, m_z = (bp1.x + bp2.x) / 2, (bp1.z + bp2.z) / 2
 	local d_x, d_z = bp2.x - bp1.x, bp2.z - bp1.z
-	local po = d_z / d_x -- beware of division by 0
+	local po = d_z / d_x
 
 	local v = (po * (po * (o_x - m_x) + (m_z - o_z))) / ((po * po) + 1)
 	local x = m_x + v
@@ -80,8 +77,6 @@ local function get_distance(o_x, o_z, bp1, bp2)
 end
 
 local function get_nearest_biome_point(x, z, biome_points)
-	-- TODO: isn't there a neater way to do this?
-
 	local closest
 	local dist1 = 99999
 	for _, bp in pairs(biome_points) do
@@ -97,7 +92,6 @@ local function get_nearest_biome_point(x, z, biome_points)
 	for _, bp in pairs(biome_points) do
 		if bp ~= closest then
 			local inter_x, inter_z = get_point_line_intersection(x, z, closest, bp)
-			-- local dist = get_distance_squared(x, z, bp.x, bp.z)
 			local dist = get_distance_squared(x, z, inter_x, inter_z)
 			if dist < dist2 then
 				dist2 = dist
@@ -106,21 +100,7 @@ local function get_nearest_biome_point(x, z, biome_points)
 		end
 	end
 
-	local third_closest
-	local dist3 = 999999
-	for _, bp in pairs(biome_points) do
-		if bp ~= closest and bp ~= second_closest then
-			local inter_x, inter_z = get_point_line_intersection(x, z, closest, bp)
-			-- local dist = get_distance_squared(x, z, bp.x, bp.z)
-			local dist = get_distance_squared(x, z, inter_x, inter_z)
-			if dist < dist3 then
-				dist3 = dist
-				third_closest = bp
-			end
-		end
-	end
-
-	return closest, second_closest, third_closest, math.sqrt(dist2), math.sqrt(dist3)
+	return closest, second_closest
 end
 
 -- distance to edge
@@ -137,83 +117,21 @@ local function get_distance_map(minp)
 	return distance_buffer
 end
 
-
-
 local height_buffer = {}
 local function get_height_map(minp, noise)
 	local biome_points = get_biome_points(minp)
-	-- local distance_map = get_distance_map({x = minp.x, z = minp.z, y = -32})
+	local distance_map = get_distance_map({x = minp.x, z = minp.z, y = -32})
 	for x = minp.x, minp.x + 79 do
 		for z = minp.z, minp.z  + 79 do
 			local nv = noise[(z-minp.z) * 80 + x-minp.x + 1] -- noise used to make interpolation more un-even
-			local bp1, bp2, bp3, dist2, dist3 = get_nearest_biome_point(x, z, biome_points)
-
-			-- local dist = distance_map[(z-minp.z) * 80 + x-minp.x + 1]
+			local bp1, bp2 = get_nearest_biome_point(x, z, biome_points)
+			local dist = distance_map[(z-minp.z) * 80 + x-minp.x + 1]
 			local height = bp1.y
-
-			local lim2 = (math.abs(bp1.y - bp2.y) / 1)
-			local lim3 = (math.abs(bp1.y - bp3.y) / 1)
-
-			-- if dist2 <= lim2 then
-			-- 	local influence2 = math.max(1 - (dist2/lim2), 0)
-			-- 	height = lerp(bp1.y, bp2.y, influence2 / 2)
-			-- elseif dist3 <= lim3 then
-			-- 	local influence3 = math.max(1 - (dist3/lim3), 0)
-			-- 	height = lerp(bp1.y, bp3.y, influence3 / 2)
-			-- 	-- height = math.max(lerp(bp1.y, bp3.y, influence3 / 2), height)
-			-- end
-			if dist2 <= lim2 then
-				local influence2 = math.max(1 - (dist2/lim2), 0)
-				height = lerp(bp1.y, bp2.y, influence2 / 2)
+			-- local lim = 5 --+ nv*3
+			local lim = (math.abs(bp1.y - bp2.y) / 2) + math.abs(nv*3)-0.5
+			if dist < lim then
+				height = ((dist/lim) * bp1.y) + ((1 - (dist/lim)) * ((bp1.y + bp2.y) / 2))
 			end
-			if dist3 <= lim3 then
-				local influence3 = math.max(1 - (dist3/lim3), 0)
-				local h = lerp(bp1.y, bp3.y, influence3 / 2)
-				if bp3.y > bp1.y then
-					height = math.max(h, height)
-				else
-					height = math.min(h, height)
-				end
-				-- height = math.max(lerp(bp1.y, bp3.y, influence3 / 2), height)
-			end
-
-			-- local dist23 = get_distance(x, z, bp2, bp3)
-			-- local lim23 = (math.abs(bp2.y - bp3.y) / 2)
-
-			-- if dist2 < lim2 and dist3 < lim3 and dist23 < lim23 then
-			-- if dist2 <= lim2 and dist3 <= lim3 then
-			-- 	height = (bp1.y + bp2.y + bp3.y) / 3
-			--
-			--
-			-- 	-- local influence1 = 1
-			-- 	-- local influence2 = 1 - (dist2/lim2)
-			-- 	-- local influence3 = 1 - (dist3/lim3)
-			-- 	--
-			-- 	-- local sum = influence1 + influence2 + influence3
-			-- 	-- influence1 = influence1 / sum
-			-- 	-- influence2 = influence2 / sum
-			-- 	-- influence3 = influence3 / sum
-			-- 	--
-			-- 	-- height = (bp1.y * influence1) + (bp2.y * influence2) + (bp3.y * influence3)
-			--
-			-- 	--
-			-- 	-- local influence2 = math.max(1 - (dist2/lim2), 0)
-			-- 	-- local influence3 = math.max(1 - (dist3/lim3), 0)
-			-- 	-- local influence23 = math.min(dist23/lim23, 1)
-			--
-			-- 	-- local h = lerp(bp1.y, bp2.y, influence2 / 2)
-			-- 	-- height = lerp(h, bp3.y, influence3 / 2)
-			--
-			-- 	-- local influence23 = math.max(1 - (dist23/lim23), 0)
-			-- 	-- influence3 = math.max(influence3, influence23)
-			-- 	-- height = ((bp1.y * ((3) - (influence2 + (influence3)))) + (bp2.y * influence2) + (bp3.y * influence3)) / (3)
-			--
-			-- 	-- height = ((bp1.y * ((3 - influence23) - (influence2 + (influence3*(1-influence23))))) + (bp2.y * influence2) + (bp3.y * influence3 * (1-influence23))) / (3-influence23)
-			-- end
-			-- if dist2 <= lim2 or dist3 <= lim3 then
-			-- 	height = (bp1.y + bp2.y + bp3.y) / 3
-			-- end
-
 			height_buffer[(z-minp.z) * 80 + x-minp.x + 1] = height
 		end
 	end
@@ -266,7 +184,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	vm:get_data(data)
-	local t0 = minetest.get_us_time()
+
     -- local noise_values_generic_3d = nobj_generic:get_3d_map_flat(minp)
     local nvs_terrain_height = nobj_terrain_height:get_2d_map_flat(minp)
 	local height_map = get_height_map(minp, nvs_terrain_height)
@@ -301,27 +219,25 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				local t_height = terrain_height
 
                 if y <= 0 then
-                    data[vi] = c_water
+                    -- data[vi] = c_water
                 end
 
 				if biome.y == 1 and y == 0 and y < t_height then
 					if math.random() < 0.6 then
-						-- data[vi] = c_peat
-						data[vi] = c_moss
+						data[vi] = c_peat
 					end
 				elseif biome.y == 1 and y < 0 and y < t_height then
 	                    data[vi] = c_peat
 				else
 
 	                if y < t_height and y >= 0 then
-	                    -- data[vi] = biome.soil
-						data[vi] = c_grass
-						if biome.soil == c_sand then data[vi] = c_sand end
+	                    data[vi] = biome.soil
+						-- data[vi] = c_grass
 	                end
 
 	                if y < t_height and y < 0 then
-						-- data[vi] = biome.soil
-	                    data[vi] = c_gravel
+						data[vi] = biome.soil
+	                    -- data[vi] = c_gravel
 	                end
 
 					if y < t_height - 1 then
@@ -345,6 +261,4 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	vm:update_liquids()
 	vm:calc_lighting()
 	vm:write_to_map()
-
-	minetest.chat_send_all("Chunk generation time: " .. (minetest.get_us_time() - t0)/1000 .. " ms")
 end)
