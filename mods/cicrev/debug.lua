@@ -102,7 +102,20 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		-- print_po(lists)
 		-- minetest.show_formspec(placer:get_player_name(), "test_fs", test_fs)
 
-		minetest.add_entity(pointed_thing.above, "cicrev:test_mob")
+		-- minetest.add_entity(pointed_thing.above, "cicrev:test_mob")
+		player_effects.add_effect(placer, {
+			source = "debuging_axe",
+			-- change to 'type'
+			effect_name = "jump",
+			text_influence = "add 1",
+			influence = function(jump) return jump+1 end,
+			priority = 5,
+			timeout = 10,
+			on_timeout = function(player)
+				minetest.chat_send_all(player:get_player_name() .. "'s jump boost run out'")
+			end,
+			persistant = true,
+		})
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_effects.add_effect(user, {

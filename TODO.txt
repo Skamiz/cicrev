@@ -115,6 +115,7 @@ caves
 lantern mod
 	viz Piezos_ illumination, but done with nodetimers
 	has own inventory slot
+	some upgradet for of lantern that bahaves like this mod: https://content.minetest.net/packages/Hybrid%20Dog/cave_lighting/
 
 cavegen mod
 	-select two random points within each chunk, connect them with a cave,
@@ -154,3 +155,34 @@ enchanting
 	provide a use for enchantments wich are left over
 
 	different tools have a diffreent capacity to hold enchantments
+
+=====
+MAYBE
+=====
+
+ladders have gravity and can only be stacked up to x high every so often the
+player has to place an afixed ladder, which is naturally harder to craft
+
+
+=======
+what does on_dig do:
+check 'diggable'  and 'can_dig'
+	if either is false return
+
+check 'is_protected'
+
+if wielded try 'after_use'
+	else add wear
+set wielded
+
+call 'preserve_metadata'
+
+'handle_node_drops'
+
+remove_node
+
+play sound
+
+'after_dig_node'
+
+'registered_on_dignodes'

@@ -63,7 +63,10 @@ function cicrev.register_tree(name, description, leaf_distance)
 			}
 		},
 		_leaves = {
-			grows_on = "cicrev:log_" .. name,
+			grows_on = {
+				["cicrev:log_" .. name] = true,
+				["cicrev:bark_" .. name] = true,
+			},
 			grow_distance = leaf_distance,
 		},
 		_on_update = cicrev.leaf_decay
@@ -110,8 +113,12 @@ function cicrev.register_tree(name, description, leaf_distance)
 		tiles = {{name = "cicrev_planks_" .. name .. ".png", align_style = "world"}},
 		groups = {choppy = 1, planks = 1, wood = 1},
 	})
-
 	make_chiseable("cicrev:planks_" .. name)
+
+	minetest.register_craftitem("cicrev:plank_" .. name, {
+		description = description .. "Plank",
+		inventory_image = "cicrev_plank_" .. name .. ".png",
+	})
 
 	-- Recipes
 	-- Bark
@@ -124,29 +131,64 @@ function cicrev.register_tree(name, description, leaf_distance)
 	})
 	-- Planks
 	minetest.register_craft({
-	    output = "cicrev:planks_" .. name .. " 4",
-	    recipe = {
-	            {"cicrev:log_" .. name},
-	        },
+		output = "cicrev:planks_" .. name,
+		recipe = {
+				{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
+				{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
+			},
 	})
-	minetest.register_craft({
-	    output = "cicrev:planks_" .. name .. " 4",
-	    recipe = {
-	            {"cicrev:log_stripped_" .. name},
-	        },
-	})
-	minetest.register_craft({
-	    output = "cicrev:planks_" .. name .. " 4",
-	    recipe = {
-	            {"cicrev:bark_" .. name},
-	        },
-	})
-	minetest.register_craft({
-	    output = "cicrev:planks_" .. name .. " 4",
-	    recipe = {
-	            {"cicrev:bark_stripped_" .. name},
-	        },
-	})
+
+	if minetest.get_modpath("splitting") then
+		splitting.register_recipe({
+			input = "cicrev:log_" .. name,
+			output = "cicrev:plank_" .. name,
+			amount = 8,
+			innner_texture = "cicrev_log_inside_" .. name .. ".png"
+		})
+		splitting.register_recipe({
+			input = "cicrev:log_stripped_" .. name,
+			output = "cicrev:plank_" .. name,
+			amount = 8,
+			innner_texture = "cicrev_log_inside_stripped_" .. name .. ".png"
+		})
+		splitting.register_recipe({
+			input = "cicrev:bark_" .. name,
+			output = "cicrev:plank_" .. name,
+			amount = 8,
+			innner_texture = "cicrev_log_inside_" .. name .. ".png"
+		})
+		splitting.register_recipe({
+			input = "cicrev:bark_stripped_" .. name,
+			output = "cicrev:plank_" .. name,
+			amount = 8,
+			innner_texture = "cicrev_log_inside_stripped_" .. name .. ".png"
+		})
+	else
+		minetest.register_craft({
+		    output = "cicrev:plank_" .. name .. " 8",
+		    recipe = {
+		            {"cicrev:log_" .. name},
+		        },
+		})
+		minetest.register_craft({
+		    output = "cicrev:plank_" .. name .. " 8",
+		    recipe = {
+		            {"cicrev:log_stripped_" .. name},
+		        },
+		})
+		minetest.register_craft({
+		    output = "cicrev:plank_" .. name .. " 8",
+		    recipe = {
+		            {"cicrev:bark_" .. name},
+		        },
+		})
+		minetest.register_craft({
+		    output = "cicrev:plank_" .. name .. " 8",
+		    recipe = {
+		            {"cicrev:bark_stripped_" .. name},
+		        },
+		})
+	end
 
 	if minetest.get_modpath("falling_trees") then
 		falling_trees.register_tree({

@@ -71,7 +71,7 @@ function cicrev.leaf_decay(pos)
 	local curent_distance = node.param2
 	local distance = 10
 	for _, v in pairs(cicrev.get_touching_nodes(pos)) do
-		if minetest.get_node(v).name == leaf_def.grows_on then
+		if leaf_def.grows_on[minetest.get_node(v).name] then
 			distance = 0
 		elseif minetest.get_node(v).name == node_name then
 			distance = math.min(distance, minetest.get_node(v).param2)

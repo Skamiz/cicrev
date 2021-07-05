@@ -350,7 +350,6 @@ minetest.register_entity(modname .. ":node_object", {
 		visual_size = {x = scale, y = scale, z = scale},
 		physical = true,
 		static_save = false,
-		wield_item = "cicrev:tetrahedrite",
 	},
 	on_step = function(self, dtime, moveresult)
 		local rot = self.object:get_rotation()

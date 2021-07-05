@@ -1,10 +1,10 @@
 np_generic = {
-        offset = 15,
-        scale = 25.18,
+        offset = 0,
+        scale = 1.0,
         spread = {x = 10, y = 10, z = 10},
         seed = 0,
-        octaves = 3,
-        persist = 0.3,
+        octaves = 1,
+        persist = 1,
         -- lacunarity = 2.0,
 }
 

@@ -377,7 +377,7 @@ minetest.register_node("cicrev:ladder", {
 minetest.register_node("cicrev:torch", {
 	description = "Torch",
 	drawtype = "nodebox",
-	tiles = {"cicrev_torch.png"},
+	tiles = {"cicrev_torch_top.png", "cicrev_torch.png"},
 	use_texture_alpha = "opaque",
 	groups = {hand = 1, attached_node = 1},
 	node_box = {type = "fixed", fixed = {-1/16, -8/16, -1/16, 1/16, 2/16, 1/16}},

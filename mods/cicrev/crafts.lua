@@ -112,3 +112,18 @@ knapping.register_recipe({
 	},
 	texture = "df_stones_chert.png",
 })
+knapping.register_recipe({
+	input = "cicrev:flint",
+	output = "cicrev:rune_speed",
+	recipe = {
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 1, 1, 1, 1, 0, 0},
+		{0, 1, 1, 1, 0, 1, 1, 0},
+		{0, 1, 1, 0, 1, 1, 1, 0},
+		{0, 1, 0, 1, 1, 0, 1, 0},
+		{0, 1, 1, 1, 0, 1, 1, 0},
+		{0, 0, 1, 1, 1, 1, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+	},
+	texture = "df_stones_chert.png",
+})

@@ -1,33 +1,44 @@
 minetest.register_craftitem("cicrev:stick", {
 	description = "Stick",
 	inventory_image = "cicrev_stick.png",
-	stack_max = 64,
 	groups = {stick = 1},
 })
 minetest.register_craftitem("cicrev:flint", {
 	description = "Flint stone",
 	inventory_image = "cicrev_flint.png",
-	stack_max = 64,
 })
 minetest.register_craftitem("cicrev:axe_head_flint", {
 	description = "Axe head (flint)",
 	inventory_image = "cicrev_axe_head_flint.png",
-	stack_max = 64,
 })
 minetest.register_craftitem("cicrev:knife_head_flint", {
 	description = "Knife head (flint)",
 	inventory_image = "cicrev_knife_head_flint.png",
-	stack_max = 64,
 })
 minetest.register_craftitem("cicrev:grass", {
 	description = "Grass bundle",
 	inventory_image = "cicrev_grass.png",
-	stack_max = 64,
 })
 minetest.register_craftitem("cicrev:grass_rope", {
 	description = "Grass Rope",
 	inventory_image = "cicrev_grass_rope.png",
-	stack_max = 64,
+})
+
+minetest.register_craftitem("cicrev:rune_speed", {
+	description = "Speed",
+	inventory_image = "cicrev_rune_speed.png",
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		player_effects.add_effect(user, {
+			source = "rune",
+			effect_name = "speed",
+			text_influence = "add 0.3",
+			timeout = 60,
+			priority = 80,
+			persistant = true,
+		})
+		itemstack:take_item()
+		return itemstack
+	end,
 })
 
 

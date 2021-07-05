@@ -17,10 +17,10 @@ minetest.register_tool("cicrev:creative_tool", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		groupcaps = {
-			hand = {maxlevel=0, times = {0.1, 0.1}},
-			choppy = {maxlevel=0, times = {0.1}},
-			cracky = {maxlevel=0, times = {0.1}},
-			crumbly = {maxlevel=0, times = {0.1}},
+			hand = {maxlevel=0, times = {0.2, 0.2}},
+			choppy = {maxlevel=0, times = {0.2}},
+			cracky = {maxlevel=0, times = {0.2}},
+			crumbly = {maxlevel=0, times = {0.2}},
 		},
 	},
 })

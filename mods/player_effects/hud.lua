@@ -3,15 +3,25 @@
 local players = {}
 
 local function get_effect_string(player, players_effects)
-	local s = ""
+	local s = {}
 	for effect_type, effects in pairs(players_effects) do
 		if effects[1] then
-			s = s .. effect_type .. "\n"
+			table.insert(s, effect_type)
+			table.insert(s, "\n")
 		end
 		for i, effect in ipairs(effects) do
-			s = s .. "	" .. effect.priority .. " - " .. effect.source .. "\n"
+			table.insert(s, "	")
+			table.insert(s, effect.priority)
+			table.insert(s, " - ")
+			table.insert(s, effect.source)
+			table.insert(s, " - ")
+			table.insert(s, effect.timeout)
+			table.insert(s, " - ")
+			table.insert(s, tostring(effect.persistant))
+			table.insert(s, "\n")
 		end
 	end
+	s = table.concat(s)
 	return s
 end
 

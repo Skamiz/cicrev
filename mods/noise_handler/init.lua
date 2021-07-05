@@ -38,6 +38,7 @@ end
 -- 'minetest.get_perlin' and 'minetest.get_perlin_map'
 -- and automaticaly maintains buffer tables for better performance.
 
+-- TODO: get this out of global space!!!
 function get_noise_object(params, chunk_size)
     local noise = {
         params = params,

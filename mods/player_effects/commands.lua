@@ -53,21 +53,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	player:set_physics_override(po)
 end)
 
-local influence_funcitons = {
-	set = function(es)
-		return function() return es end
-	end,
-	add = function(es)
-		return function(strenght) return strenght + es end
-	end,
-	multiply = function(es)
-		return function(strenght) return strenght * es end
-	end,
-}
+
 -- command for manualy setting effects
 -- TODO: this will crash the game with bad input
 minetest.register_chatcommand("effect", {
-	params = "[add|remove] effect_name effect_source [set|add|multiply] strenght priority",
+	params = "[add|remove] effect_name effect_source [set|add|multiply] strenght priority timeout",
 	description = "Add and remove effects by command.",
 	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
@@ -78,8 +68,9 @@ minetest.register_chatcommand("effect", {
 			player_effects.add_effect(player, {
 				effect_name = params[2],
 				source = params[3],
-				influence = influence_funcitons[params[4]](params[5]),
+				influence = player_effects.influence_funcitons[params[4]](params[5]),
 				priority = tonumber(params[6]),
+				timeout = tonumber(params[7])
 			})
 		elseif params[1] == "remove" then
 			player_effects.remove_effect(player, params[2], params[3])
