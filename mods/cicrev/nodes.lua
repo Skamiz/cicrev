@@ -115,6 +115,28 @@ minetest.register_node("cicrev:sedge", {
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
 
+minetest.register_node("cicrev:moss", {
+	description = "Moss",
+	drawtype = "nodebox",
+	paramtype = "light",
+	sunlight_propagates = true,
+	tiles = {"cicrev_moss.png"},
+	groups = {hand = 1},
+	walkable = false,
+	buildable_to = true,
+	connects_to = {"group:solid_node"},
+	node_box = {
+		type = "connected",
+		connect_top = {-0.5, 6/16, -0.5, 0.5, 0.5, 0.5},
+        connect_bottom = {-0.5, -0.5, -0.5, 0.5, -6/16, 0.5},
+        connect_front = {-0.5, -0.5, -0.5, 0.5, 0.5, -6/16},
+		connect_back = {-0.5, -0.5, 6/16, 0.5, 0.5, 0.5},
+        connect_left = {-0.5, -0.5, -0.5, -6/16, 0.5, 0.5},
+        connect_right = {6/16, -0.5, -0.5, 0.5, 0.5, 0.5},
+		disconnected = {-6/16, -6/16, -6/16, 6/16, 6/16, 6/16},
+	},
+})
+
 -- =====
 -- TREES
 -- =====
@@ -220,7 +242,8 @@ minetest.register_node("cicrev:gravel", {
 
 minetest.register_node("cicrev:dirt_with_grass", {
 	description = "Grass",
-	tiles = {"cicrev_grass_top.png", "cicrev_loam.png", "cicrev_soil.png^cicrev_grass_side.png"},
+	tiles = {{name = "cicrev_grass_top_4x4.png", align_style = "world", scale = 4},
+			"cicrev_loam.png", "cicrev_soil.png^cicrev_grass_side.png"},
 	groups = {crumbly = 1, hand = 3},
 	drop = "cicrev:soil",
 })
@@ -231,6 +254,15 @@ minetest.register_node("cicrev:peat_with_moss", {
 	groups = {hand = 1},
 })
 
+-- ===
+-- SOMETHING
+-- ===
+
+minetest.register_node("cicrev:path", {
+	description = "Path",
+	tiles = {"cicrev_path.png"},
+	groups = {cracky = 1, hand = 2, walkover_speed = 125},
+})
 
 -- ====
 -- ORES

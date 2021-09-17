@@ -2,31 +2,13 @@
 	A place for deving new code bofore deciding what to do with it.
 ]]
 
--- TODO: add debug command
 
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
 local storage = minetest.get_mod_storage()
 
-local function place_slice(pos)
-	for i = 0, 2 do
-		for j = 0, 2 do
-			minetest.set_node({x = pos.x + i, y = pos.y, z = pos.z + j}, {name = "df_stones:slate"})
-		end
-	end
-end
 
-local function place_tile(pos, tile_type)
-	if tile_type == "wall" then
-		for i = 0, 4 do
-			place_slice({x = pos.x, y = pos.y + i, z = pos.z})
-		end
-	elseif tile_type == "coridor" then
-		place_slice(pos)
-		place_slice({x = pos.x, y = pos.y + 4, z = pos.z})
-	end
-end
 
 local fs = {
 	"formspec_version[4]",
@@ -57,6 +39,18 @@ local test_fs = {
 	"list[current_player;main;0.25,0.25;8,4;]",
 }
 
+minetest.register_chatcommand("debug", {
+	params = "",
+	description = "Just another way to execute debug code.",
+	privs = {server=true},
+	func = function(name, param)
+		param = param:split(" ")
+		-- for k, v in pairs(param) do
+		-- 	minetest.chat_send_all(v)
+		-- end
+	end,
+})
+
 minetest.register_entity("cicrev:test_mob", {
 	initial_properties = {
 		visual = "mesh",
@@ -79,11 +73,14 @@ minetest.register_entity("cicrev:test_mob", {
 fs = table.concat(fs)
 test_fs = table.concat(test_fs)
 
-local function print_po(po)
+local function print_table(po)
 	for k, v in pairs(po) do
 		minetest.chat_send_all(type(k) .. " : " .. tostring(k) .. " | " .. type(v) .. " : " .. tostring(v))
 	end
 end
+
+
+
 
 minetest.register_craftitem("cicrev:axe_of_debug", {
 	description = "axe of debug",
@@ -96,43 +93,24 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
-		-- placer:set_inventory_formspec(fs)
-		-- local inv = placer:get_inventory()
-		-- local lists = inv:get_lists()
-		-- print_po(lists)
-		-- minetest.show_formspec(placer:get_player_name(), "test_fs", test_fs)
 
-		-- minetest.add_entity(pointed_thing.above, "cicrev:test_mob")
-		player_effects.add_effect(placer, {
-			source = "debuging_axe",
-			-- change to 'type'
-			effect_name = "jump",
-			text_influence = "add 1",
-			influence = function(jump) return jump+1 end,
-			priority = 5,
-			timeout = 10,
-			on_timeout = function(player)
-				minetest.chat_send_all(player:get_player_name() .. "'s jump boost run out'")
-			end,
-			persistant = true,
-		})
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_effects.add_effect(user, {
 			source = "debuging_axe",
-			-- change to 'type'
 			effect_name = "speed",
-			influence = function(speed) return speed*2 end,
+			-- influence = function(speed) return speed*2 end,
+			text_influence = "function(speed) return speed*2 end",
 			priority = 5,
+			persistant = true,
 		})
 	end,
 	on_use = function(itemstack, user, pointed_thing)
 		player_effects.remove_effect(user,"speed", "debuging_axe")
-		-- minetest.chat_send_all(storage:get_string("foo"))
-		-- minetest.chat_send_all(type(minetest.get_inventory({type = "detached", name = "pull_cart:cart_fdg"})))
-		-- local pos = user:get_pos()
-		-- pos = vector.round(pos)
-		-- place_tile({x = pos.x - 1, y = pos.y - 5, z = pos.z - 1}, "coridor")
+
+		-- local node = minetest.get_node(pointed_thing.under)
+		-- node.param2 = y_rot[node.param2]
+		-- minetest.set_node(pointed_thing.under, node)
 	end,
 })
 
@@ -158,6 +136,10 @@ minetest.register_craftitem("cicrev:time_wand", {
 		minetest.chat_send_all("Setting time to morining.")
 		minetest.set_timeofday(0.25)
 	end,
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		minetest.chat_send_all("Setting time to midnight.")
+		minetest.set_timeofday(0)
+	end
 })
 
 

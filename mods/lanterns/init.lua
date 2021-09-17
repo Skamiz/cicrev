@@ -54,7 +54,7 @@ minetest.register_globalstep(function(dtime)
         local node = minetest.get_node(pos).name
         if node == "air" or minetest.get_item_group(node, "glowing_air") == 1 then
             minetest.set_node(pos, {name = "lanterns:light_" .. lantern_def.light_source})
-            get_and_set_timer(pos, 0.15, true)
+            get_and_set_timer(pos, 0.2, true)
         end
     end
 end)

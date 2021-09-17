@@ -1,3 +1,5 @@
+noise_handler = {}
+
 -- These guards are here because 'minetest.get_perlin' isn't aviable at startup,
 -- which is when the noise object is registered
 -- and 'PerlinNoise()' doesn't take into acount the map seed
@@ -38,11 +40,10 @@ end
 -- 'minetest.get_perlin' and 'minetest.get_perlin_map'
 -- and automaticaly maintains buffer tables for better performance.
 
--- TODO: get this out of global space!!!
-function get_noise_object(params, chunk_size)
-    local noise = {
+function noise_handler.get_noise_object(params, chunk_size)
+    local noise_object = {
         params = params,
-        chunk_size = chunk_size, -- or {x = 80, y = 80, z = 80},
+        chunk_size = chunk_size or {x = 80, y = 80, z = 80},
         buffer_2d = {},
         buffer_3d = {},
         get_2d = get_2d,
@@ -51,5 +52,5 @@ function get_noise_object(params, chunk_size)
         get_3d_map_flat = get_3d_map_flat,
     }
 
-    return noise
+    return noise_object
 end

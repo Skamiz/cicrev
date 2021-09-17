@@ -1,6 +1,12 @@
 =====
 TODO:
 =====
+a 'stoor to nearby chests' button
+	like the one in terraria
+
+a node which can only be mined when next to another node
+	selction boxes have all the capabilitis of node boxes, including conectivity
+
 elementars
 	fire elementar
 		spawns when a lot of fire accumulates in one place
@@ -19,8 +25,8 @@ elementars
 if a lantern doesn't protect from wind then the flame may flicker, the faster the player moves the greater the chance that it goes out
 	stopping lets the flame recover
 
-make tree trunks grow through leaf blocks
-?something so construction isn't instant
+
+?make trees grow over time
 
 if mature farmed plants are left standing for too long they die/whiter/etc
 
@@ -51,7 +57,7 @@ Slow but powerfull enemies, focus on mechanics not direct hitting
 
 ore generation
 
-wind affectin players movement as a barier preventing the player from reaching a location
+wind affecting players movement as a barier preventing the player from reaching a location
 
 ?in-between space before respawn
 
@@ -101,6 +107,9 @@ cart
 	rightclick - opens inventory
 	shift + rightclick begin/stop pulling it
 	while pulling decrease movement speed and prevent jumping
+
+trees
+	make tree trunks grow through leaf blocks
 
 leaves
 	-_grows_on

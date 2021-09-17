@@ -1,4 +1,3 @@
--- TODO: put constants in thier own file, into the table c
 local c_grass = minetest.get_content_id("cicrev:dirt_with_grass")
 local c_dirt = minetest.get_content_id("cicrev:loam")
 local c_sand = minetest.get_content_id("cicrev:sand")
@@ -34,8 +33,8 @@ local clif_height = 30
 local cliff_width = 2 -- depends on noise scale
 
 local chunk_size = {x = 80, y = 80, z = 80}
-local nobj_generic = get_noise_object(np_generic, chunk_size)
-local nobj_hillines = get_noise_object(np_hillines, chunk_size)
+local nobj_generic = noise_handler.get_noise_object(np_generic, chunk_size)
+local nobj_hillines = noise_handler.get_noise_object(np_hillines, chunk_size)
 
 local data = {}
 
@@ -67,7 +66,6 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 			for z = minp.z, maxp.z do
 				local vi = area:index(x, y, z)
 
-                -- TODO: fiure out how to use :index() here
                 local noise_value = noise_values_generic_2d[(z-minp.z) * chunk_size.x + x-minp.x + 1]
                 local noise_value_3d = noise_values_generic_3d[(z-minp.z) * side_lenght * side_lenght + (y-minp.y) * side_lenght + x-minp.x + 1]
                 assert(noise_value_3d, (z-minp.z) * side_lenght * side_lenght + (y-minp.y) * side_lenght + x-minp.x + 1)

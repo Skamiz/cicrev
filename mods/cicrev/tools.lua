@@ -1,5 +1,7 @@
-minetest.register_craftitem(":", {
-    inventory_image = "hand.png",
+
+minetest.register_craftitem("cicrev:hand", {
+	description = "Hand",
+    inventory_image = "cicrev_hand.png",
     tool_capabilities = {
         full_punch_interval = 1.5,
         groupcaps = {
@@ -17,10 +19,7 @@ minetest.register_tool("cicrev:creative_tool", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		groupcaps = {
-			hand = {maxlevel=0, times = {0.2, 0.2}},
-			choppy = {maxlevel=0, times = {0.2}},
-			cracky = {maxlevel=0, times = {0.2}},
-			crumbly = {maxlevel=0, times = {0.2}},
+			everything = {maxlevel=0, times = {0.2, 0.2}},
 		},
 	},
 })

@@ -1,4 +1,4 @@
-local c_dirt = minetest.get_content_id("cicrev:dirt_with_grass")
+local c_dirt = minetest.get_content_id("cicrev:soil")
 local c_stone = minetest.get_content_id("cicrev:gravel")
 
 minetest.set_mapgen_setting("water_level", "0", true)

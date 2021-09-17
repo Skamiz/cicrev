@@ -11,7 +11,7 @@ np_generic = {
 local side_lenght = 80
 local chunk_size = {x = side_lenght, y = side_lenght, z = side_lenght}
 
-local nobj_generic = get_noise_object(np_generic, chunk_size)
+local nobj_generic = noise_handler.get_noise_object(np_generic, chunk_size)
 
 local min, max = 1000, -1000
 

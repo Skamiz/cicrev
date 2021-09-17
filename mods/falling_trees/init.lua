@@ -2,10 +2,9 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 --[[
+TODO:
 tool wear
 code cleanup
-
-TODO: it crashes when the neares log to a leaf isn't part of the felled tree
 
 Stretch goals:
 make the objects rotate to the nodes rotation to stop jaring transition between node and object

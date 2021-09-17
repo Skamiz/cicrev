@@ -18,7 +18,7 @@ local function get_middle(p1, p2)
     local distance = get_distance(p1, p2)
     for axis, _ in pairs(p1) do
         new_point[axis] = (p1[axis] + p2[axis]) / 2
-        -- new_point[axis] = new_point[axis] + ((math.random()-0.5) * distance)
+        new_point[axis] = new_point[axis] + ((math.random()-0.5) * distance)
     end
     return new_point
 end

@@ -73,6 +73,7 @@ function splitting.register_recipe(recipe)
 		minetest.register_node(":splitting" .. node_name .. "_" .. i, {
 			description = def.description .. " " .. i .. "/" .. recipe.amount,
 			drawtype = "nodebox",
+			paramtype = "light",
 			tiles = tiles,
 			node_box = {
 				type = "fixed",
@@ -96,6 +97,7 @@ end
 minetest.register_node("splitting:chopping_block", {
 	description = "Chopping Block",
 	drawtype = "nodebox",
+	paramtype = "light",
 	-- TODO: chopping block needs it's own textures, also a recipe
 	tiles = {"splittiong_chopping_block_top.png", "splittiong_chopping_block_top.png", "splittiong_chopping_block.png"},
 	node_box = {

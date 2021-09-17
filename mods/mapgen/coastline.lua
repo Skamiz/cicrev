@@ -1,4 +1,3 @@
--- TODO: put constants in thier own file, into the table c
 local c_grass = minetest.get_content_id("cicrev:dirt_with_grass")
 local c_dirt = minetest.get_content_id("cicrev:soil")
 local c_sand = minetest.get_content_id("cicrev:sand")
@@ -20,7 +19,7 @@ np_generic = {
 local side_lenght = 80
 local chunk_size = {x = 80, y = 84, z = 80}
 local chunk_area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge=chunk_size}
-local nobj_generic = get_noise_object(np_generic, chunk_size)
+local nobj_generic = noise_handler.get_noise_object(np_generic, chunk_size)
 
 local data = {}
 
@@ -38,7 +37,6 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 			for z = minp.z, maxp.z do
 				local vi = area:index(x, y, z)
 
-                -- TODO: fiure out how to use :index() here
                 local noise_value_3d = noise_values_generic_3d[chunk_area:index(x - minp.x + 1, y - minp.y + 1, z - minp.z + 1)]
                 local noise_value_3d_1 = noise_values_generic_3d[chunk_area:index(x - minp.x + 1, y - minp.y + 1 + 1, z - minp.z + 1)]
                 -- assert(noise_value_3d, (z-minp.z) * side_lenght * side_lenght + (y-minp.y) * side_lenght + x-minp.x + 1)

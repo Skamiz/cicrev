@@ -75,7 +75,7 @@ minetest.register_node(modname .. ":pull_cart", {
 			{-12/16, -8/16, -3/16, -10/16, 2/16, 3/16},
 		},
 	},
-	groups = {hand = 1},
+	groups = {},
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
 		local cart = minetest.add_entity(pointed_thing.above, modname .. ":pull_cart")

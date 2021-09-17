@@ -175,7 +175,7 @@ local fence_prototype = {
 		connect_right = {{1/8,3/16,-1/16,1/2,5/16,1/16},
 			{1/8,-5/16,-1/16,1/2,-3/16,1/16}},
 	},
-	connects_to = {"group:fence", "group:wood", "group:wall"},
+	connects_to = {"group:fence", "group:wall", "group:solid_node"},
 	groups = {}
 }
 
@@ -209,7 +209,7 @@ local wall_prototype = {
 		connect_back = 	{-3/16, -1/2, 3/16, 3/16, 1/2, 1/2},
 		connect_right = {3/16, -1/2, -3/16, 1/2, 1/2, 3/16},
 	},
-	connects_to = {"group:wall", "group:stone", "group:fence"},
+	connects_to = {"group:wall", "group:fence", "group:solid_node"},
 	groups = {},
 }
 

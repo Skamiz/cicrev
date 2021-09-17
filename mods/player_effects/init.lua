@@ -3,6 +3,8 @@ local modpath = minetest.get_modpath(modname)
 
 
 --[[
+TODO: rename mod to player_properties
+
 equivalent to player_monoids
 	first evaluate +- then */
 can specify a timeout of the effect
@@ -137,8 +139,9 @@ function player_effects.add_effect(player, effect)
 	end
 
 	if effect.text_influence then
-		local s = effect.text_influence:split(' ')
-		effect.influence = player_effects.influence_funcitons[s[1]](tonumber(s[2]))
+		-- local s = effect.text_influence:split(' ')
+		-- effect.influence = player_effects.influence_funcitons[s[1]](tonumber(s[2]))
+		effect.influence = assert(loadstring("return " .. effect.text_influence))()
 	end
 
 	table.insert(player_effect_type, effect)

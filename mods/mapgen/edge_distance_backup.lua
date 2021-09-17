@@ -1,6 +1,5 @@
 -- before adding third biome smoothing and general surface unevenes
 
--- TODO: put constants in thier own file, into the table c
 local c_grass = minetest.get_content_id("cicrev:dirt_with_grass")
 local c_dirt = minetest.get_content_id("cicrev:loam")
 local c_moss = minetest.get_content_id("cicrev:peat_with_moss")
@@ -175,8 +174,8 @@ np_terrain_height = {
 local side_lenght = 80
 local chunk_size = {x = 80, y = 84, z = 80}
 local chunk_area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge=chunk_size}
-local nobj_generic = get_noise_object(np_generic, chunk_size)
-local nobj_terrain_height = get_noise_object(np_terrain_height, chunk_size)
+local nobj_generic = noise_handler.get_noise_object(np_generic, chunk_size)
+local nobj_terrain_height = noise_handler.get_noise_object(np_terrain_height, chunk_size)
 
 local data = {}
 

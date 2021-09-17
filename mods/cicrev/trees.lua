@@ -10,6 +10,8 @@ registers:
 	planks
 --]]
 
+local place_schematic = schem.place_tree or minetest.place_schematic
+
 function cicrev.register_tree(name, description, leaf_distance)
 	assert(name and type(name) == "string", "A tree registration doesn't provide a valid name.")
 	local description = description or "Unspecified"
@@ -22,7 +24,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		drawtype = "plantlike",
 		paramtype = "light",
 		tiles = {"cicrev_sapling_" .. name .. ".png"},
-		groups = {hand = 1},
+		groups = {hand = 1, sapling = 1},
 		walkable = false,
 		drop = "",
 		selection_box = {
@@ -33,21 +35,21 @@ function cicrev.register_tree(name, description, leaf_distance)
 	        },
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			local t = minetest.get_node_timer(pos)
-			t:start(math.random(60 * 20, 60 * 60))
-			-- t:start(math.random(1, 5))
+			-- t:start(math.random(60 * 20, 60 * 60))
+			t:start(math.random(1, 5))
 		end,
-		on_timer = function(pos, elapsed) -- TODO: replace with a 'grow_tree' function or at the very least make tree grow through leaves
+		on_timer = function(pos, elapsed)
 			minetest.remove_node(pos)
-			minetest.place_schematic(pos, modpath .. "/schematics/tree_" .. name .. ".mts", "random", nil, false, "place_center_x, place_center_z")
+			place_schematic(pos, modpath .. "/schematics/tree_" .. name .. ".mts", "random", nil, false, "place_center_x, place_center_z")
 		end,
 	})
 
 	minetest.register_node("cicrev:leaves_" .. name, {
 		description = description .. " Leaves",
-		drawtype = "allfaces",
+		drawtype = "allfaces_optional",
 		paramtype = "light",
 		tiles = {"cicrev_leaves_" .. name .. ".png"},
-		groups = {hand = 1},
+		groups = {hand = 1, leaves = 1},
 		walkable = false,
 		drop = {
 			max_items = 1,

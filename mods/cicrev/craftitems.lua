@@ -31,7 +31,8 @@ minetest.register_craftitem("cicrev:rune_speed", {
 		player_effects.add_effect(user, {
 			source = "rune",
 			effect_name = "speed",
-			text_influence = "add 0.3",
+			-- text_influence = "add 0.3",
+			text_influence = "function (s) return s + 0.3 end",
 			timeout = 60,
 			priority = 80,
 			persistant = true,
@@ -46,7 +47,6 @@ minetest.register_craftitem("cicrev:rune_speed", {
 minetest.register_craftitem("cicrev:coal", {
 	description = "Coal",
 	inventory_image = "cicrev_coal.png",
-	stack_max = 16,
 	on_use = function(itemstack, user, pointed_thing)
 		if pointed_thing.type ~= "node" then return end
 		local node = minetest.get_node(pointed_thing.under)

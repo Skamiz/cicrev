@@ -29,8 +29,8 @@ local side_lenght = 80
 local chunk_size = {x = 80, y = 80, z = 80}
 local chunk_area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge=chunk_size}
 
-local nobj_3d = get_noise_object(np_3d, chunk_size)
-local nobj_2d = get_noise_object(np_2d, chunk_size)
+local nobj_3d = noise_handler.get_noise_object(np_3d, chunk_size)
+local nobj_2d = noise_handler.get_noise_object(np_2d, chunk_size)
 
 local data = {}
 
@@ -55,6 +55,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 
 				local nv_3d = nvals_3d[(z - minp.z) * 80 * 80 + (y - minp.y) * 80 + (x - minp.x) + 1]
                 local nv_2d = nvals_2d[(z-minp.z) * 80 + (x-minp.x) + 1]
+				-- TODO: fiure out how to use :index() here
                 -- local nv_2d = nvals_2d[flat_area:index(x, emin.y, z)]
 
 				-- local nv_3d = nvals_3d[chunk_area:index(x - minp.x + 1, y - minp.y + 1, z - minp.z + 1)]

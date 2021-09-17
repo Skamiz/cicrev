@@ -14,17 +14,30 @@ dofile(modpath .. "/debug.lua")
 dofile(modpath .. "/growing_trees.lua")
 
 
-
 minetest.register_on_mods_loaded(function()
 	for name, def in pairs(minetest.registered_nodes) do
-		if not def.stack_max then
+		local groups = table.copy(def.groups)
+		groups["everything"] = 1
+		minetest.override_item(name,{
+			groups = groups,
+		})
+
+		if not rawget(def, "stack_max") then
 			minetest.override_item(name,{
 				stack_max = 8,
 			})
 		end
+
+		if def.drawtype == "normal" and def.walkable then
+			local groups = table.copy(def.groups)
+			groups["solid_node"] = 1
+			minetest.override_item(name,{
+				groups = groups,
+			})
+		end
 	end
 	for name, def in pairs(minetest.registered_craftitems) do
-		if not def.stack_max then
+		if not rawget(def, "stack_max") then
 			minetest.override_item(name,{
 				stack_max = 16,
 			})

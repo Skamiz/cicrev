@@ -40,8 +40,8 @@ local side_lenght = 80
 local chunk_size = {x = 80, y = 80, z = 80}
 local chunk_area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge=chunk_size}
 
-local nobj_3d = get_noise_object(np_3d, chunk_size)
-local nobj_2d = get_noise_object(np_2d, chunk_size)
+local nobj_3d = noise_handler.get_noise_object(np_3d, chunk_size)
+local nobj_2d = noise_handler.get_noise_object(np_2d, chunk_size)
 
 local data = {}
 

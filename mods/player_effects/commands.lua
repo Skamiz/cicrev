@@ -61,7 +61,7 @@ minetest.register_chatcommand("effect", {
 	description = "Add and remove effects by command.",
 	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
-		local params = params:split(' ')
+		local params = params:split(" ")
 		print_po(params)
 
 		if params[1] == "add" then
@@ -75,7 +75,7 @@ minetest.register_chatcommand("effect", {
 		elseif params[1] == "remove" then
 			player_effects.remove_effect(player, params[2], params[3])
 		else
-			minetest.chat_send_player(name, "Instructions unclear, use 'add' of 'remove'.")
+			minetest.chat_send_player(name, "Instructions unclear, use 'add' or 'remove'.")
 		end
 
 	end
