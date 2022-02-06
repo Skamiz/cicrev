@@ -66,7 +66,7 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 end)
 
 minetest.register_on_dignode(function(pos, oldnode, digger)
-	node_index = minetest.hash_node_position(pos)
+	local node_index = minetest.hash_node_position(pos)
 	if touched_nodes[node_index] then
 		local objects = minetest.get_objects_in_area(pos, pos)
 		for _, v in pairs(objects) do

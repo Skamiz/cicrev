@@ -83,7 +83,7 @@ minetest.register_globalstep(function(dtime)
         local lantern_item = player:get_inventory():get_stack("lantern", 1)
         if lantern_item:is_empty() then return end
         lantern_item = lantern_item:get_name()
-        lantern_def = minetest.registered_nodes[lantern_item]
+        local lantern_def = minetest.registered_nodes[lantern_item]
         if not lantern_def or lantern_def.light_source == 0 then
             return
         end

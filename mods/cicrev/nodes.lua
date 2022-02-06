@@ -131,6 +131,7 @@ minetest.register_node("cicrev:moss", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	sunlight_propagates = true,
+	use_texture_alpha = "clip",
 	tiles = {"cicrev_moss.png"},
 	groups = {hand = 1},
 	walkable = false,
@@ -505,7 +506,7 @@ minetest.register_node("cicrev:lantern", {
 	connects_to = {"group:fence", "group:wall", "group:solid_node", "cicrev:lantern"},
 	walkable = true,
 	paramtype = "light",
-	light_source = 9001,
+	light_source = minetest.LIGHT_MAX,
 	on_construct = function(pos)
 		-- get_and_set_timer(pos, 480) -- 8 minutes
 	end,
@@ -537,7 +538,7 @@ minetest.register_node("cicrev:fabric", {
 minetest.register_node("cicrev:bricks", {
 	-- TODO:needs inventory_image
 	description = "Bricks",
-	inventory_image = minetest.inventorycube("cicrev_bricks_inventory.png", img2, img3),
+	inventory_image = minetest.inventorycube("cicrev_bricks_inventory.png", nil, nil),
 	tiles = {{name = "cicrev_bricks_4x4.png", align_style = "world", scale = 4}},
 	overlay_tiles = {{name = "cicrev_bricks_overlay_4x4.png", align_style = "world", scale = 4, color = "#ffffff"}},
 	groups = {hand = 1},
