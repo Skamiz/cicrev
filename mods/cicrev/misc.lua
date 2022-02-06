@@ -202,6 +202,7 @@ local wall_prototype = {
 	sunlight_propagates = true,
 	drawtype = "nodebox",
 	node_box = {
+		-- type = "fixed",
 		type = "connected",
 		fixed = 		{-3/16, -1/2, -3/16, 3/16, 1/2, 3/16},
 		connect_front = {-3/16, -1/2, -1/2, 3/16, 1/2, -3/16},

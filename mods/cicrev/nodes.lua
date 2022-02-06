@@ -7,20 +7,27 @@ cicrev:tall_grass_2
 cicrev:tall_grass_3
 cicrev:sawgrass
 cicrev:sedge
+cicrev:moss
 
 
+cicrev:fence_oak
+cicrev:fence_chestnut
+cicrev:fence_chaktekok
 cicrev:fence_dark
 cicrev:wall_dark
 
+cicrev:soil
 cicrev:peat
 cicrev:loam
-cicrev:soil
 cicrev:clay
 cicrev:silt
 cicrev:sand
 cicrev:gravel
 cicrev:dirt_with_grass
 cicrev:peat_with_moss
+
+cicrev:path
+cicrev:shingles
 
 cicrev:tetrahedrite
 cicrev:bituminous_coal
@@ -30,8 +37,12 @@ cicrev:water_flowing
 
 cicrev:coal_arrow
 cicrev:crate
+cicrev:glass
 cicrev:ladder
 cicrev:torch
+cicrev:lantern
+cicrev:fabric
+cicrev:bricks
 --]]
 
 -- ======
@@ -198,6 +209,12 @@ cicrev.register_wall("cicrev:wall_dark", {
 -- peat
 -- soil?
 
+minetest.register_node("cicrev:soil", {
+	description = "Soil",
+	tiles = {"cicrev_soil.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+})
+
 minetest.register_node("cicrev:peat", {
 	description = "Peat",
 	tiles = {"cicrev_peat.png"},
@@ -207,12 +224,6 @@ minetest.register_node("cicrev:peat", {
 minetest.register_node("cicrev:loam", {
 	description = "Loam",
 	tiles = {"cicrev_loam.png"},
-	groups = {crumbly = 1, hand = 3, falling_node = 1},
-})
-
-minetest.register_node("cicrev:soil", {
-	description = "Soil",
-	tiles = {"cicrev_soil.png"},
 	groups = {crumbly = 1, hand = 3, falling_node = 1},
 })
 
@@ -240,18 +251,54 @@ minetest.register_node("cicrev:gravel", {
 	groups = {crumbly = 1, hand = 3, falling_node = 1},
 })
 
-minetest.register_node("cicrev:dirt_with_grass", {
+minetest.register_alias("cicrev:dirt_with_grass", "cicrev:soil_with_grass")
+minetest.register_node("cicrev:soil_with_grass", {
 	description = "Grass",
 	tiles = {{name = "cicrev_grass_top_4x4.png", align_style = "world", scale = 4},
-			"cicrev_loam.png", "cicrev_soil.png^cicrev_grass_side.png"},
+			"cicrev_soil.png", "cicrev_soil.png^cicrev_grass_side.png"},
 	groups = {crumbly = 1, hand = 3},
 	drop = "cicrev:soil",
 })
 
 minetest.register_node("cicrev:peat_with_moss", {
-	description = "Moss",
+	description = "Grass",
 	tiles = {"cicrev_peat_with_moss_top.png", "cicrev_peat.png"},
 	groups = {hand = 1},
+})
+
+minetest.register_node("cicrev:loam_with_grass", {
+	description = "Loam with Grass",
+	tiles = {"cicrev_grass_top.png", "cicrev_loam.png", "cicrev_loam.png^cicrev_grass_side.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+	drop = "cicrev:loam",
+})
+
+minetest.register_node("cicrev:clay_with_grass", {
+	description = "Clay with Grass",
+	tiles = {"cicrev_grass_top.png", "cicrev_clay.png", "cicrev_clay.png^cicrev_grass_side.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+	drop = "cicrev:clay",
+})
+
+minetest.register_node("cicrev:silt_with_grass", {
+	description = "Silt with Grass",
+	tiles = {"cicrev_grass_top.png", "cicrev_silt.png", "cicrev_silt.png^cicrev_grass_side.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+	drop = "cicrev:silt",
+})
+
+minetest.register_node("cicrev:sand_with_grass", {
+	description = "Sand with Grass",
+	tiles = {"cicrev_grass_sand_top.png", "cicrev_sand.png", "cicrev_sand.png^cicrev_grass_sand_side.png"},
+	groups = {crumbly = 1, hand = 2, falling_node = 1, walkover_speed = 90},
+	drop = "cicrev:sand",
+})
+
+minetest.register_node("cicrev:gravel_with_grass", {
+	description = "Gravel with Grass",
+	tiles = {"cicrev_grass_top.png", "cicrev_gravel.png", "cicrev_gravel.png^cicrev_grass_side.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+	drop = "cicrev:gravel",
 })
 
 -- ===
@@ -263,6 +310,12 @@ minetest.register_node("cicrev:path", {
 	tiles = {"cicrev_path.png"},
 	groups = {cracky = 1, hand = 2, walkover_speed = 125},
 })
+minetest.register_node("cicrev:shingles", {
+	description = "Shingles",
+	tiles = {"cicrev_shingles.png"},
+	groups = {cracky = 1, hand = 2},
+})
+make_chiseable("cicrev:shingles")
 
 -- ====
 -- ORES
@@ -386,6 +439,16 @@ minetest.register_node("cicrev:crate", {
 	end
 })
 
+minetest.register_node("cicrev:glass", {
+	description = "Glass",
+	drawtype = "glasslike",
+	tiles = {"cicrev_glass.png"},
+	use_texture_alpha = "blend",
+	paramtype = "light",
+	sunlight_propagates = true,
+	groups = {hand = 2},
+})
+
 minetest.register_node("cicrev:ladder", {
 	description = "Ladder",
 	drawtype = "signlike",
@@ -423,6 +486,73 @@ minetest.register_node("cicrev:torch", {
 		minetest.remove_node(pos)
 	end,
 })
+minetest.register_node("cicrev:lantern", {
+	description = "Lantern",
+	drawtype = "nodebox",
+	tiles = {"cicrev_lantern_top.png", "cicrev_lantern_top.png", "cicrev_lantern.png"},
+	use_texture_alpha = "opaque",
+	groups = {hand = 1},
+	node_box = {
+		type = "connected",
+		fixed = {
+			{-4/16, 3/16, -4/16, 4/16, 4/16, 4/16},
+			{-3/16, -5/16, -3/16, 3/16, 5/16, 3/16},
+		},
+		connect_top = {-2/16, 5/16, -2/16, 2/16, 8/16, 2/16},
+		connect_bottom = {-2/16, -8/16, -2/16, 2/16, -5/16, 2/16},
+	},
+	-- TODO: for whatever godforsaken reason, the connection doesn't work when the to be connected node is also a connected node
+	connects_to = {"group:fence", "group:wall", "group:solid_node", "cicrev:lantern"},
+	walkable = true,
+	paramtype = "light",
+	light_source = 9001,
+	on_construct = function(pos)
+		-- get_and_set_timer(pos, 480) -- 8 minutes
+	end,
+	on_timer = function(pos, elapsed)
+		-- minetest.remove_node(pos)
+	end,
+})
+
+minetest.register_node("cicrev:fabric", {
+	description = "Fabric",
+	tiles = {{name = "cicrev_fabric_4x4.png", align_style = "world", scale = 4}},
+	-- tiles = {"cicrev_fabric.png"},
+	groups = {hand = 1},
+	paramtype2 = "color",
+	-- palette = "cicrev_bears.png",
+	-- palette = "cicrev_fabric.png^[brighten",
+	palette = "cicrev_fabric_pallete.png",
+	drop = "cicrev:fabric",
+	node_placement_prediction = "",
+	on_place = function(itemstack, placer, pointed_thing)
+		-- local pos = pointed_thing.above
+		-- local param2 = pos.x%16 + (pos.z%16 * 16)
+		-- minetest.item_place(itemstack, placer, pointed_thing, param2)
+		minetest.item_place(itemstack, placer, pointed_thing, math.random(0,15))
+	end,
+	color = {r = 214, g = 200, b = 177, a = 255}
+})
+
+minetest.register_node("cicrev:bricks", {
+	-- TODO:needs inventory_image
+	description = "Bricks",
+	inventory_image = minetest.inventorycube("cicrev_bricks_inventory.png", img2, img3),
+	tiles = {{name = "cicrev_bricks_4x4.png", align_style = "world", scale = 4}},
+	overlay_tiles = {{name = "cicrev_bricks_overlay_4x4.png", align_style = "world", scale = 4, color = "#ffffff"}},
+	groups = {hand = 1},
+	paramtype2 = "color",
+	palette = "cicrev_bricks_pallete.png",
+	drop = "cicrev:fabric",
+	node_placement_prediction = "",
+	on_place = function(itemstack, placer, pointed_thing)
+		minetest.item_place(itemstack, placer, pointed_thing, math.random(0,255))
+	end,
+})
+make_chiseable("cicrev:bricks")
+
+
+
 
 local stones = {"andesite", "basalt", "chalk", "chert", "claystone",
     "conglomerate", "dacite", "diorite", "dolomite", "gabbro", "gneiss", "granite", "limestone",

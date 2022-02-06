@@ -80,7 +80,7 @@ local function print_table(po)
 end
 
 
-
+local abm_detect
 
 minetest.register_craftitem("cicrev:axe_of_debug", {
 	description = "axe of debug",
@@ -93,7 +93,7 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
-
+		minetest.chat_send_all(_VERSION)
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_effects.add_effect(user, {
@@ -106,13 +106,30 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		})
 	end,
 	on_use = function(itemstack, user, pointed_thing)
-		player_effects.remove_effect(user,"speed", "debuging_axe")
+		abm_detect = true
+		-- player_effects.remove_effect(user,"speed", "debuging_axe")
 
 		-- local node = minetest.get_node(pointed_thing.under)
 		-- node.param2 = y_rot[node.param2]
 		-- minetest.set_node(pointed_thing.under, node)
 	end,
 })
+
+-- minetest.register_abm({
+--     label = "Active Block Detection",
+--     nodenames = {"air"},
+--     interval = 10,
+--     chance = 1,
+--     action = function(pos, node, active_object_count, active_object_count_wider)
+-- 		-- if not abm_detect then return end
+-- 		minetest.set_node(pos, {name = "cicrev:glass"})
+--         minetest.after(5,
+-- 			function()
+-- 				abm_detect = false
+-- 			end
+-- 		)
+--     end,
+-- })
 
 minetest.register_lbm({
 	name = "cicrev:debug",
@@ -140,6 +157,33 @@ minetest.register_craftitem("cicrev:time_wand", {
 		minetest.chat_send_all("Setting time to midnight.")
 		minetest.set_timeofday(0)
 	end
+})
+
+minetest.register_craftitem("cicrev:wrench", {
+	description = "Wrench",
+	inventory_image = "cicrev_wrench.png",
+	stack_max = 1,
+	on_place = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+		if not placer:get_player_control().sneak then
+			node.param2 = node.param2 + 4
+		else
+			node.param2 = node.param2 - 4
+		end
+		minetest.swap_node(pos, node)
+	end,
+	on_use = function(itemstack, user, pointed_thing)
+		if not pointed_thing.under then return end
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+		if not user:get_player_control().sneak then
+			node.param2 = node.param2 + 1
+		else
+			node.param2 = node.param2 - 1
+		end
+		minetest.swap_node(pos, node)
+	end,
 })
 
 
@@ -214,4 +258,87 @@ minetest.register_node("cicrev:test_node_4", {
 	description = "test_node_4",
 	tiles = {"test_node_4.png"},
 	groups = {test = 4},
+})
+
+minetest.register_node("cicrev:grass_sand", {
+	description = "Grass-Sand",
+	tiles = {"test_grass_sand_1.png", "test_grass_sand_2.png", "test_grass_sand_3.png", "test_grass_sand_4.png", "test_grass_sand_5.png", "test_grass_sand_6.png"},
+	paramtype2 = "facedir",
+})
+minetest.register_node("cicrev:sand_patch", {
+	description = "Sand Patch",
+	drawtype = "nodebox",
+	visual_scale = 2,
+	paramtype = "light",
+	tiles = {"test_sand_patch.png", "cicrev_sand.png"},
+	use_texture_alpha = "blend",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.25, -0.25, -0.25, 0.25, 0.25, 0.25},
+			{-0.5, 0.25 + 0.001, -0.5, 0.5, 0.25 + 0.001, 0.5},
+		},
+	},
+	collision_box = {type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},},
+	selection_box = {type = "regular"},
+})
+
+minetest.register_node("cicrev:connected_glass", {
+	description = "Connected Glass",
+	drawtype = "nodebox",
+	tiles = {"cicrev_glass.png"},
+	use_texture_alpha = "clip",
+	paramtype = "light",
+	groups = {hand = 2},
+	collision_box = {type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},},
+	selection_box = {type = "regular"},
+	connects_to = {"cicrev:connected_glass"},
+	node_box = {
+		type = "connected",
+		-- fixed = {-6/16, -6/16, -6/16, 6/16, 6/16, 6/16},
+		disconnected_top = {-8/16, 6/16, -8/16, 8/16, 8/16, 8/16},
+        disconnected_bottom = {-8/16, -8/16, -8/16, 8/16, -6/16, 8/16},
+        disconnected_front = {-8/16, -8/16, -8/16, 8/16, 8/16, -6/16},
+		disconnected_back = {-8/16, -8/16, 6/16, 8/16, 8/16, 8/16},
+        disconnected_left = {-8/16, -8/16, -8/16, -6/16, 8/16, 8/16},
+        disconnected_right = {6/16, -8/16, -8/16, 8/16, 8/16, 8/16},
+		disconnected = {-6/16, -6/16, -6/16, 6/16, 6/16, 6/16},
+	},
+})
+
+minetest.register_node("cicrev:variant_textures", {
+	description = "test",
+	tiles = {
+		{name = "cicrev_var_A.png", align_style = "world", scale = 2},
+		{name = "cicrev_var_B.png", align_style = "world", scale = 2},
+		{name = "cicrev_var_C.png", align_style = "world", scale = 2},
+		{name = "cicrev_var_D.png", align_style = "world", scale = 2},
+		{name = "cicrev_var_E.png", align_style = "world", scale = 2},
+		{name = "cicrev_var_F.png", align_style = "world", scale = 2},
+	},
+	paramtype2 = "facedir",
+})
+
+minetest.register_node("cicrev:dude_painting", {
+	description = "Painting of a dude",
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	tiles = {"dude.png"},
+	groups = {},
+	visual_scale = 3,
+	node_box = {
+        type = "fixed",
+        fixed = {-8/48, -8/48, 7/48, 8/48, 24/48, 8/48}
+    },
+	collision_box = {
+        type = "fixed",
+        fixed = {-8/16, -8/16, 7/16, 8/16, 24/16, 8/16}
+    },
+	selection_box = {
+        type = "fixed",
+        fixed = {-8/16, -8/16, 7/16, 8/16, 24/16, 8/16}
+    },
 })

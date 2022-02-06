@@ -1,6 +1,17 @@
 =====
 TODO:
 =====
+
+replace all air with glowing air
+
+respawn anchor - node at which you can set your spawn point, for a price
+		- has to be paid after every death?
+	- when mined (only valid tool is hand) moves one node in the direction it is being punched
+		- can be pushed up slopes
+	- spawns randomly in the world
+
+collision_box es don't support type = "regular"
+
 a 'stoor to nearby chests' button
 	like the one in terraria
 

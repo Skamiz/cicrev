@@ -19,6 +19,8 @@ function make_chiseable(node_name)
     chis_def.drawtype = "nodebox"
     chis_def.paramtype = "light"
     chis_def.paramtype2 = "facedir"
+	-- TODO: technically I should try to maintain the color information when stairs are chisseled
+	if node_def.paramtype2 == "color" then chis_def.paramtype2 = "colorfacedir" end
     chis_def.groups.not_in_creative_inventory = 1
     chis_def.drop = ""
     chis_def.node_placement_prediction = ""
@@ -146,7 +148,10 @@ local function pointing_pos(player, distance, liquids)
         ray_end = vector.add(eye_pos, ray_end)
 
     local ray = minetest.raycast(eye_pos, ray_end, false, liquids)
-    return ray:next().intersection_point
+	-- TODO: when chiseling rapidly sometimes doesn't return anything
+	-- idiot, the problem is that the ray is too short when using the creative hand
+	local next = ray:next()
+    return next and next.intersection_point
 end
 
 -- TODO this needs SO much refactoring to be legible
@@ -173,6 +178,7 @@ minetest.register_craftitem("chisel:chisel", {
         direction = vector.multiply(direction, 0.0001)
 
         local intersection = pointing_pos(user)
+		if not intersection then return end
         intersection = vector.add(intersection, direction)
 
         local relative = vector.subtract(intersection, pointed_thing.under)

@@ -25,7 +25,7 @@ end
 
 -- calls '_on_update' for the six node surounding a pos
 local function update_touching_nodes(pos_center)
-	local touching = cicrev.get_touching_nodes(pos_center)
+	local touching = get_touching_nodes(pos_center)
 	for _, pos in pairs(touching) do
 		local node_def = minetest.registered_nodes[minetest.get_node(pos).name]
 		local propagate

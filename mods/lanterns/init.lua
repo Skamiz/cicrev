@@ -1,4 +1,7 @@
-local MODNAME = minetest.get_current_modname()
+local modname = minetest.get_current_modname()
+
+-- TODO: split in two parts: one for placing the light node; one for determining it's strength
+-- that way it's easier to add other sources of caried light
 
 local glowing_air = {
     description = "glowing air",
@@ -9,11 +12,8 @@ local glowing_air = {
 	can_dig = false,
 	walkable = false,
 	buildable_to = true,
-	light_source = 10,
+	-- light_source = minetest.LIGHT_MAX,
     pointable = false,
-	selection_box = {
-        type = "fixed",
-        fixed = {0, 0, 0, 0, 0, 0}},
     on_timer = function(pos)
         minetest.remove_node(pos)
     end,
@@ -40,6 +40,44 @@ minetest.register_on_joinplayer(
     end
 )
 
+local function can_place_light(pos)
+	local node_name = minetest.get_node(pos).name
+	return node_name == "air" or minetest.get_item_group(node_name, "glowing_air") > 0
+end
+
+local function get_light_pos(player)
+	local pos = player:get_pos()
+	pos = vector.round(pos)
+	if can_place_light(pos) then return pos end
+	pos.y = pos.y + 1
+	if can_place_light(pos) then return pos end
+	pos = minetest.find_node_near(pos, 1, {"air", "group:glowing_air"})
+	return pos
+end
+
+local players = {}
+
+local function place_light(player, level)
+	local player_name = player:get_player_name()
+	local old_pos = players[player_name]
+	local pos = get_light_pos(player)
+
+	if not pos then
+		if old_pos then minetest.remove_node(old_pos) end
+		players[player_name] = nil
+		return
+	end
+
+	minetest.set_node(pos, {name = "lanterns:light_" .. level})
+
+	if old_pos and not vector.equals(pos, old_pos) then
+		minetest.remove_node(old_pos)
+	end
+
+	players[player_name] = pos
+	minetest.get_node_timer(pos):start(1)
+end
+
 minetest.register_globalstep(function(dtime)
     for _, player in pairs(minetest.get_connected_players()) do
         local lantern_item = player:get_inventory():get_stack("lantern", 1)
@@ -49,12 +87,6 @@ minetest.register_globalstep(function(dtime)
         if not lantern_def or lantern_def.light_source == 0 then
             return
         end
-        local pos = player:get_pos()
-        pos = vector.round(pos)
-        local node = minetest.get_node(pos).name
-        if node == "air" or minetest.get_item_group(node, "glowing_air") == 1 then
-            minetest.set_node(pos, {name = "lanterns:light_" .. lantern_def.light_source})
-            get_and_set_timer(pos, 0.2, true)
-        end
+		place_light(player, lantern_def.light_source)
     end
 end)

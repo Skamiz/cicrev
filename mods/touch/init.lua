@@ -4,6 +4,7 @@ local modpath = minetest.get_modpath(modname)
 -- dofile(modpath .. "/other_file.lua")
 
 --[[
+todo:
 rotate entity to reflect node rotation
 maybe figure out whats wrong with glow updating
 

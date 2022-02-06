@@ -17,8 +17,7 @@ local pull_cart = {}
 pull_cart.cart_number = tonumber(storage:get("cart_number") or 1)
 pull_cart.players = {}
 
--- meant to be a multiplier, but with the current simple way of handling pysics overrides
--- it just flat out sets the speed to this value
+
 local speed_multiplier = tonumber(minetest.settings:get("cart_speed_multiplier")) or 0.7
 -- if this is true, pulling a cart does not prevent going up whole blocks at once
 local offroad_cart = minetest.settings:get("offroad_cart") == "true"
@@ -305,11 +304,14 @@ minetest.register_entity(modname .. ":pull_cart", {
 			-- set velocity to move to that position
 			local direction_to_rest_pos = vector.subtract(pos, o_pos)
 			local vel = object:get_velocity()
-			if distance_2(direction_to_rest_pos) < 0.001 then
+			if distance_2(direction_to_rest_pos) < 0.01 then
 				object:set_velocity({x=0,y=vel.y,z=0})
 			else
 				-- speed_multiplier should actually be replaced with the pullers movement speed
+				-- TODO: some minetest update made cart movement janky as heck
+				-- try scaling by distance to target positio?
 				direction_to_rest_pos = vector.multiply(direction_to_rest_pos, speed_multiplier * (1/dtime))
+				-- direction_to_rest_pos = vector.multiply(direction_to_rest_pos, 0.09/dtime)
 				-- this is important to preserve downwards movement due to gravity
 				direction_to_rest_pos.y = vel.y
 				object:set_velocity(direction_to_rest_pos)
