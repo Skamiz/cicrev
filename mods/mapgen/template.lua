@@ -5,24 +5,24 @@ minetest.set_mapgen_setting("water_level", "0", true)
 
 --noise parameters
 np_3d = {
-        offset = 0,
-        scale = 10,
-        spread = {x = 10, y = 10, z = 10},
-        seed = 0,
-        octaves = 1,
-        persist = 1,
-        lacunarity = 1.0,
+    offset = 0,
+    scale = 10,
+    spread = {x = 10, y = 10, z = 10},
+    seed = 0,
+    octaves = 1,
+    persist = 1,
+    lacunarity = 1.0,
 }
 
 np_2d = {
-        offset = 0,
-        scale = 10,
-        spread = {x = 40, y = 40, z = 40},
-        seed = 0,
-        octaves = 1,
-        persist = 1,
-        lacunarity = 1.0,
-		flags = "noeased",
+    offset = 0,
+    scale = 10,
+    spread = {x = 40, y = 40, z = 40},
+    seed = 0,
+    octaves = 1,
+    persist = 1,
+    lacunarity = 1.0,
+	flags = "noeased",
 }
 
 local side_lenght = 80

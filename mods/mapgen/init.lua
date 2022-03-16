@@ -3,10 +3,10 @@ local mod_path = minetest.get_modpath(mod_name)
 
 -- TODO: consider putting content ID's in their own file, maybe into the table 'c'
 
--- dofile(mod_path.."/util.lua")
+dofile(mod_path.."/util.lua")
 -- dofile(mod_path.."/cave_util.lua")
 -- dofile(mod_path.."/make_frame.lua")
-dofile(mod_path.."/flat.lua")
+-- dofile(mod_path.."/flat.lua")
 
 -- dofile(mod_path.."/mount_meru.lua")
 -- dofile(mod_path.."/mesa.lua")
@@ -20,6 +20,7 @@ dofile(mod_path.."/flat.lua")
 -- dofile(mod_path.."/shrooms.lua")
 -- dofile(mod_path.."/procedural_fortress.lua")
 -- dofile(mod_path.."/frac.lua")
+dofile(mod_path.."/caelid.lua")
 
 -- dofile(mod_path.."/template.lua")
 -- dofile(mod_path.."/noise_research.lua")

@@ -2,6 +2,12 @@
 TODO:
 =====
 
+potion which reveals nearby ores - see resonator mod
+
+general idea = mapgen where the player is trapped in an internal structure
+
+for dungeons - braziers and similar that the player can light up, see 'unepic'
+
 replace all air with glowing air
 
 respawn anchor - node at which you can set your spawn point, for a price
@@ -63,6 +69,7 @@ add water chestnut to marches
 
 geode - blob ore with a smaler blob ore inside
 	the outer one acts as a barier for the valuable material inside
+	minetest automatically offsets the ore seeds so best bet is generating geode completely manually
 
 Slow but powerfull enemies, focus on mechanics not direct hitting
 

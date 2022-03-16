@@ -53,7 +53,7 @@ minetest.register_node("cicrev:tall_grass_1", {
 	description = "Grass",
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
-	tiles = {"cicrev_tall_grass.png"},
+	tiles = {"cicrev_tall_grass_1.png"},
 	groups = {hand = 1, attached_node = 1},
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -147,6 +147,69 @@ minetest.register_node("cicrev:moss", {
         connect_right = {6/16, -0.5, -0.5, 0.5, 0.5, 0.5},
 		disconnected = {-6/16, -6/16, -6/16, 6/16, 6/16, 6/16},
 	},
+})
+
+
+minetest.register_node("cicrev:tall_grass_dry_1", {
+	description = "Grass",
+	drawtype = "plantlike",
+	-- visual_scale = 4.0,
+	tiles = {"cicrev_tall_grass_dry_1.png"},
+	groups = {hand = 1, attached_node = 1},
+	paramtype = "light",
+	sunlight_propagates = true,
+	paramtype2 = "degrotate",
+	walkable = false,
+	buildable_to = true,
+	drop = "cicrev:grass",
+	selection_box = {type = "fixed",
+		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
+})
+minetest.register_node("cicrev:tall_grass_dry_2", {
+	description = "Grass",
+	drawtype = "plantlike",
+	-- visual_scale = 4.0,
+	tiles = {"cicrev_tall_grass_dry_2.png"},
+	groups = {hand = 1, attached_node = 1},
+	paramtype = "light",
+	sunlight_propagates = true,
+	paramtype2 = "degrotate",
+	walkable = false,
+	buildable_to = true,
+	drop = "cicrev:grass",
+	selection_box = {type = "fixed",
+		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
+})
+minetest.register_node("cicrev:tall_grass_dry_3", {
+	description = "Grass",
+	drawtype = "plantlike",
+	-- visual_scale = 4.0,
+	tiles = {"cicrev_tall_grass_dry_3.png"},
+	groups = {hand = 1, attached_node = 1},
+	paramtype = "light",
+	sunlight_propagates = true,
+	paramtype2 = "degrotate",
+	walkable = false,
+	buildable_to = true,
+	drop = "cicrev:grass",
+	selection_box = {type = "fixed",
+		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
+})
+
+minetest.register_node("cicrev:sawgrass_dry", {
+	description = "Sawgrass",
+	drawtype = "plantlike",
+	visual_scale = 2.0,
+	tiles = {"cicrev_sawgrass_dry.png"},
+	groups = {hand = 1, attached_node = 1},
+	paramtype = "light",
+	sunlight_propagates = true,
+	paramtype2 = "meshoptions",
+	walkable = false,
+	buildable_to = true,
+	-- drop = "cicrev:grass",
+	selection_box = {type = "fixed",
+		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
 
 -- =====
@@ -300,6 +363,13 @@ minetest.register_node("cicrev:gravel_with_grass", {
 	tiles = {"cicrev_grass_top.png", "cicrev_gravel.png", "cicrev_gravel.png^cicrev_grass_side.png"},
 	groups = {crumbly = 1, hand = 3, falling_node = 1},
 	drop = "cicrev:gravel",
+})
+
+minetest.register_node("cicrev:silt_with_fungus", {
+	description = "Silt with Grass",
+	tiles = {"cicrev_fungus_top.png", "cicrev_silt.png", "cicrev_silt.png^cicrev_fungus_side.png"},
+	groups = {crumbly = 1, hand = 3, falling_node = 1},
+	drop = "cicrev:silt",
 })
 
 -- ===

@@ -1,4 +1,4 @@
-local c_ground = minetest.get_content_id("df_stones:dacite")
+local c_ground = minetest.get_content_id("cicrev:dirt_with_grass")
 local c_stone_brick = minetest.get_content_id("dungeon:stone_brick")
 local n_ground = {name = "cicrev:dirt_with_grass"}
 local n_stone_brick = {name = "dungeon:stone_brick"}

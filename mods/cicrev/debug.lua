@@ -89,7 +89,7 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 	stack_max = 1,
 	tool_capabilities = {
 		groupcaps = {
-			test = {maxlevel=0, uses=20, times={[1]=1, [2]=2, [3]=3, [4]=4}},
+			test = {maxlevel=0, uses=20, times={[1]=1, [2]=2, [3]=1, [4]=4}},
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
@@ -106,9 +106,9 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		})
 	end,
 	on_use = function(itemstack, user, pointed_thing)
-		abm_detect = true
-		-- player_effects.remove_effect(user,"speed", "debuging_axe")
-
+		-- abm_detect = true
+		player_effects.remove_effect(user,"speed", "debuging_axe")
+		--
 		-- local node = minetest.get_node(pointed_thing.under)
 		-- node.param2 = y_rot[node.param2]
 		-- minetest.set_node(pointed_thing.under, node)
