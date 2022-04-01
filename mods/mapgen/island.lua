@@ -33,17 +33,19 @@ end
 local middle = vector.new(0, 0, 0)
 local middle2 = vector.new(0, 20, 0)
 
+-- direction in which the shell oopens
+local shell_dir = vector.new(-1, 1, 0):normalize()
 
 
 --noise parameters
 np_3d = {
         offset = 0,
-        scale = 10,
-        spread = {x = 10, y = 10, z = 10},
+        scale = 3,
+        spread = {x = 10, y = 20, z = 10},
         seed = 0,
-        octaves = 1,
-        persist = 1,
-        lacunarity = 1.0,
+        octaves = 2,
+        persist = 0.4,
+        lacunarity = 1.6,
 }
 
 -- np_2d = {
@@ -100,7 +102,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
             for y = minp.y, maxp.y do
 				local vi = area:index(x, y, z)
 
-				local nv_3d = nvals_3d[ni]
+				local nv_3d = nvals_3d[(z - minp.z) * 80 * 80 + (y - minp.y) * 80 + (x - minp.x) + 1]
 
 
 
@@ -132,6 +134,26 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
                 if y <= 0 and data[vi] == c_air then
                     data[vi] = c_water
                 end
+
+
+				local dist3 = x*x + y*y + z*z
+				-- distance along shell_dir axis
+				local dist_ax = x * shell_dir.x + y * shell_dir.y + z * shell_dir.z
+
+				local density = math.abs(dist3/(145*145) - 1) * -145 + 10
+				density = density - (dist_ax/10 + 10)
+				-- density = density - y/8
+				-- density = math.min(density - (dist_ax/10 + 10), density - y/8)
+				-- density = density + nv_3d
+				local dist_from_shell = math.abs(dist3/(145*145) - 1)
+
+				if density > 0
+				-- and y < 10
+				then
+            		data[vi] = c_stone
+                end
+
+
 
 			end
 		end

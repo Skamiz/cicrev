@@ -44,3 +44,9 @@ minetest.register_on_mods_loaded(function()
 		end
 	end
 end)
+
+minetest.register_on_joinplayer(function(player, last_login)
+player:set_properties({
+	zoom_fov = 15.0,
+})
+end)
