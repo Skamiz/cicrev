@@ -82,6 +82,7 @@ minetest.register_node(modname .. ":pull_cart", {
 		local rot = cart:get_rotation()
 		rot.y = minetest.dir_to_yaw(vector.subtract(placer:get_pos(), cart:get_pos()))
 		cart:set_rotation(rot)
+		cart:set_armor_groups({punch_operable = 1})
 
 		itemstack:take_item()
 		return itemstack
@@ -185,7 +186,7 @@ minetest.register_entity(modname .. ":pull_cart", {
 	end,
 
 	_remove_children = function(self)
-		for _, child in pairs(self.object:get_children()) do
+		for _, child in pairs(self.object:get_children() or {}) do
 			child:remove()
 		end
 	end,
@@ -223,6 +224,10 @@ minetest.register_entity(modname .. ":pull_cart", {
 		if not self.puller then
 			self:_remove()
 		end
+	end,
+
+	on_death = function(self, killer)
+		minetest.chat_send_all("Cart was killed. This shouldn't happen.")
 	end,
 
 	get_staticdata = function(self)
@@ -310,7 +315,8 @@ minetest.register_entity(modname .. ":pull_cart", {
 				-- speed_multiplier should actually be replaced with the pullers movement speed
 				-- TODO: some minetest update made cart movement janky as heck
 				-- try scaling by distance to target positio?
-				direction_to_rest_pos = vector.multiply(direction_to_rest_pos, speed_multiplier * (1/dtime))
+				direction_to_rest_pos = vector.multiply(direction_to_rest_pos,  200 * speed_multiplier * dtime)
+				-- direction_to_rest_pos = vector.multiply(direction_to_rest_pos, speed_multiplier * (1/dtime))
 				-- direction_to_rest_pos = vector.multiply(direction_to_rest_pos, 0.09/dtime)
 				-- this is important to preserve downwards movement due to gravity
 				direction_to_rest_pos.y = vel.y

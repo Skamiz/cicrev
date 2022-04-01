@@ -43,6 +43,7 @@ for _, v in pairs(stones) do
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
+        stack_max = 16,
         groups = {cracky = 1, hand = 1, falling_node = 1},
 		node_box = {type = "fixed", fixed = {-5/16, -0.5, -1/16, 1/16, -5/16, 4/16}},
 		after_place_node = function(pos, placer, itemstack, pointed_thing)

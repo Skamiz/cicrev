@@ -3,6 +3,7 @@ local c_stone = minetest.get_content_id("cicrev:gravel")
 
 minetest.set_mapgen_setting("water_level", "0", true)
 
+local surface_level = 0 -- nodes at this level will be filled
 
 local side_lenght = 80
 local chunk_size = {x = 80, y = 80, z = 80}
@@ -28,7 +29,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				ni = ni + 1
 
 
-				if y < 1 then
+				if y <= surface_level then
 					data[vi] = c_dirt
 				end
 			end

@@ -1,6 +1,8 @@
 =====
 TODO:
 =====
+material that cannot be destroyed/moved, but is necessary to be present for whatever
+
 
 potion which reveals nearby ores - see resonator mod
 
@@ -18,11 +20,12 @@ respawn anchor - node at which you can set your spawn point, for a price
 
 collision_box es don't support type = "regular"
 
-a 'stoor to nearby chests' button
+a 'stoor to nearby chests' button - done, now improve it
 	like the one in terraria
 
 a node which can only be mined when next to another node
 	selction boxes have all the capabilitis of node boxes, including conectivity
+	ghost ore
 
 elementars
 	fire elementar

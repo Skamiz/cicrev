@@ -151,7 +151,7 @@ minetest.register_node("cicrev:moss", {
 
 
 minetest.register_node("cicrev:tall_grass_dry_1", {
-	description = "Grass",
+	description = "Grass dry",
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
 	tiles = {"cicrev_tall_grass_dry_1.png"},
@@ -166,7 +166,7 @@ minetest.register_node("cicrev:tall_grass_dry_1", {
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
 minetest.register_node("cicrev:tall_grass_dry_2", {
-	description = "Grass",
+	description = "Grass dry",
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
 	tiles = {"cicrev_tall_grass_dry_2.png"},
@@ -181,7 +181,7 @@ minetest.register_node("cicrev:tall_grass_dry_2", {
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
 minetest.register_node("cicrev:tall_grass_dry_3", {
-	description = "Grass",
+	description = "Grass dry",
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
 	tiles = {"cicrev_tall_grass_dry_3.png"},
@@ -197,7 +197,7 @@ minetest.register_node("cicrev:tall_grass_dry_3", {
 })
 
 minetest.register_node("cicrev:sawgrass_dry", {
-	description = "Sawgrass",
+	description = "Sawgrass dry",
 	drawtype = "plantlike",
 	visual_scale = 2.0,
 	tiles = {"cicrev_sawgrass_dry.png"},
@@ -208,6 +208,24 @@ minetest.register_node("cicrev:sawgrass_dry", {
 	walkable = false,
 	buildable_to = true,
 	-- drop = "cicrev:grass",
+	selection_box = {type = "fixed",
+		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
+})
+minetest.register_node("cicrev:dry_shrub", {
+	description = "Dry Shrub",
+	drawtype = "plantlike",
+	tiles = {"cicrev_dry_shrub.png"},
+	groups = {hand = 1, attached_node = 1},
+	paramtype = "light",
+	sunlight_propagates = true,
+	-- paramtype2 = "meshoptions",
+	walkable = false,
+	buildable_to = true,
+	drop = {items = {
+		{items = {"cicrev:stick"},},
+		{rarity = 2,
+		items = {"cicrev:stick"},},
+	},},
 	selection_box = {type = "fixed",
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
 })
@@ -388,6 +406,14 @@ minetest.register_node("cicrev:shingles", {
 })
 make_chiseable("cicrev:shingles")
 
+minetest.register_node("cicrev:corite", {
+	description = "Corite",
+	tiles = {"cicrev_corite.png"},
+	groups = {cracky = 1},
+	light_source = 8,
+	paramtype = "light",
+})
+
 -- ====
 -- ORES
 -- ====
@@ -494,11 +520,11 @@ minetest.register_node("cicrev:coal_arrow", {
 minetest.register_node("cicrev:crate", {
 	description = "Crate",
 	tiles = {"cicrev_crate.png"},
-	groups = {hand = 2},
+	groups = {hand = 2, storage = 1},
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-    	inv:set_size("main", 8*4)
+    	inv:set_size("main", 4*4)
 		meta:set_string("formspec",
             "formspec_version[4]"..
             "size[10.25,10.5]"..
@@ -507,7 +533,10 @@ minetest.register_node("cicrev:crate", {
             "list[current_player;main;0,5.25;8,4;]"..
             "container_end[]"..
 			"listring[]")
-	end
+	end,
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+		minetest.chat_send_all(stack:to_string())
+	end,
 })
 
 minetest.register_node("cicrev:glass", {

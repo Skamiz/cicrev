@@ -1,19 +1,25 @@
 local c_dirt = minetest.get_content_id("cicrev:dirt_with_grass")
-local c_stone = minetest.get_content_id("cicrev:gravel")
+local c_stone = minetest.get_content_id("df_stones:schist")
+local c_gair = minetest.get_content_id("lanterns:light_14")
+-- TODO: override 'remove_node' to place glowing air instead
+local c_air = minetest.CONTENT_AIR
 
 minetest.set_mapgen_setting("water_level", "0", true)
-local world_seed = minetest.get_mapgen_setting("seed")
-world_seed = world_seed % 5000 -- necesary, otherwise it breaks things
+
+local basal_top = 47
+local basal_bottom = -32
+local blend_dist = 10
 
 --noise parameters
 np_3d = {
     offset = 0,
-    scale = 10,
-    spread = {x = 10, y = 10, z = 10},
+    scale = 1,
+    spread = {x = 32, y = 16, z = 32},
     seed = 0,
-    octaves = 1,
-    persist = 1,
-    lacunarity = 1.0,
+    octaves = 2,
+    persist = 0.5,
+    lacunarity = 2,
+    -- flags = "eased",
 }
 
 np_2d = {
@@ -36,7 +42,9 @@ local nobj_2d = noise_handler.get_noise_object(np_2d, chunk_size)
 
 local data = {}
 
-minetest.register_on_generated(function(minp, maxp, chunkseed)
+minetest.register_on_generated(function(minp, maxp, blockseed)
+    if maxp.y < basal_bottom or minp.y > basal_top then return end
+
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local flat_area = VoxelArea:new({MinEdge=emin, MaxEdge={x = emax.x, y = emin.y, z = emax.z}})
@@ -47,7 +55,7 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 
 
 
-    math.randomseed(chunkseed)
+    math.randomseed(blockseed)
 
 	local ni = 0
 	for z = minp.z, maxp.z do
@@ -57,27 +65,28 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 
 				local nv_3d = nvals_3d[(z - minp.z) * 80 * 80 + (y - minp.y) * 80 + (x - minp.x) + 1]
                 local nv_2d = nvals_2d[(z-minp.z) * 80 + (x-minp.x) + 1]
-				-- TODO: fiure out how to use :index() here
-                -- local nv_2d = nvals_2d[flat_area:index(x, emin.y, z)]
-
-				-- local nv_3d = nvals_3d[chunk_area:index(x - minp.x + 1, y - minp.y + 1, z - minp.z + 1)]
-				-- local nv_3d = nvals_3d[area:index(x, y, z)]
-				-- local nv_3d = nvals_3d[vi]
 
 				ni = ni + 1
 				-- local nv_3d = nvals_3d[ni]
 
-				-- if y == minp.y then
-				-- 	minetest.chat_send_all((z-minp.z) * 80 + (x-minp.x) + 1 .. " | " .. flat_area:index(x, emin.y, z))
+
+                if y == basal_bottom or y == basal_top then
+                	data[vi] = c_stone
+                end
+
+				-- if nv_2d > y then
+				-- 	data[vi] = c_dirt
 				-- end
+                --
+                local dist = math.min(math.abs(y - basal_bottom), math.abs(y - basal_top))
 
-
-				if nv_2d > y then
-					data[vi] = c_dirt
+				if nv_3d < 0 or (dist <= blend_dist and nv_3d < math.pow((blend_dist-dist)/blend_dist, 2)) then
+				-- if nv_3d < math.max(0, math.pow((blend_dist-dist)/blend_dist, 2)) then
+					data[vi] = c_stone
 				end
 
-				if nv_3d > y then
-					data[vi] = c_stone
+				if data[vi] == c_air then
+					data[vi] = c_gair
 				end
 
 			end
@@ -92,3 +101,15 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 	-- vm:calc_lighting()
 	vm:write_to_map()
 end)
+
+minetest.register_abm({
+    label = "Air to glow",
+    nodenames = {"air"},
+    interval = 1,
+    chance = 1,
+    min_y = basal_bottom,
+    max_y = basal_top,
+    action = function(pos, node, active_object_count, active_object_count_wider)
+        minetest.set_node(pos, {name = "lanterns:light_5"})
+    end,
+})

@@ -32,8 +32,8 @@ minetest.register_craftitem("cicrev:rune_speed", {
 			source = "rune",
 			effect_name = "speed",
 			-- text_influence = "function (s) return s + 0.3 end",
-			text_influence = "function (s) return s + 1.3 end",
-			timeout = 6,
+			text_influence = "function (s) return s + 0.5 end",
+			timeout = 30,
 			priority = 80,
 			persistant = true,
 		})

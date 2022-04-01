@@ -253,11 +253,38 @@ minetest.register_node("cicrev:test_node_3", {
 	description = "test_node_3",
 	tiles = {"test_node_3.png"},
 	groups = {test = 3},
+	-- can_dig = function(pos, player)
+	-- 	return pos.x%2 == 0
+	-- end,
 })
 minetest.register_node("cicrev:test_node_4", {
 	description = "test_node_4",
 	tiles = {"test_node_4.png"},
 	groups = {test = 4},
+})
+minetest.register_node("cicrev:mesh_node", {
+	description = "mesh node",
+	drawtype = "mesh",
+	mesh = "debug.obj",
+	tiles = {"debug.png"},
+	-- groups = {test = 4},
+	paramtype = "light",
+})
+minetest.register_node("cicrev:desert_rose", {
+	description = "Desert Rose",
+	drawtype = "mesh",
+	mesh = "desert_rose.obj",
+	tiles = {"cicrev_desert_rose.png"},
+	-- groups = {test = 4},
+	paramtype = "light",
+	paramtype2 = "facedir",
+	collision_box = {type = "fixed",
+		fixed = {-6/16, -0.5, -5/16, 6/16, 1/16, 5/16},},
+	selection_box = {type = "fixed",
+		fixed = {-6/16, -0.5, -5/16, 6/16, 1/16, 5/16},},
+	on_place = function(itemstack, placer, pointed_thing)
+		return minetest.item_place(itemstack, placer, pointed_thing, math.random(0, 3))
+	end,
 })
 
 minetest.register_node("cicrev:grass_sand", {
