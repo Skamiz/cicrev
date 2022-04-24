@@ -1,0 +1,24 @@
+# Blender MTL File: 'campfire_lit.blend'
+# Material Count: 2
+
+newmtl 1
+Ns 359.999993
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd /home/daren/games/minetest/games/cicrev/mods/cicrev/textures/cicrev_campfire.png
+
+newmtl 2
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd /home/daren/games/minetest/games/cicrev/mods/cicrev/textures/cicrev_campfire_fire.png

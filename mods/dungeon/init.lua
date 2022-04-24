@@ -190,9 +190,6 @@ minetest.register_node("dungeon:item_spawner", {
 	description = "Item Spawner",
 	tiles = {"dungeon_item_spawner.png"},
 	groups = {},
-	-- on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-		-- minetest.swap_node(pos, {name = "dungeon:gate_closed", param2 = node.param2})
-	-- end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()

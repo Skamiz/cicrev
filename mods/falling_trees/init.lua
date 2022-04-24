@@ -19,7 +19,7 @@ falling_trees = {}
 
 local scale = (2/3) -- visual = "item", have weired default scaling
 local max_logs = 50 --to preven chopping whole forests at once
-local leave_search_distance = 3 --how far from each log to look for leaves
+local leave_search_distance = 4 --how far from each log to look for leaves
 local pivot_texture = "invisible.png" -- used for the pivoting object
 
 -- for the rotation of param2 nodes

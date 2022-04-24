@@ -2,6 +2,16 @@ minetest.register_craftitem("cicrev:stick", {
 	description = "Stick",
 	inventory_image = "cicrev_stick.png",
 	groups = {stick = 1},
+	on_place = function(itemstack, placer, pointed_thing)
+		if minetest.get_node(pointed_thing.under).name == "cicrev:campfire_lit" then
+			itemstack:take_item()
+			local leftover = placer:get_inventory():add_item("main", "cicrev:torch")
+			if not leftover:is_empty() then
+				minetest.add_item(placer:get_pos(), "cicrev:torch")
+			end
+			return itemstack
+		end
+	end,
 })
 minetest.register_craftitem("cicrev:flint", {
 	description = "Flint stone",

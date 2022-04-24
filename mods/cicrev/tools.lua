@@ -66,10 +66,24 @@ minetest.register_tool("cicrev:mallet_wood", {
 	description = "Wooden Mallet",
 	inventory_image = "cicrev_mallet_wood.png",
 	tool_capabilities = {
-		full_punch_interval = 2,
+		full_punch_interval = 5, -- no effect on dig swing speed
 		groupcaps={
 			cracky = {times = {[1] = 10.00}, uses = 20, maxlevel = 0},
 		},
 	},
 	groups = {pickaxe = 1},
+})
+
+minetest.register_tool("cicrev:fire_stones", {
+	description = "Fire Stones",
+	inventory_image = "cicrev_fire_stones.png",
+	on_place = function(itemstack, placer, pointed_thing)
+		if not pointed_thing then return end
+		local pos = pointed_thing.under
+		if minetest.get_node(pos).name == "cicrev:campfire" then
+			minetest.set_node(pos, {name = "cicrev:campfire_lit"})
+			itemstack:add_wear(65535 / 20)
+			return itemstack
+		end
+	end,
 })

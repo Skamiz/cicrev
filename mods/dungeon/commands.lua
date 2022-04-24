@@ -21,7 +21,7 @@ minetest.register_chatcommand("place_dungeon", {
 
 minetest.register_chatcommand("dun", {
 	params = "",
-	description = "Generate decorations in current mapchunk.",
+	description = "Generate dungeon.",
 	privs = {server=true},
 	func = function(name, param)
 		local params = param:split(" ")

@@ -1,6 +1,8 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+-- TODO: add thatch as cheap building material
+
 --[[
 cicrev:tall_grass_1
 cicrev:tall_grass_2
@@ -54,7 +56,7 @@ minetest.register_node("cicrev:tall_grass_1", {
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
 	tiles = {"cicrev_tall_grass_1.png"},
-	groups = {hand = 1, attached_node = 1},
+	groups = {hand = 1, attached_node = 1, grass = 1},
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "degrotate",
@@ -69,7 +71,7 @@ minetest.register_node("cicrev:tall_grass_2", {
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
 	tiles = {"cicrev_tall_grass_2.png"},
-	groups = {hand = 1, attached_node = 1},
+	groups = {hand = 1, attached_node = 1, grass = 1},
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "degrotate",
@@ -84,7 +86,7 @@ minetest.register_node("cicrev:tall_grass_3", {
 	drawtype = "plantlike",
 	-- visual_scale = 4.0,
 	tiles = {"cicrev_tall_grass_3.png"},
-	groups = {hand = 1, attached_node = 1},
+	groups = {hand = 1, attached_node = 1, grass = 1},
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "degrotate",
@@ -100,7 +102,7 @@ minetest.register_node("cicrev:sawgrass", {
 	drawtype = "plantlike",
 	visual_scale = 2.0,
 	tiles = {"cicrev_sawgrass.png"},
-	groups = {hand = 1, attached_node = 1},
+	groups = {hand = 1, attached_node = 1, grass = 1},
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "meshoptions",
@@ -228,6 +230,25 @@ minetest.register_node("cicrev:dry_shrub", {
 	},},
 	selection_box = {type = "fixed",
 		fixed = {-5/16, -0.5, -5/16, 5/16, -3/16, 5/16}},
+})
+
+minetest.register_node("cicrev:desert_rose", {
+	description = "Desert Rose",
+	drawtype = "mesh",
+	mesh = "desert_rose.obj",
+	tiles = {"cicrev_desert_rose.png"},
+	use_texture_alpha = "clip",
+
+	-- groups = {test = 4},
+	paramtype = "light",
+	paramtype2 = "facedir",
+	collision_box = {type = "fixed",
+		fixed = {-6/16, -0.5, -5/16, 6/16, 1/16, 5/16},},
+	selection_box = {type = "fixed",
+		fixed = {-6/16, -0.5, -5/16, 6/16, 1/16, 5/16},},
+	on_place = function(itemstack, placer, pointed_thing)
+		return minetest.item_place(itemstack, placer, pointed_thing, math.random(0, 3))
+	end,
 })
 
 -- =====
@@ -437,6 +458,7 @@ minetest.register_node("cicrev:bituminous_coal", {
 minetest.register_node("cicrev:water_source", {
 	description = "Water",
 	drawtype = "liquid",
+	drowning = 1,
 	-- tiles = {"cicrev_water.png^[opacity:150"},
 	tiles = {{
 		name = "cicrev_water_still.png^[opacity:150",
@@ -463,6 +485,7 @@ minetest.register_node("cicrev:water_source", {
 minetest.register_node("cicrev:water_flowing", {
 	description = "Flowing water",
 	drawtype = "flowingliquid",
+	drowning = 1,
 	-- tiles = {"cicrev_water.png^[opacity:150"},
 	-- special_tiles = {"cicrev_water.png", "cicrev_water.png"},
 	special_tiles = {{
@@ -502,6 +525,19 @@ minetest.register_node("cicrev:water_flowing", {
 -- MISC
 -- ====
 
+minetest.register_node("cicrev:ash", {
+	description = "Ash",
+	drawtype = "nodebox",
+	tiles = {"cicrev_ash.png"},
+	groups = {hand = 1},
+	-- walkable = true,
+	buildable_to = true,
+	paramtype = "light",
+	-- paramtype2 = "facedir",
+	node_box = {type = "fixed",
+		fixed = {-8/16,- 0.5, -8/16, 8/16, -6/16, 8/16}},
+})
+
 minetest.register_node("cicrev:coal_arrow", {
 	description = "_coal_arrow",
 	drawtype = "nodebox",
@@ -533,9 +569,6 @@ minetest.register_node("cicrev:crate", {
             "list[current_player;main;0,5.25;8,4;]"..
             "container_end[]"..
 			"listring[]")
-	end,
-	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.chat_send_all(stack:to_string())
 	end,
 })
 
@@ -579,6 +612,7 @@ minetest.register_node("cicrev:torch", {
 	walkable = false,
 	paramtype = "light",
 	light_source = 8,
+	stack_max = 16,
 	on_construct = function(pos)
 		get_and_set_timer(pos, 480) -- 8 minutes
 	end,
@@ -614,6 +648,12 @@ minetest.register_node("cicrev:lantern", {
 	end,
 })
 
+minetest.register_node("cicrev:thatch", {
+	description = "Thatch",
+	tiles = {"cicrev_thatch.png"},
+	groups = {hand = 2},
+	walkable = false,
+})
 minetest.register_node("cicrev:fabric", {
 	description = "Fabric",
 	tiles = {{name = "cicrev_fabric_4x4.png", align_style = "world", scale = 4}},
@@ -651,7 +691,64 @@ minetest.register_node("cicrev:bricks", {
 })
 make_chiseable("cicrev:bricks")
 
+minetest.register_node("cicrev:painting", {
+	description = "Painting of a dude",
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	tiles = {"dude.png"},
+	groups = {},
+	visual_scale = 3,
+	node_box = {
+        type = "fixed",
+        fixed = {-8/48, -8/48, 7/48, 8/48, 24/48, 8/48}
+    },
+	collision_box = {
+        type = "fixed",
+        fixed = {-8/16, -8/16, 7/16, 8/16, 24/16, 8/16}
+    },
+	selection_box = {
+        type = "fixed",
+        fixed = {-8/16, -8/16, 7/16, 8/16, 24/16, 8/16}
+    },
+})
 
+minetest.register_node("cicrev:campfire", {
+	description = "Campfire",
+	drawtype = "mesh",
+	mesh = "campfire.obj",
+	tiles = {"cicrev_campfire.png"},
+	use_texture_alpha = "opaque",
+	groups = {hand = 2},
+	paramtype = "light",
+	drop = "",
+	selection_box = {type = "fixed",
+		fixed = {-7/16, -0.5, -7/16, 7/16, 0/16, 7/16}},
+	collision_box = {type = "fixed",
+		fixed = {-7/16, -0.5, -7/16, 7/16, 0/16, 7/16}},
+})
+minetest.register_node("cicrev:campfire_lit", {
+	description = "Lit Campfire",
+	drawtype = "mesh",
+	mesh = "campfire_lit.obj",
+	tiles = {"cicrev_campfire.png", "cicrev_campfire_fire.png"},
+	use_texture_alpha = "clip",
+	groups = {hand = 2},
+	drop = "",
+	paramtype = "light",
+	light_source = 10,
+	selection_box = {type = "fixed",
+		fixed = {-7/16, -0.5, -7/16, 7/16, 0/16, 7/16}},
+	collision_box = {type = "fixed",
+		fixed = {-7/16, -0.5, -7/16, 7/16, 0/16, 7/16}},
+	-- TODO: after burning down only ashes remain
+	on_construct = function(pos)
+		get_and_set_timer(pos, 600) -- 10 minutes
+	end,
+	on_timer = function(pos, elapsed)
+		minetest.set_node(pos, {name = "cicrev:ash"})
+	end,
+})
 
 
 local stones = {"andesite", "basalt", "chalk", "chert", "claystone",

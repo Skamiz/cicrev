@@ -24,6 +24,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		drawtype = "plantlike",
 		paramtype = "light",
 		tiles = {"cicrev_sapling_" .. name .. ".png"},
+		inventory_image = "cicrev_sapling_" .. name .. ".png",
 		groups = {hand = 1, sapling = 1},
 		walkable = false,
 		drop = "",
@@ -35,8 +36,8 @@ function cicrev.register_tree(name, description, leaf_distance)
 	        },
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			local t = minetest.get_node_timer(pos)
-			-- t:start(math.random(60 * 20, 60 * 60))
-			t:start(math.random(1, 5))
+			t:start(math.random(60 * 20, 60 * 60))
+			-- t:start(math.random(1, 5))
 		end,
 		on_timer = function(pos, elapsed)
 			minetest.remove_node(pos)
@@ -118,8 +119,9 @@ function cicrev.register_tree(name, description, leaf_distance)
 	make_chiseable("cicrev:planks_" .. name)
 
 	minetest.register_craftitem("cicrev:plank_" .. name, {
-		description = description .. "Plank",
+		description = description .. " Plank",
 		inventory_image = "cicrev_plank_" .. name .. ".png",
+		groups = {plank = 1},
 	})
 
 	-- Recipes

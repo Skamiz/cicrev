@@ -1,6 +1,28 @@
 =====
 TODO:
 =====
+
+energy based smelting
+	use kelvin? - temerature
+	and Joules - energy
+	watt? - energy trasfer speed
+	default temperature 15 C?
+	fuel
+		- amount of energy which can be released by burning
+		- amount of energy it releases per second
+	furnaces
+		- have a rate at which they loose acumulated temperature energy, limmiting their max temperature
+	smeltables/cookables
+		- energy capacity - energy needed to increase in temperature
+		- can't reach higher temperature then the furnace
+	recipes
+		-triger when certain temperature reached
+
+	storage node in which items specifically don't/very slowly loose their temperature
+
+
+add it to official lore that time moves only when an area is observed i.e. the payer is near
+
 material that cannot be destroyed/moved, but is necessary to be present for whatever
 
 

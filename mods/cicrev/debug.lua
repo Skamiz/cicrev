@@ -44,10 +44,15 @@ minetest.register_chatcommand("debug", {
 	description = "Just another way to execute debug code.",
 	privs = {server=true},
 	func = function(name, param)
-		param = param:split(" ")
+		local player = minetest.get_player_by_name(name)
+		-- param = param:split(" ")
 		-- for k, v in pairs(param) do
 		-- 	minetest.chat_send_all(v)
 		-- end
+		-- player:hud_set_hotbar_itemcount(param)
+		-- player:hud_set_hotbar_image("cicrev_hotbar.png")
+		-- player:hud_set_hotbar_selected_image("cicrev_glass.png")
+		player:set_hp(param, "debug command")
 	end,
 })
 
@@ -132,7 +137,7 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 -- })
 
 minetest.register_lbm({
-	name = "cicrev:debug",
+	name = "cicrev:debug_lbm",
 	nodenames = {"cicrev:test_node_3"},
 	run_at_every_load = true,
     action = function(pos, node)
@@ -270,22 +275,7 @@ minetest.register_node("cicrev:mesh_node", {
 	-- groups = {test = 4},
 	paramtype = "light",
 })
-minetest.register_node("cicrev:desert_rose", {
-	description = "Desert Rose",
-	drawtype = "mesh",
-	mesh = "desert_rose.obj",
-	tiles = {"cicrev_desert_rose.png"},
-	-- groups = {test = 4},
-	paramtype = "light",
-	paramtype2 = "facedir",
-	collision_box = {type = "fixed",
-		fixed = {-6/16, -0.5, -5/16, 6/16, 1/16, 5/16},},
-	selection_box = {type = "fixed",
-		fixed = {-6/16, -0.5, -5/16, 6/16, 1/16, 5/16},},
-	on_place = function(itemstack, placer, pointed_thing)
-		return minetest.item_place(itemstack, placer, pointed_thing, math.random(0, 3))
-	end,
-})
+
 
 minetest.register_node("cicrev:grass_sand", {
 	description = "Grass-Sand",
@@ -346,26 +336,4 @@ minetest.register_node("cicrev:variant_textures", {
 		{name = "cicrev_var_F.png", align_style = "world", scale = 2},
 	},
 	paramtype2 = "facedir",
-})
-
-minetest.register_node("cicrev:dude_painting", {
-	description = "Painting of a dude",
-	drawtype = "nodebox",
-	paramtype = "light",
-	paramtype2 = "facedir",
-	tiles = {"dude.png"},
-	groups = {},
-	visual_scale = 3,
-	node_box = {
-        type = "fixed",
-        fixed = {-8/48, -8/48, 7/48, 8/48, 24/48, 8/48}
-    },
-	collision_box = {
-        type = "fixed",
-        fixed = {-8/16, -8/16, 7/16, 8/16, 24/16, 8/16}
-    },
-	selection_box = {
-        type = "fixed",
-        fixed = {-8/16, -8/16, 7/16, 8/16, 24/16, 8/16}
-    },
 })
