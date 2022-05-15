@@ -57,7 +57,7 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 
 				local nv_3d = nvals_3d[(z - minp.z) * 80 * 80 + (y - minp.y) * 80 + (x - minp.x) + 1]
                 local nv_2d = nvals_2d[(z-minp.z) * 80 + (x-minp.x) + 1]
-				-- TODO: fiure out how to use :index() here
+				-- TODO: figure out how to use :index() here
                 -- local nv_2d = nvals_2d[flat_area:index(x, emin.y, z)]
 
 				-- local nv_3d = nvals_3d[chunk_area:index(x - minp.x + 1, y - minp.y + 1, z - minp.z + 1)]

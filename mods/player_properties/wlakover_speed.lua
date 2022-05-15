@@ -44,7 +44,7 @@ minetest.register_globalstep(function(dtime)
 				players[name] = walkover_speed
 			end
 		-- maintian last speed while in air
-		elseif node.name ~= "air" then
+		elseif minetest.registered_nodes[node.name].walkable and players[name] then
 			player_effects.remove_effect(player, "speed", "walkover_speed")
 			players[name] = nil
 		end

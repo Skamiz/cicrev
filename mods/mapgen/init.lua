@@ -60,7 +60,7 @@ minetest.register_chatcommand("deletechunk", {
 	privs = {server=true},
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
-		local pos = player:get_pos()
+		local pos = player:get_pos():round()
 		local minp = {x = 80 * math.floor((pos.x + 32) / 80) - 32,
 					y = 80 * math.floor((pos.y + 32) / 80) - 32,
 					z = 80 * math.floor((pos.z + 32) / 80) - 32}

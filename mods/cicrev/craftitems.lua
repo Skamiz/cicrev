@@ -71,11 +71,48 @@ minetest.register_craftitem("cicrev:coal", {
 })
 
 
-
-local pos1, pos2, line
-
-local function place_line(line, to_place)
-	for _, v in ipairs(line) do
-		minetest.set_node(v, {name = to_place})
+minetest.register_craftitem("cicrev:time_wand", {
+	description = "Wand of time",
+	inventory_image = "cicrev_time_wand.png",
+	stack_max = 1,
+	on_place = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local timer = minetest.get_node_timer(pos)
+		timer:set(1, 0)
+	end,
+	on_use = function(itemstack, user, pointed_thing)
+		minetest.chat_send_all("Setting time to morining.")
+		minetest.set_timeofday(0.25)
+	end,
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		minetest.chat_send_all("Setting time to midnight.")
+		minetest.set_timeofday(0)
 	end
-end
+})
+
+minetest.register_craftitem("cicrev:wrench", {
+	description = "Wrench",
+	inventory_image = "cicrev_wrench.png",
+	stack_max = 1,
+	on_place = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+		if not placer:get_player_control().sneak then
+			node.param2 = node.param2 + 4
+		else
+			node.param2 = node.param2 - 4
+		end
+		minetest.swap_node(pos, node)
+	end,
+	on_use = function(itemstack, user, pointed_thing)
+		if not pointed_thing.under then return end
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+		if not user:get_player_control().sneak then
+			node.param2 = node.param2 + 1
+		else
+			node.param2 = node.param2 - 1
+		end
+		minetest.swap_node(pos, node)
+	end,
+})

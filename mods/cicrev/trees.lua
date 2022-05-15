@@ -126,21 +126,29 @@ function cicrev.register_tree(name, description, leaf_distance)
 
 	-- Recipes
 	-- Bark
-	minetest.register_craft({
-	    output = "cicrev:bark_" .. name .. " 3",
-	    recipe = {
-	            {"cicrev:log_" .. name, "cicrev:log_" .. name},
-	            {"cicrev:log_" .. name, "cicrev:log_" .. name},
-	        },
+	fast_craft.register_craft({
+		output = {"cicrev:bark_" .. name, 2},
+		additional_output = {
+			["cicrev:log_stripped_" .. name] = 1
+		},
+		input = {
+			["cicrev:log_" .. name] = 3,
+		},
 	})
 	-- Planks
-	minetest.register_craft({
-		output = "cicrev:planks_" .. name,
-		recipe = {
-				{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
-				{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
-			},
+	fast_craft.register_craft({
+		output = {"cicrev:planks_" .. name},
+		input = {
+			["cicrev:plank_" .. name] = 4,
+		},
 	})
+	-- minetest.register_craft({
+	-- 	output = "cicrev:planks_" .. name,
+	-- 	recipe = {
+	-- 			{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
+	-- 			{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
+	-- 		},
+	-- })
 
 	if minetest.get_modpath("splitting") then
 		splitting.register_recipe({

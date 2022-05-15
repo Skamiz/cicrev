@@ -28,6 +28,26 @@ function cicrev.get_touching_nodes_by_type(pos, node_name)
 	return positions
 end
 
+-- cuts up a one slot hotbar immage and reasembles it with the requested amount of slots
+-- assumes that original hotbar image is 30 * 30 pixels
+function cicrev.get_hotbar_image(base, length)
+	length = math.min(32, math.max(1, length))
+
+	local left_edge = "[combine\\:1x30\\:0,0=" .. base
+	local middle = "[combine\\:28x30\\:-1,0=" .. base
+	local right_edge = "[combine\\:1x30\\:-29,0=" .. base
+
+	local hotbar_image = "[combine:" .. 28 * length + 2 .. "x30"
+
+	for i = 0, length - 1 do
+		hotbar_image = hotbar_image .. ":" .. 1 + i * 28 .. ",0=" .. middle
+	end
+	hotbar_image = hotbar_image .. ":0,0=" .. left_edge
+	hotbar_image = hotbar_image .. ":" .. 28 * length + 1 .. ",0=" .. right_edge
+
+	return hotbar_image
+end
+
 function cicrev.random_from_table(t)
 	if #t < 1 then return {} end
 	local reverse_table = {}

@@ -45,10 +45,14 @@ minetest.register_on_mods_loaded(function()
 	end
 end)
 
+
+local hotbar_length = 10
+
 minetest.register_on_joinplayer(function(player, last_login)
 	player:set_properties({
 		zoom_fov = 15.0,
 	})
-	player:hud_set_hotbar_image("cicrev_hotbar.png")
+	player:hud_set_hotbar_itemcount(hotbar_length)
+	player:hud_set_hotbar_image(cicrev.get_hotbar_image("cicrev_hotbar.png", hotbar_length))
 	player:hud_set_hotbar_selected_image("cicrev_hotbar_selected.png")
 end)

@@ -1,3 +1,5 @@
+-- TODO: change the slot conf tab to use newest formspec version
+
 local slot_conf = {}
 
 local function save_locked(player)
@@ -28,7 +30,10 @@ local orig_get = sfinv.pages["sfinv:crafting"].get
 sfinv.override_page("sfinv:crafting", {
     get = function(self, player, context)
         local fs = orig_get(self, player, context)
-        return fs .. "image_button[7,4.2;1,1;store_to_nearby.png;store_to_nearby;]"
+		return fs .. "style_type[image_button;bgimg=slot_conf_button.png]"
+        .. "image_button[7,4.2;1,1;store_to_nearby.png;store_to_nearby;]"
+		.. "tooltip[store_to_nearby;Store to nearby]"
+		-- .. "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]" -- same as creative tabs
     end
 })
 
@@ -36,24 +41,31 @@ if minetest.get_modpath("sfinv") then
 	sfinv.register_page("auto_storage:config", {
 	    title = "Slot Conf",
 	    get = function(self, player, context)
-            local locked = slot_conf[player:get_player_name()]
-			local formspec = ""
-                .. "label[0,4;Here you can configure which slots can be auto-stored.]"
 
-            for i = 1, 8 do
-                local image = locked[i] and "locked.png" or "unlocked.png"
-                formspec = formspec
-                    .. "image_button[" .. i-1 .. ",0;1,1;" .. image .. ";slot_" .. i .. ";]"
-            end
+			local locked = slot_conf[player:get_player_name()]
+			local f = ""
+			.. "formspec_version[4]"
+			.. "size[10.25,10.25]"
+			.. "bgcolor[;neither;]"
+			.. "background[0,0;10.25,10.25;slot_conf_background.png]"
+		    -- .. "label[0,4;Here you can configure which slots can be auto-stored.]"
+			.. "listcolors[#777777;#929292;#00000000]"
+			.. "list[current_player;main;0.25,5.25;8,4;]"
+			.. "style_type[image_button;bgimg=slot_conf_button.png]"
 
-            for i = 9, 32 do
-                local image = locked[i] and "locked.png" or "unlocked.png"
-                formspec = formspec
-                    .. "image_button[" .. (i-1)%8 .. "," .. math.floor((i-1)/8) + 0.15 .. ";1,1;" .. image .. ";slot_" .. i .. ";]"
-            end
+			for i = 1, 32 do
+			    local image = locked[i] and "locked.png" or "unlocked.png"
+				local x = (i-1)%8
+				local x_pos = x + ((x + 1) * 0.25)
+				local y = math.floor((i-1)/8)
+				local y_pos = y + ((y + 1) * 0.25)
+			    f = f .. "image_button[" .. x_pos .. "," .. y_pos .. ";1,1;" .. image .. ";slot_" .. i .. ";]"
+				if locked[i] then
+					f = f .. "image[" .. x_pos .. "," .. y_pos + 5 .. ";1,1;locked_slot.png]"
+				end
+			end
 
-
-	        return sfinv.make_formspec(player, context, formspec, true)
+			return f .. sfinv.get_nav_fs(player, context, context.nav_titles, context.nav_idx)
 	    end
 	})
 end

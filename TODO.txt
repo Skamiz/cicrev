@@ -2,6 +2,8 @@
 TODO:
 =====
 
+The sun and moon are just two gigantic eyeballs. No explenation.
+
 energy based smelting
 	use kelvin? - temerature
 	and Joules - energy
@@ -143,6 +145,10 @@ Dungeon
 	keys and matching doors
 	fake walls
 	floor modifiers? - plantlife/water/fire/whatever
+
+	enemies
+		ball which rolls straight towards the player until it hits something, stops, turns towards the player, and rolls again
+		stationary turret
 =====
 DONE:
 =====

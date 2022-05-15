@@ -37,11 +37,8 @@ minetest.register_craftitem(modname .. ":dungeon_wand", {
 	end,
 	on_use = function(itemstack, user, pointed_thing)
 		local meta = itemstack:get_meta()
-		local pos = user:get_pos()
+		local pos = user:get_pos():round()
 
-		pos.x = pos.x + 0.5
-		pos.y = pos.y + 0.5
-		pos.z = pos.z + 0.5
 		pos.x = pos.x - pos.x%3
 		pos.y = pos.y - pos.y%3
 		pos.z = pos.z - pos.z%3
@@ -249,11 +246,14 @@ minetest.register_on_mods_loaded(function()
 end)
 
 minetest.register_lbm({
-        label = "run '_on_lbm' for nodes which register it",
-        name = "dungeon:_on_lbm",
-        nodenames = {"group:_on_lbm"},
-        run_at_every_load = true,
-        action = function(pos, node)
-			minetest.registered_nodes[node.name]._on_lbm(pos, node)
-		end,
-    })
+    label = "run '_on_lbm' for nodes which register it",
+    name = "dungeon:_on_lbm",
+    nodenames = {"group:_on_lbm"},
+    run_at_every_load = true,
+    action = function(pos, node)
+		minetest.registered_nodes[node.name]._on_lbm(pos, node)
+	end,
+})
+
+
+dofile(modpath .. "/mapgen.lua")

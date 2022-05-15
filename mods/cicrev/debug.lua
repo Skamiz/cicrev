@@ -49,10 +49,10 @@ minetest.register_chatcommand("debug", {
 		-- for k, v in pairs(param) do
 		-- 	minetest.chat_send_all(v)
 		-- end
-		-- player:hud_set_hotbar_itemcount(param)
-		-- player:hud_set_hotbar_image("cicrev_hotbar.png")
+		player:hud_set_hotbar_itemcount(param)
+		player:hud_set_hotbar_image(cicrev.get_hotbar_image("cicrev_hotbar.png", param))
 		-- player:hud_set_hotbar_selected_image("cicrev_glass.png")
-		player:set_hp(param, "debug command")
+		-- player:set_hp(param, "debug command")
 	end,
 })
 
@@ -142,52 +142,6 @@ minetest.register_lbm({
 	run_at_every_load = true,
     action = function(pos, node)
 		minetest.chat_send_all("Found testnode at: " .. minetest.pos_to_string(pos))
-	end,
-})
-
-minetest.register_craftitem("cicrev:time_wand", {
-	description = "Wand of time",
-	inventory_image = "cicrev_time_wand.png",
-	stack_max = 1,
-	on_place = function(itemstack, placer, pointed_thing)
-		local pos = pointed_thing.under
-		local timer = minetest.get_node_timer(pos)
-		timer:set(1, 0)
-	end,
-	on_use = function(itemstack, user, pointed_thing)
-		minetest.chat_send_all("Setting time to morining.")
-		minetest.set_timeofday(0.25)
-	end,
-	on_secondary_use = function(itemstack, user, pointed_thing)
-		minetest.chat_send_all("Setting time to midnight.")
-		minetest.set_timeofday(0)
-	end
-})
-
-minetest.register_craftitem("cicrev:wrench", {
-	description = "Wrench",
-	inventory_image = "cicrev_wrench.png",
-	stack_max = 1,
-	on_place = function(itemstack, placer, pointed_thing)
-		local pos = pointed_thing.under
-		local node = minetest.get_node(pos)
-		if not placer:get_player_control().sneak then
-			node.param2 = node.param2 + 4
-		else
-			node.param2 = node.param2 - 4
-		end
-		minetest.swap_node(pos, node)
-	end,
-	on_use = function(itemstack, user, pointed_thing)
-		if not pointed_thing.under then return end
-		local pos = pointed_thing.under
-		local node = minetest.get_node(pos)
-		if not user:get_player_control().sneak then
-			node.param2 = node.param2 + 1
-		else
-			node.param2 = node.param2 - 1
-		end
-		minetest.swap_node(pos, node)
 	end,
 })
 
@@ -301,30 +255,6 @@ minetest.register_node("cicrev:sand_patch", {
 	selection_box = {type = "regular"},
 })
 
-minetest.register_node("cicrev:connected_glass", {
-	description = "Connected Glass",
-	drawtype = "nodebox",
-	tiles = {"cicrev_glass.png"},
-	use_texture_alpha = "clip",
-	paramtype = "light",
-	groups = {hand = 2},
-	collision_box = {type = "fixed",
-		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},},
-	selection_box = {type = "regular"},
-	connects_to = {"cicrev:connected_glass"},
-	node_box = {
-		type = "connected",
-		-- fixed = {-6/16, -6/16, -6/16, 6/16, 6/16, 6/16},
-		disconnected_top = {-8/16, 6/16, -8/16, 8/16, 8/16, 8/16},
-        disconnected_bottom = {-8/16, -8/16, -8/16, 8/16, -6/16, 8/16},
-        disconnected_front = {-8/16, -8/16, -8/16, 8/16, 8/16, -6/16},
-		disconnected_back = {-8/16, -8/16, 6/16, 8/16, 8/16, 8/16},
-        disconnected_left = {-8/16, -8/16, -8/16, -6/16, 8/16, 8/16},
-        disconnected_right = {6/16, -8/16, -8/16, 8/16, 8/16, 8/16},
-		disconnected = {-6/16, -6/16, -6/16, 6/16, 6/16, 6/16},
-	},
-})
-
 minetest.register_node("cicrev:variant_textures", {
 	description = "test",
 	tiles = {
@@ -337,3 +267,42 @@ minetest.register_node("cicrev:variant_textures", {
 	},
 	paramtype2 = "facedir",
 })
+
+local orig_get = sfinv.pages["sfinv:crafting"].get
+sfinv.override_page("sfinv:crafting", {
+    get = function(self, player, context)
+        local fs = orig_get(self, player, context)
+        return fs .. "background[-0.1875,-0.2603;8.4,9.8378;cicrev_craft_background.png;false]"
+		.. "listcolors[#777777;#929292]"
+    end
+})
+
+
+if fast_craft then
+	fast_craft.register_craft({
+		output = {"cicrev:ash", 2},
+		additional_output = {
+			["cicrev:branch"] = 1
+		},
+		input = {
+			["cicrev:bark_stripped_oak"] = 1,
+			-- ["item_in_b"] = 2,
+			-- ["item_in_c"] = 1,
+		},
+		condition = function(player)
+			return (minetest.get_timeofday() < (1/24))
+		end,
+	})
+	fast_craft.register_craft({
+		output = {"cicrev:log_stripped_dark", 1},
+		additional_output = {
+			["cicrev:axe_head_flint"] = 1
+		},
+		input = {
+			["cicrev:log_dark"] = 1,
+			["cicrev:axe_head_flint"] = 1,
+		},
+	})
+
+
+end
