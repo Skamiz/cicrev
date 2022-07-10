@@ -1,45 +1,63 @@
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+
+minetest.register_biome({
+	name = "tundra",
+	node_top = "cicrev:soil_with_grass",
+	depth_top = 1,
+	heat_point = 50,
+	humidity_point = 50,
+})
+-- minetest.register_biome({
+-- 	name = "sand",
+-- 	node_top = "cicrev:sand_with_grass",
+-- 	heat_point = 50,
+-- 	humidity_point = 50,
+-- })
+
+-- local s = minetest.read_schematic("schematics/tree_oak.mts", "all")
 minetest.register_decoration({
 	deco_type = "schematic",
 	place_on = "cicrev:dirt_with_grass",
 	y_min = 0,
     y_max = 50,
 	fill_ratio = 0.001,
-	schematic = "schematics/tree_oak.mts",
+	schematic = modpath .. "/schematics/tree_oak.mts",
 	flags = "place_center_x, place_center_z",
 })
 
-minetest.register_decoration({
-	deco_type = "schematic",
-	place_on = "cicrev:dirt_with_grass",
-	y_min = 0,
-    y_max = 50,
-	fill_ratio = 0.001,
-	schematic = "schematics/tree_dark.mts",
-	flags = "place_center_x, place_center_z",
-	place_offset_y = 1,
-})
-
-minetest.register_decoration({
-	deco_type = "schematic",
-	place_on = "cicrev:dirt_with_grass",
-	y_min = 0,
-    y_max = 50,
-	fill_ratio = 0.001,
-	schematic = "schematics/tree_chaktekok.mts",
-	flags = "place_center_x, place_center_z",
-	place_offset_y = 1,
-})
-
-minetest.register_decoration({
-	deco_type = "schematic",
-	place_on = "cicrev:dirt_with_grass",
-	y_min = 0,
-    y_max = 50,
-	fill_ratio = 0.001,
-	schematic = "schematics/tree_chestnut.mts",
-	flags = "place_center_x, place_center_z",
-	place_offset_y = 1,
-})
+-- minetest.register_decoration({
+-- 	deco_type = "schematic",
+-- 	place_on = "cicrev:dirt_with_grass",
+-- 	y_min = 0,
+--     y_max = 50,
+-- 	fill_ratio = 0.001,
+-- 	schematic = "schematics/tree_dark.mts",
+-- 	flags = "place_center_x, place_center_z",
+-- 	place_offset_y = 1,
+-- })
+--
+-- minetest.register_decoration({
+-- 	deco_type = "schematic",
+-- 	place_on = "cicrev:dirt_with_grass",
+-- 	y_min = 0,
+--     y_max = 50,
+-- 	fill_ratio = 0.001,
+-- 	schematic = "schematics/tree_chaktekok.mts",
+-- 	flags = "place_center_x, place_center_z",
+-- 	place_offset_y = 1,
+-- })
+--
+-- minetest.register_decoration({
+-- 	deco_type = "schematic",
+-- 	place_on = "cicrev:dirt_with_grass",
+-- 	y_min = 0,
+--     y_max = 50,
+-- 	fill_ratio = 0.001,
+-- 	schematic = "schematics/tree_chestnut.mts",
+-- 	flags = "place_center_x, place_center_z",
+-- 	place_offset_y = 1,
+-- })
 
 
 minetest.register_decoration({

@@ -21,8 +21,8 @@ local FISEXPBAS = 0.6 -- Fissure expansion rate under surface at base
 local FISEXPTOP = 1.2 -- Fissure expansion rate under surface at top
 
 
-local c_stone = minetest.get_content_id("df_stones:andesite")
-local c_destone = minetest.get_content_id("df_stones:dacite")
+local c_stone = minetest.get_content_id("df_stones:diorite")
+local c_destone = minetest.get_content_id("df_stones:chalk")
 -- 3D noise for primary structure
 
 local np_structure = {

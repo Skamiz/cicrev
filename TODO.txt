@@ -1,6 +1,21 @@
 =====
 TODO:
 =====
+a wand which uses arx fatalis like casting to select spells, though the shape spell asocation is up to the user
+ spells in full are defined in the players spell book, but the player can decide which gesture casts which spels
+
+
+turnbased rouglike where the player moves by selecting one of the adjenced nodes
+  free movement while not in combat
+
+
+monster which causes darkness around itself
+  places airlike nodes which dont let light through themsleves
+
+phoenix tree
+	grows -> undergoes slow necrosis -> catches fire and burns down -> the tree core automaticaly plants itself as a sapling
+
+fireing kiln - has several slots, but only accepts stacks of 1 and results stay in same slot
 
 The sun and moon are just two gigantic eyeballs. No explenation.
 

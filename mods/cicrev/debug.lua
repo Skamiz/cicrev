@@ -8,8 +8,6 @@ local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
 local storage = minetest.get_mod_storage()
 
-
-
 local fs = {
 	"formspec_version[4]",
 	"size[10.75,11,<fixed_size>]",
@@ -59,19 +57,22 @@ minetest.register_chatcommand("debug", {
 minetest.register_entity("cicrev:test_mob", {
 	initial_properties = {
 		visual = "mesh",
-		mesh = "minetest_mob_test.b3d",
-		textures = {"minetest_mob_test.png"},
+		mesh = "gyro.b3d",
+		textures = {"debug.png"},
 		static_save = false,
-		-- visual_size = {x = 1, y = 1, z = 1},
+		visual_size = {x = 5, y = 5, z = 5},
 	},
 
     on_activate = function(self, staticdata)
-      self.object:set_animation({x=1, y=60}, 20, 0, true)
+		minetest.chat_send_all("activated")
+      -- self.object:set_animation({x=1, y=60}, 20, 0, true)
+	  self.object:set_bone_position("large", {x=1, y=1, z=0}, {x=1, y=1, z=0})
     end,
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 		minetest.chat_send_all("punched!")
-		self.object:set_animation({x=1, y=60}, 20, 0, false)
+		-- self.object:set_animation({x=1, y=60}, 20, 0, false)
 		-- self.object:remove()
+		self.object:set_bone_position("foo", {x=0, y=1, z=0}, {x=1, y=0, z=0})
 	end,
 })
 
@@ -98,7 +99,9 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
-		minetest.chat_send_all(_VERSION)
+		-- minetest.chat_send_all(_VERSION)
+		-- minetest.chat_send_all("time: " .. minetest.get_us_time())
+		minetest.add_entity(pointed_thing.above, "cicrev:test_mob", "")
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_effects.add_effect(user, {
@@ -278,31 +281,94 @@ sfinv.override_page("sfinv:crafting", {
 })
 
 
-if fast_craft then
-	fast_craft.register_craft({
-		output = {"cicrev:ash", 2},
-		additional_output = {
-			["cicrev:branch"] = 1
-		},
-		input = {
-			["cicrev:bark_stripped_oak"] = 1,
-			-- ["item_in_b"] = 2,
-			-- ["item_in_c"] = 1,
-		},
-		condition = function(player)
-			return (minetest.get_timeofday() < (1/24))
-		end,
-	})
-	fast_craft.register_craft({
-		output = {"cicrev:log_stripped_dark", 1},
-		additional_output = {
-			["cicrev:axe_head_flint"] = 1
-		},
-		input = {
-			["cicrev:log_dark"] = 1,
-			["cicrev:axe_head_flint"] = 1,
-		},
-	})
-
-
-end
+minetest.register_node("cicrev:brick_mold", {
+	description = "Brick Mold",
+	drawtype = "nodebox",
+	paramtype = "light",
+	tiles = {"cicrev_planks_chestnut.png"},
+	-- groups = {oddly_breakable_by_hand = 3},
+	node_box = {
+		type = "fixed",
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, -2/16, -7/16},
+			{-0.5, -0.5, 7/16, 0.5, -2/16, 8/16},
+			{-0.5, -0.5, -1/16, 0.5, -2/16, 1/16},
+			{-8/16, -8/16, -8/16, -7/16, -2/16, 8/16},
+			{-1/16, -8/16, -8/16, 1/16, -2/16, 8/16},
+			{7/16, -8/16, -8/16, 8/16, -2/16, 8/16},
+		}
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {{-8/16, -8/16, -8/16, 8/16, -2/16, 8/16}},
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {{-8/16, -8/16, -8/16, 8/16, -2/16, 8/16}},
+	},
+})
+minetest.register_node("cicrev:brick_mold_full", {
+	description = "Full Brick Mold",
+	drawtype = "nodebox",
+	paramtype = "light",
+	tiles = {"cicrev_frame_wet.png", "cicrev_frame_wet.png", "cicrev_planks_chestnut.png"},
+	-- groups = {oddly_breakable_by_hand = 3},
+	drop = "cicrev:brick_mold",
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		minetest.set_node(pos, {name = "cicrev:bricks_unfired"})
+	end,
+	node_box = {
+		type = "fixed",
+		fixed = {{-8/16, -8/16, -8/16, 8/16, -2/16, 8/16},}
+	},
+})
+minetest.register_node("cicrev:bricks_unfired", {
+	description = "Unfired Bricks",
+	drawtype = "nodebox",
+	paramtype = "light",
+	tiles = {"cicrev_bricks_wet.png"},
+	-- groups = {oddly_breakable_by_hand = 3},
+	drop = "cicrev:clay_lump",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-7/16, -8/16, -7/16, -1/16, -2/16, -1/16},
+			{1/16, -8/16, -7/16, 7/16, -2/16, -1/16},
+			{-7/16, -8/16, 1/16, -1/16, -2/16, 7/16},
+			{1/16, -8/16, 1/16, 7/16, -2/16, 7/16},
+		}
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {{-7/16, -7/16, -8/16, 7/16, -2/16, 7/16}},
+	},
+	on_construct = function(pos)
+		local t = minetest.get_node_timer(pos)
+		t:start(60*5)
+	end,
+	on_timer = function(pos, elapsed)
+		minetest.set_node(pos, {name = "cicrev:bricks_dry"})
+	end,
+})
+minetest.register_node("cicrev:bricks_dry", {
+	description = "Dry Bricks",
+	drawtype = "nodebox",
+	paramtype = "light",
+	tiles = {"cicrev_bricks_dry.png"},
+	-- groups = {oddly_breakable_by_hand = 2},
+	drop = "cicrev:brick 4",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-7/16, -8/16, -7/16, -1/16, -2/16, -1/16},
+			{1/16, -8/16, -7/16, 7/16, -2/16, -1/16},
+			{-7/16, -8/16, 1/16, -1/16, -2/16, 7/16},
+			{1/16, -8/16, 1/16, 7/16, -2/16, 7/16},
+		}
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {{-7/16, -7/16, -8/16, 7/16, -2/16, 7/16}},
+	},
+})

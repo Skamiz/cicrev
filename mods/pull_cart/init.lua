@@ -92,11 +92,11 @@ minetest.register_node(modname .. ":pull_cart", {
 minetest.register_entity(modname .. ":pull_cart", {
 	initial_properties = {
 		visual = "item",
+		wield_item = modname .. ":pull_cart",
 		visual_size = {x = 2/3, y = 2/3, z = 2/3},
 		physical = true,
 		collide_with_objects = true,
 		static_save = true,
-		wield_item = modname .. ":pull_cart",
 		stepheight = offroad_cart and 1.1 or 0.6,
 	},
 

@@ -6,7 +6,7 @@ local world_seed = minetest.get_mapgen_setting("seed")
 world_seed = world_seed % 5000 -- necesary, otherwise it breaks things
 
 --noise parameters
-np_3d = {
+local np_3d = {
     offset = 0,
     scale = 10,
     spread = {x = 10, y = 10, z = 10},
@@ -16,7 +16,7 @@ np_3d = {
     lacunarity = 1.0,
 }
 
-np_2d = {
+local np_2d = {
     offset = 0,
     scale = 10,
     spread = {x = 40, y = 40, z = 40},

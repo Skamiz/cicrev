@@ -128,9 +128,9 @@ minetest.register_node("splitting:chopping_block", {
 	end,
 })
 
-minetest.register_craft({
-    output = "splitting:chopping_block",
-    recipe = {
-        {'group:log'},
-    },
+fast_craft.register_craft({
+	output = {"splitting:chopping_block"},
+	input = {
+		["group:log"] = 1,
+	},
 })

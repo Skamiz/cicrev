@@ -1,115 +1,131 @@
-minetest.register_craft({
-    output = "cicrev:planks_dark 4",
-    recipe = {
-        {"cicrev:log_dark"},
-    },
-})
 
-minetest.register_craft({
-    output = "cicrev:stick 2",
-    recipe = {
-        {"group:planks"},
-    },
-})
+-- fast_craft.register_craft({
+-- 	output = {
+-- 		item = "item_out",
+-- 		count = n,
+-- 	},
+-- 	additional_output = {
+-- 		["ao_1"] = 1
+-- 	},
+-- 	input = {
+-- 		["item_in_a"] = 1,
+--
+-- 	},
+-- 	condition = function(player),
+-- })
 
-minetest.register_craft({
-    output = "cicrev:knife_flint",
-    recipe = {
-		{"cicrev:knife_head_flint"},
-		{"cicrev:stick"},
+-- tools
+fast_craft.register_craft({
+	output = {"cicrev:knife_flint"},
+	input = {
+		["cicrev:knife_head_flint"] = 1,
+		["cicrev:stick"] = 1,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:axe_flint"},
+	input = {
+		["cicrev:axe_head_flint"] = 1,
+		["cicrev:stick"] = 1,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:mallet_wood"},
+	input = {
+		["group:log"] = 1,
+		["cicrev:stick"] = 1,
 	},
 })
 
-minetest.register_craft({
-    output = "cicrev:axe_flint",
-    recipe = {
-		{"cicrev:axe_head_flint"},
-		{"cicrev:stick"},
-    },
+fast_craft.register_craft({
+	output = {"cicrev:crate"},
+	input = {
+		["group:plank"] = 8,
+	},
 })
 
-minetest.register_craft({
-	output = "cicrev:mallet_wood",
-	recipe = {
-		{"group:log"},
-		{"group:stick"},
-		{"group:stick"},
-	}
+fast_craft.register_craft({
+	output = {"cicrev:grass_rope"},
+	input = {
+		["cicrev:grass"] = 5,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:thatch"},
+	input = {
+		["cicrev:grass"] = 9,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:grass", 9},
+	input = {
+		["cicrev:thatch"] = 1,
+	},
 })
 
-minetest.register_craft({
-    output = "cicrev:crate",
-    recipe = {
-        {"group:plank", "group:plank", "group:plank"},
-        {"group:plank", "", 			 "group:plank"},
-        {"group:plank", "group:plank", "group:plank"},
-    },
+fast_craft.register_craft({
+	output = {"cicrev:ladder"},
+	input = {
+		["cicrev:stick"] = 3,
+		["cicrev:grass_rope"] = 2,
+	},
 })
 
-minetest.register_craft({
-    output = "cicrev:grass_rope",
-    recipe = {
-        {"", "", "cicrev:grass"},
-        {"", "cicrev:grass", "cicrev:grass"},
-        {"cicrev:grass", "cicrev:grass", ""},
-    },
-})
-minetest.register_craft({
-    output = "cicrev:thatch",
-    recipe = {
-        {"cicrev:grass", "cicrev:grass", "cicrev:grass"},
-        {"cicrev:grass", "cicrev:grass", "cicrev:grass"},
-        {"cicrev:grass", "cicrev:grass", "cicrev:grass"},
-    },
-})
-minetest.register_craft({
-    output = "cicrev:grass 9",
-    recipe = {
-        {"cicrev:thatch"},
-    },
+fast_craft.register_craft({
+	output = {"cicrev:flint"},
+	input = {
+		["cicrev:gravel"] = 1,
+	},
 })
 
-minetest.register_craft({
-    output = "cicrev:ladder",
-    recipe = {
-        {"cicrev:stick", "cicrev:grass_rope", "cicrev:stick"},
-        {"cicrev:stick", "cicrev:stick", "cicrev:stick"},
-        {"cicrev:stick", "cicrev:grass_rope", "cicrev:stick"},
-    },
+fast_craft.register_craft({
+	output = {"cicrev:fire_stones"},
+	input = {
+		["df_stones:chert_rock"] = 2,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:campfire"},
+	input = {
+		["cicrev:thatch"] = 1,
+		["group:plank"] = 4,
+		["cicrev:stick"] = 4,
+	},
 })
 
-minetest.register_craft({
-    output = "cicrev:flint",
-    recipe = {
-        {"cicrev:gravel"},
-    },
+fast_craft.register_craft({
+	output = {"cicrev:digging_stick"},
+	input = {
+		["cicrev:grass_rope"] = 1,
+		["cicrev:stick"] = 3,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:bricks"},
+	input = {
+		["cicrev:brick"] = 8,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:brick_mold"},
+	input = {
+		["group:plank"] = 6,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:clay_lump", 2},
+	input = {
+		["cicrev:clay"] = 1,
+	},
+	condition = function(player)
+		local p_pos = player:get_pos():round()
+	    p_pos.y = p_pos.y + 1
+
+		return minetest.find_node_near(p_pos, 3, {"group:water"}, true)
+	end
 })
 
-minetest.register_craft({
-    output = "cicrev:fire_stones",
-    recipe = {
-        {"", "df_stones:chert_rock"},
-        {"df_stones:chert_rock", ""},
-    },
-})
 
-minetest.register_craft({
-    output = "cicrev:campfire",
-    recipe = {
-        {"group:plank", "cicrev:stick", "group:plank"},
-        {"cicrev:stick", "cicrev:thatch", "cicrev:stick"},
-        {"group:plank", "cicrev:stick", "group:plank"},
-    },
-})
-
-minetest.register_craft({
-	output = "cicrev:digging_stick",
-	recipe = {
-		{"", "", "group:stick"},
-		{"cicrev:grass_rope", "group:stick", ""},
-		{"group:stick", "", ""},
-	}
-})
 
 -- knapping
 

@@ -4,6 +4,7 @@ local c_wall = minetest.get_content_id("dungeon:stone_brick")
 local c_block = minetest.get_content_id("dungeon:stone_block")
 local c_gound = minetest.get_content_id("dungeon:floor")
 
+if true then return end
 
 local function check_area(tiles, area, x, z, width, height)
 	for i in area:iter(x-1, 1, z-1, x + width, 1, z + height) do

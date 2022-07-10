@@ -17,6 +17,7 @@ for _, v in pairs(stones) do
     local lower = string.lower(v)
 	local name = mod_name .. ":" .. lower
 	local cobble_name = name .. "_cobblestone"
+	local brick_name = name .. "_bricks"
 	local rock_name = name .. "_rock"
 
 	local texture_name = mod_name .. "_" .. lower
@@ -32,6 +33,12 @@ for _, v in pairs(stones) do
     minetest.register_node(cobble_name, {
         description = v .. " Cobblestone",
         tiles = {texture_name .. ".png^df_stones_cobble.png"},
+        groups = {cracky = 1},
+    })
+
+    minetest.register_node(brick_name, {
+        description = v .. " Bricks",
+        tiles = {texture_name .. ".png^df_stones_brick.png"},
         groups = {cracky = 1},
     })
 
@@ -59,12 +66,11 @@ for _, v in pairs(stones) do
 	-- 	stack_max = 64,
 	-- })
 
-	minetest.register_craft({
-	    output = cobble_name,
-	    recipe = {
-	        {rock_name, rock_name},
-	        {rock_name, rock_name},
-	    },
+	fast_craft.register_craft({
+		output = {cobble_name},
+		input = {
+			[rock_name] = 4,
+		},
 	})
 
 

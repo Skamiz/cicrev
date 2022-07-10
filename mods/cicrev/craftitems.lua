@@ -33,6 +33,22 @@ minetest.register_craftitem("cicrev:grass_rope", {
 	description = "Grass Rope",
 	inventory_image = "cicrev_grass_rope.png",
 })
+minetest.register_craftitem("cicrev:brick", {
+	description = "Brick",
+	inventory_image = "cicrev_brick.png",
+})
+minetest.register_craftitem("cicrev:clay_lump", {
+	description = "Wet Lump of Clay",
+	inventory_image = "cicrev_clay_lump.png",
+	on_place = function(itemstack, placer, pointed_thing)
+		if minetest.get_node(pointed_thing.under).name ~= "cicrev:brick_mold" or placer:get_player_control().sneak then
+			return
+		end
+		minetest.set_node(pointed_thing.under, {name = "cicrev:brick_mold_full"})
+		itemstack:take_item()
+		return itemstack
+	end,
+})
 
 minetest.register_craftitem("cicrev:rune_speed", {
 	description = "Speed",

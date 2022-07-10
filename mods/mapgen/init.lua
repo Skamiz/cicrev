@@ -24,6 +24,7 @@ dofile(mod_path.."/util.lua")
 -- dofile(mod_path.."/forest.lua")
 -- dofile(mod_path.."/basal.lua")
 -- dofile(mod_path.."/rings.lua")
+dofile(mod_path.."/mc.lua")
 
 -- dofile(mod_path.."/template.lua")
 -- dofile(mod_path.."/noise_research.lua")

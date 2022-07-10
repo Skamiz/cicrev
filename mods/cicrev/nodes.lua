@@ -363,29 +363,31 @@ minetest.register_node("cicrev:soil_with_grass", {
 	drop = "cicrev:soil",
 })
 
-minetest.register_node("cicrev:peat_with_moss", {
+minetest.register_alias("cicrev:peat_with_moss", "cicrev:peat_with_grass")
+minetest.register_node("cicrev:peat_with_grass", {
 	description = "Grass",
-	tiles = {"cicrev_peat_with_moss_top.png", "cicrev_peat.png"},
+	tiles = {"cicrev_grass_peat_top.png", "cicrev_peat.png", "cicrev_peat.png^cicrev_grass_peat_side.png"},
 	groups = {hand = 1},
+	drop = "cicrev:peat",
 })
 
 minetest.register_node("cicrev:loam_with_grass", {
 	description = "Loam with Grass",
-	tiles = {"cicrev_grass_top.png", "cicrev_loam.png", "cicrev_loam.png^cicrev_grass_side.png"},
+	tiles = {"cicrev_grass_loam_top.png", "cicrev_loam.png", "cicrev_loam.png^cicrev_grass_loam_side.png"},
 	groups = {crumbly = 1, hand = 3, falling_node = 1},
 	drop = "cicrev:loam",
 })
 
 minetest.register_node("cicrev:clay_with_grass", {
 	description = "Clay with Grass",
-	tiles = {"cicrev_grass_top.png", "cicrev_clay.png", "cicrev_clay.png^cicrev_grass_side.png"},
+	tiles = {"cicrev_grass_clay_top.png", "cicrev_clay.png", "cicrev_clay.png^cicrev_grass_clay_side.png"},
 	groups = {crumbly = 1, hand = 3, falling_node = 1},
 	drop = "cicrev:clay",
 })
 
 minetest.register_node("cicrev:silt_with_grass", {
 	description = "Silt with Grass",
-	tiles = {"cicrev_grass_top.png", "cicrev_silt.png", "cicrev_silt.png^cicrev_grass_side.png"},
+	tiles = {"cicrev_grass_silt_top.png", "cicrev_silt.png", "cicrev_silt.png^cicrev_grass_silt_side.png"},
 	groups = {crumbly = 1, hand = 3, falling_node = 1},
 	drop = "cicrev:silt",
 })
@@ -399,7 +401,7 @@ minetest.register_node("cicrev:sand_with_grass", {
 
 minetest.register_node("cicrev:gravel_with_grass", {
 	description = "Gravel with Grass",
-	tiles = {"cicrev_grass_top.png", "cicrev_gravel.png", "cicrev_gravel.png^cicrev_grass_side.png"},
+	tiles = {"cicrev_grass_gravel_top.png", "cicrev_gravel.png", "cicrev_gravel.png^cicrev_grass_gravel_side.png"},
 	groups = {crumbly = 1, hand = 3, falling_node = 1},
 	drop = "cicrev:gravel",
 })
