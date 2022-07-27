@@ -1,6 +1,24 @@
 =====
 TODO:
 =====
+concept idea for a game,
+	the player doesn't get the node they dig, they only get the resources
+	no crafting, at least for building blocks
+	when the player want's to place a bed, they select it from a catalog (creative style inventory ?)
+		placing the bed (the bed item doesn't get consumed) costs 3 textile resources and 3 wood resources
+		digging the bed yeilds back the invested resources (if that's desired)
+	a dimension of depth can be gained from having to unlock the placeable nodes
+
+the glowing air everywhere thing just isn't working out.. on the surface that is, underground it seems to work fine
+	ass the player moves down the move through a realy dark layer with dark stone
+	then suddenly there comes a paint where a lot of glowdust ore is spread around and the glow air starts
+	the very high density doesn't last very long( maybe some 20 - 50 nodes?, depends on other heights)
+		and as an aside, don't use depth as a mesure of game progress you idiots
+		if you need to slow the player down, find other mechanics
+	after that the glow dust ore is present in much humbler quantities (all the way down until there is a erason to stop)
+	and the glow air effect remains
+
+
 a wand which uses arx fatalis like casting to select spells, though the shape spell asocation is up to the user
  spells in full are defined in the players spell book, but the player can decide which gesture casts which spels
 

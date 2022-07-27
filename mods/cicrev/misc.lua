@@ -181,6 +181,7 @@ end
 local fence_prototype = {
 	description = "This fence is missing a description.",
 	paramtype = "light",
+	paramtype2 = "facedir",
 	sunlight_propagates = true,
 	drawtype = "nodebox",
 	node_box = {

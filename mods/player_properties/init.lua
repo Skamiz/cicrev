@@ -82,7 +82,7 @@ end
 dofile(modpath .. "/effect_types.lua")
 dofile(modpath .. "/hud.lua")
 dofile(modpath .. "/commands.lua")
-dofile(modpath .. "/wlakover_speed.lua")
+dofile(modpath .. "/walkover_speed.lua")
 
 local function update_effect_type(player, effect_name)
 	local effect_type = effect_types[effect_name]

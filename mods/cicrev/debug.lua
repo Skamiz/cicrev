@@ -99,9 +99,12 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
-		-- minetest.chat_send_all(_VERSION)
 		-- minetest.chat_send_all("time: " .. minetest.get_us_time())
-		minetest.add_entity(pointed_thing.above, "cicrev:test_mob", "")
+		local dir = placer:get_look_dir()
+		minetest.chat_send_all(math.atan2(-dir.x, dir.z))
+		-- minetest.chat_send_all(_VERSION)
+
+		-- minetest.add_entity(pointed_thing.above, "cicrev:test_mob", "")
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_effects.add_effect(user, {
