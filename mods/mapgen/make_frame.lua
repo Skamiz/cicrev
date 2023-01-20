@@ -1,5 +1,5 @@
 
-minetest.register_alias("borderblock", "cicrev:soil_with_grass")
+minetest.register_alias("borderblock", "dungeon:stone_block")
 
 local c_frame = minetest.get_content_id("borderblock")
 

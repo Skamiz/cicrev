@@ -1,5 +1,6 @@
 local c_stone = minetest.get_content_id("df_stones:phyllite")
 local c_water = minetest.get_content_id("cicrev:water_source")
+local c_snow_layer = minetest.get_content_id("cicrev:snow_layer")
 
 minetest.register_alias("mapgen_stone", "df_stones:phyllite")
 minetest.register_alias("mapgen_water_source", "cicrev:water_source")
@@ -94,12 +95,14 @@ local nobj_2d_pv = noise_handler.get_noise_object(np_2d_peaksvalleys, chunk_size
 local nobj_2d_e = noise_handler.get_noise_object(np_2d_erosion, chunk_size)
 
 local data = {}
+local param2_data = {}
 
 minetest.register_on_generated(function(minp, maxp, chunkseed)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local flat_area = VoxelArea:new({MinEdge=emin, MaxEdge={x = emax.x, y = emin.y, z = emax.z}})
 	vm:get_data(data)
+	vm:get_param2_data(param2_data)
 
     local nvals_2d_c = nobj_2d_c:get_2d_map_flat(minp)
     local nvals_2d_pv = nobj_2d_pv:get_2d_map_flat(minp)
@@ -148,7 +151,20 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 
 	biomegen.generate_all(data, area, vm, minp, maxp, chunkseed)
 
+	-- for some reason dust doesn't generate in the previous call
+	vm:get_data(data)
+	biomegen.dust_top_nodes(data, area, vm, minp, maxp)
+
+	-- dust is placed with param2 of 0, but needs to be 8
+	for k, v in pairs(data) do
+		if v == c_snow_layer then
+			param2_data[k] = 8
+		end
+	end
+
+
 	vm:set_data(data)
+	vm:set_param2_data(param2_data)
     -- minetest.generate_decorations(vm)
 	-- minetest.generate_ores(vm)
 	-- vm:update_liquids()
@@ -156,3 +172,28 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 	-- vm:calc_lighting()
 	vm:write_to_map()
 end)
+
+
+-- SKY
+minetest.register_on_joinplayer(
+    function(player)
+        player:set_sky({
+            type = "regular",
+            -- base_color = "#a45037",
+            clouds = true,
+            sky_color = {
+                day_sky = "#9ecef3",
+                day_horizon = "#b6e3fb",
+                -- dawn_sky = "#c8776c",
+                -- dawn_horizon = "#fbaf8e",
+                -- night_sky = "#232943",
+                -- night_horizon = "#323c51",
+            },
+            -- player:set_clouds({
+            --     density = 0.6,
+            --     color = "#722b30",
+            --     ambient = "#1c080a",
+            -- })
+        })
+    end
+)

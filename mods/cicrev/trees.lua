@@ -118,6 +118,21 @@ function cicrev.register_tree(name, description, leaf_distance)
 	})
 	make_chiseable("cicrev:planks_" .. name)
 
+	minetest.register_node("cicrev:panel_" .. name, {
+		description = description .. " Panel",
+		tiles = {{name = "cicrev_planks_" .. name .. ".png", align_style = "world"}},
+		drawtype = "nodebox",
+		paramtype = "light",
+		paramtype2 = "facedir",
+		groups = {choppy = 1, planks = 1, wood = 1},
+		node_box = {
+			type = "fixed",
+			fixed = {-8/16, -8/16, -8/16, 8/16, -4/16, 8/16}
+		},
+		node_placement_prediction = "",
+		on_place = minetest.rotate_node,
+	})
+
 	minetest.register_craftitem("cicrev:plank_" .. name, {
 		description = description .. " Plank",
 		inventory_image = "cicrev_plank_" .. name .. ".png",

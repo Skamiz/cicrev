@@ -1,9 +1,12 @@
-local c_dirt = minetest.get_content_id("cicrev:soil_with_grass")
+local c_dirt = minetest.get_content_id("cicrev:dirt_with_grass")
 local c_stone = minetest.get_content_id("df_stones:andesite")
 
 minetest.set_mapgen_setting("water_level", "0", true)
 local world_seed = minetest.get_mapgen_setting("seed")
 world_seed = world_seed % 5000 -- necesary, otherwise it breaks things
+
+local cavern_top = 10
+local cavern_bottom = -50
 
 --noise parameters
 local np_3d = {
@@ -14,12 +17,13 @@ local np_3d = {
     octaves = 1,
     persist = 1,
     lacunarity = 1.0,
+	flags = "absvalue",
 }
 
 local np_2d = {
     offset = 0,
     scale = 10,
-    spread = {x = 40, y = 40, z = 40},
+    spread = {x = 80, y = 80, z = 80},
     seed = 0,
     octaves = 1,
     persist = 1,
@@ -27,7 +31,6 @@ local np_2d = {
 	flags = "noeased",
 }
 
--- TODO: get sidelenght from chunksize setting
 local side_lenght = 80
 local chunk_size = {x = 80, y = 80, z = 80}
 local chunk_area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge=chunk_size}
@@ -50,41 +53,33 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 
     math.randomseed(chunkseed)
 
-	-- noise index, same as i3d
 	local ni = 0
 	for z = minp.z, maxp.z do
 		for y = minp.y, maxp.y do
 			for x = minp.x, maxp.x do
-				-- voxel area index, takes into acount overgenerated mapblocks
 				local vi = area:index(x, y, z)
 				-- index for flat noise maps, 3d and 2d respectively
 				local i3d = (z - minp.z) * 80 * 80 + (y - minp.y) * 80 + (x - minp.x) + 1
 				local i2d = (z - minp.z) * 80 + (x - minp.x) + 1
 				ni = ni + 1
 
-				-- TODO: figure out how to use :index() here
-                -- local nv_2d = nvals_2d[flat_area:index(x, emin.y, z)]
-
-				-- local nv_3d = nvals_3d[chunk_area:index(x - minp.x + 1, y - minp.y + 1, z - minp.z + 1)]
-				-- local nv_3d = nvals_3d[area:index(x, y, z)]
-				-- local nv_3d = nvals_3d[vi]
-
-				-- local nv_3d = nvals_3d[ni]
 				local nv_3d = nvals_3d[i3d]
-				local nv_2d = nvals_2d[i2d]
+                local nv_2d = nvals_2d[i2d]
 
-				-- if y == minp.y then
-				-- 	minetest.chat_send_all((z-minp.z) * 80 + (x-minp.x) + 1 .. " | " .. flat_area:index(x, emin.y, z))
+
+
+
+
+				-- if nv_2d > y then
+				-- 	data[vi] = c_dirt
 				-- end
 
-
-				if nv_2d > y then
-					data[vi] = c_dirt
-				end
-
-				if nv_3d > y then
+				if y <= 0 and nv_2d > 0 then
 					data[vi] = c_stone
 				end
+				-- if y <= 0 and nv_3d < 1 then
+				-- 	data[vi] = c_stone
+				-- end
 
 			end
 		end

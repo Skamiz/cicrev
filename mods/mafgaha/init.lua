@@ -3,7 +3,7 @@ local modpath = minetest.get_modpath(modname)
 
 mafgaha = {}
 
--- TODO: replace wand with another kind of spell focus
+-- TODO: casting a spell doesn't update it's description
 
 dofile(modpath .. "/runes.lua")
 dofile(modpath .. "/spells.lua")

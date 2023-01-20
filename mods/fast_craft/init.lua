@@ -245,7 +245,6 @@ local function get_recipe_list_fs(player, scroll_index)
 	local recipes = get_craftable_recipes(player)
 
 	local f = ""
-		.. "container[0.25,0.25]"
 
 	if #recipes > 16 then
 		f = f .. "scrollbaroptions[max=" .. (math.floor(#recipes/4) * 10) - 30 .. "]"
@@ -266,7 +265,6 @@ local function get_recipe_list_fs(player, scroll_index)
 	if #recipes > 16 then
 		f = f .. "scroll_container_end[]"
 	end
-	f = f .. "container_end[]"
 
 	return f
 end
@@ -278,10 +276,10 @@ local function item_image_fs(x_pos, y_pos, item, count)
 		local groups = item:sub(7, -1):split()
 		f = f .. "item_image[" .. x_pos .. "," .. y_pos .. ";1,1;" .. group_icons[groups[1]] .. "]"
 		f = f .. "label[" .. x_pos + 0.390625 .. "," .. y_pos + 0.5 .. ";G]"
-		f = f .. "tooltip[" .. x_pos .. "," .. y_pos .. ";1,1;" .. item .. ";#878787;#FFFFFF]"
+		f = f .. "tooltip[" .. x_pos .. "," .. y_pos .. ";1,1;" .. item .. "]"
 	else
 		f = f .. "item_image[" .. x_pos .. "," .. y_pos .. ";1,1;" .. item .. "]"
-		f = f .. "tooltip[" .. x_pos .. "," .. y_pos .. ";1,1;" .. minetest.registered_items[item].description .. ";#878787;#FFFFFF]"
+		f = f .. "tooltip[" .. x_pos .. "," .. y_pos .. ";1,1;" .. minetest.registered_items[item].description .. "]"
 	end
 	if count and count > 9 then
 		f = f .. "label[" .. x_pos + 46 * pixel .. "," .. y_pos + 54 * pixel .. ";" .. count .. "]"
@@ -295,19 +293,18 @@ end
 local function get_craft_formspec(player, scroll_index, recipe_index)
 	local f = ""
 	.. "formspec_version[4]"
-	.. "size[10.25,10.25]"
+	.. "size[10.75,11]"
 	-- .. "no_prepend[]"
 
 	.. "bgcolor[;neither;]"
-	.. "listcolors[#777777;#929292;#00000000]"
-	.. "background[0,0;10.25,10.25;fc_background.png]"
-	.. "style_type[button;bgimg=fc_button_8x8.png]"
-	.. "style_type[image_button;bgimg=fc_button_8x8.png]"
-	.. "style_type[item_image_button;bgimg=fc_button_16x16.png]"
+	.. "listcolors[#777777;#929292;#00000000;#878787;#FFFFFF]"
+	.. "background[0,0;10.75,11;fc_background.png]"
 
-	.. "list[current_player;main;0.25,5.25;8,4;]"
-	.. "image_button[9.5,4.25;0.5,0.5;fc_reload.png;reload;;false;false]"
-	.. "tooltip[reload;" .. S("Refresh Formspec") .. ";#878787;#FFFFFF]"
+	.. "container[0.5,0.5]"
+
+	.. "list[current_player;main;0,5.25;8,4;]"
+	.. "image_button[9.25,4;0.5,0.5;fc_reload.png;reload;]"
+	.. "tooltip[reload;" .. S("Refresh Formspec") .. "]"
 
 	f = f .. get_recipe_list_fs(player, scroll_index)
 
@@ -317,31 +314,33 @@ local function get_craft_formspec(player, scroll_index, recipe_index)
 		local recipe = registered_crafts[recipe_index]
 		local x_pos = 5.25
 		local y_pos = 0.25
-		f = f .. item_image_fs(5.25, 0.25, recipe.output[1], recipe.output[2])
+		f = f .. item_image_fs(5, 0, recipe.output[1], recipe.output[2])
 		local n = 0
 		for item, count in pairs(recipe.additional_output) do
 			n = n + 1
-			f = f .. item_image_fs(5.25 + n, 0.25, item, count)
+			f = f .. item_image_fs(5 + n, 0, item, count)
 		end
 		n = 0
 		for item, count in pairs(recipe.input) do
-			local x_pos = (n % 4) + 5.25
-			local y_pos = math.floor(n / 4) + 1.75
+			local x_pos = (n % 4) + 5
+			local y_pos = math.floor(n / 4) + 1.5
 			f = f .. item_image_fs(x_pos, y_pos, item, count)
 			n = n + 1
 		end
-		f = f .. "button[9.5,0.25;0.5,0.5;craft_" .. craft_sizes[1] .. "_" .. recipe_index .. ";" .. craft_sizes[1] .. "]"
-		f = f .. "tooltip[craft_" .. craft_sizes[1] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[1]) .. ";#878787;#FFFFFF]"
-		.. "button[9.5,1.;0.5,0.5;craft_" .. craft_sizes[2] .. "_" .. recipe_index .. ";" .. craft_sizes[2] .. "]"
-		f = f .. "tooltip[craft_" .. craft_sizes[2] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[2]) .. ";#878787;#FFFFFF]"
-		.. "button[9.5,1.75;0.5,0.5;craft_" .. craft_sizes[3] .. "_" .. recipe_index .. ";" .. craft_sizes[3] .. "]"
-		f = f .. "tooltip[craft_" .. craft_sizes[3] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[3]) .. ";#878787;#FFFFFF]"
-		.. "button[9.5,2.5;0.5,0.5;craft_" .. craft_sizes[4] .. "_" .. recipe_index .. ";" .. craft_sizes[4] .. "]"
-		f = f .. "tooltip[craft_" .. craft_sizes[4] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[4]) .. ";#878787;#FFFFFF]"
+		f = f .. "button[9.25,0;0.5,0.5;craft_" .. craft_sizes[1] .. "_" .. recipe_index .. ";" .. craft_sizes[1] .. "]"
+		f = f .. "tooltip[craft_" .. craft_sizes[1] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[1]) .. "]"
+		.. "button[9.25,0.75.;0.5,0.5;craft_" .. craft_sizes[2] .. "_" .. recipe_index .. ";" .. craft_sizes[2] .. "]"
+		f = f .. "tooltip[craft_" .. craft_sizes[2] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[2]) .. "]"
+		.. "button[9.25,1.5;0.5,0.5;craft_" .. craft_sizes[3] .. "_" .. recipe_index .. ";" .. craft_sizes[3] .. "]"
+		f = f .. "tooltip[craft_" .. craft_sizes[3] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[3]) .. "]"
+		.. "button[9.25,2.25;0.5,0.5;craft_" .. craft_sizes[4] .. "_" .. recipe_index .. ";" .. craft_sizes[4] .. "]"
+		f = f .. "tooltip[craft_" .. craft_sizes[4] .. "_" .. recipe_index .. ";" .. S("Craft @1", craft_sizes[4]) .. "]"
 		local max = can_craft(recipe, inv_to_table(player:get_inventory()))
-		f = f .. "button[9.5,3.25;0.5,0.5;craft_" .. max .. "_" .. recipe_index .. "max;" .. max .. "]"
-		f = f .. "tooltip[craft_" .. max .. "_" .. recipe_index .. "max;" .. S("Craft Maximum") .. ";#878787;#FFFFFF]"
+		f = f .. "button[9.25,3;0.5,0.5;craft_" .. max .. "_" .. recipe_index .. "max;" .. max .. "]"
+		f = f .. "tooltip[craft_" .. max .. "_" .. recipe_index .. "max;" .. S("Craft Maximum") .. "]"
 	end
+	f = f .. "container_end[]"
+
 
 	return f
 end

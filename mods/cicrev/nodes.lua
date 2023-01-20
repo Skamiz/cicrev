@@ -217,6 +217,7 @@ minetest.register_node("cicrev:dry_shrub", {
 	description = "Dry Shrub",
 	drawtype = "plantlike",
 	tiles = {"cicrev_dry_shrub.png"},
+	inventory_image = "cicrev_dry_shrub.png",
 	groups = {hand = 1, attached_node = 1},
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -416,6 +417,121 @@ minetest.register_node("cicrev:silt_with_fungus", {
 -- ===
 -- SOMETHING
 -- ===
+
+minetest.register_alias("cicrev:snow", "cicrev:snow_block")
+minetest.register_node("cicrev:snow_block", {
+	description = "Snow Block",
+	tiles = {"cicrev_snow.png"},
+	groups = {hand = 1},
+})
+minetest.register_node("cicrev:soil_with_snow", {
+	description = "Snowed Soil",
+	tiles = {"cicrev_snow.png", "cicrev_soil.png", "cicrev_soil.png^cicrev_snow_side.png"},
+	groups = {hand = 1},
+})
+minetest.register_node("cicrev:snow_layer", {
+	description = "Snow",
+	tiles = {"cicrev_snow.png"},
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "leveled",
+	node_placement_prediction = "",
+	node_box = {
+		type = "leveled",
+		fixed = {-8/16, -8/16, -8/16, 8/16, 8/16, 8/16},
+	},
+	groups = {hand = 1}, -- , falling_node = 1},
+	buildable_to = true,
+	on_place = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+		if node.name == "cicrev:snow_layer" and node.param2 < 64 then
+			node.param2 = node.param2 + 8
+			minetest.set_node(pos, node)
+			if not minetest.is_creative_enabled(placer:get_player_name()) then itemstack:take_item() end
+			return itemstack
+		else
+			return minetest.item_place(itemstack, placer, pointed_thing, 8)
+		end
+	end,
+	on_dig = function(pos, node, digger)
+		if minetest.node_dig(pos, node, digger) then
+			local extra = (node.param2 / 8) - 1
+			if extra > 0 then
+				minetest.handle_node_drops(pos, {"cicrev:snow_layer " .. extra}, digger)
+			end
+			return true
+		end
+	end,
+})
+minetest.register_node("cicrev:ice", {
+	description = "Ice Block",
+	drawtype = "glasslike",
+	paramtype = "light",
+	tiles = {"cicrev_ice.png^[opacity:200"},
+	use_texture_alpha = "blend",
+	groups = {slippery = 5},
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local pos_under = vector.copy(pos)
+		pos_under.y = pos_under.y - 1
+		local under = minetest.get_node(pos_under)
+		if under.name ~= "air" then
+			minetest.set_node(pos, {name = "cicrev:water_source"})
+		end
+	end,
+})
+
+cicrev.register_stalactite("cicrev:ice_spike", {
+	description = "Ice Spike",
+	tiles = {"cicrev_ice.png^[opacity:200"},
+	use_texture_alpha = "blend",
+	groups = {slippery = 5},
+})
+-- minetest.register_node("cicrev:ice_spike_1", {
+-- 	description = "Ice Spike",
+-- 	drawtype = "nodebox",
+-- 	sunlight_propagates = true,
+-- 	paramtype = "light",
+-- 	paramtype2 = "facedir",
+-- 	tiles = {"cicrev_ice.png^[opacity:200"},
+-- 	use_texture_alpha = "blend",
+-- 	groups = {slippery = 5},
+-- 	node_box = {
+-- 		type = "fixed",
+-- 		fixed = {-2/16, -8/16, -2/16, 2/16, 8/16, 2/16},
+-- 	},
+-- 	on_place = place_pillar,
+-- })
+-- minetest.register_node("cicrev:ice_spike_2", {
+-- 	description = "Ice Spike",
+-- 	drawtype = "nodebox",
+-- 	sunlight_propagates = true,
+-- 	paramtype = "light",
+-- 	paramtype2 = "facedir",
+-- 	tiles = {"cicrev_ice.png^[opacity:200"},
+-- 	use_texture_alpha = "blend",
+-- 	groups = {slippery = 5},
+-- 	node_box = {
+-- 		type = "fixed",
+-- 		fixed = {-4/16, -8/16, -4/16, 4/16, 8/16, 4/16},
+-- 	},
+-- 	on_place = place_pillar,
+-- })
+-- minetest.register_node("cicrev:ice_spike_3", {
+-- 	description = "Ice Spike",
+-- 	tiles = {"cicrev_ice.png^[opacity:200"},
+-- 	drawtype = "nodebox",
+-- 	paramtype = "light",
+-- 	paramtype2 = "facedir",
+-- 	sunlight_propagates = true,
+-- 	use_texture_alpha = "blend",
+-- 	groups = {slippery = 5},
+-- 	node_box = {
+-- 		type = "fixed",
+-- 		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
+-- 	},
+-- 	on_place = place_pillar,
+-- })
 
 minetest.register_node("cicrev:path", {
 	description = "Path",
@@ -685,7 +801,6 @@ minetest.register_node("cicrev:bricks", {
 	groups = {hand = 1},
 	paramtype2 = "color",
 	palette = "cicrev_bricks_pallete.png",
-	drop = "cicrev:fabric",
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
 		minetest.item_place(itemstack, placer, pointed_thing, math.random(0,255))

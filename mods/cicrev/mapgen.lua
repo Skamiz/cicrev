@@ -1,18 +1,45 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+-- minetest.register_biome({
+-- 	name = "tundra",
+-- 	node_top = "cicrev:soil_with_grass",
+-- 	depth_top = 1,
+-- 	heat_point = 50,
+-- 	humidity_point = 50,
+-- })
 minetest.register_biome({
-	name = "tundra",
-	node_top = "cicrev:soil_with_grass",
+	name = "winter",
+	node_dust = "cicrev:snow_layer",
+	node_top = "cicrev:soil_with_snow",
 	depth_top = 1,
+	node_filler = "cicrev:soil",
+    depth_filler = 2,
+	node_stone = "df_stones:dolomite",
+	node_water_top = "cicrev:ice",
 	heat_point = 50,
 	humidity_point = 50,
+	y_min = 0,
 })
+minetest.register_biome({
+	name = "underground",
+	-- node_dust = "cicrev:snow_layer",
+	-- node_top = "cicrev:soil_with_snow",
+	-- depth_top = 1,
+	node_filler = "cicrev:soil",
+    depth_filler = 2,
+	-- node_stone = "df_stones:dolomite",
+	-- node_water_top = "cicrev:ice",
+	-- heat_point = 50,
+	-- humidity_point = 50,
+	y_max = -1,
+})
+
 -- minetest.register_biome({
 -- 	name = "sand",
 -- 	node_top = "cicrev:sand_with_grass",
 -- 	heat_point = 50,
--- 	humidity_point = 50,
+-- 	humidity_point = 50,0
 -- })
 
 -- local s = minetest.read_schematic("schematics/tree_oak.mts", "all")
@@ -24,6 +51,18 @@ minetest.register_decoration({
 	fill_ratio = 0.001,
 	schematic = modpath .. "/schematics/tree_oak.mts",
 	flags = "place_center_x, place_center_z",
+})
+
+minetest.register_decoration({
+	deco_type = "schematic",
+	place_on = "cicrev:soil_with_snow",
+	y_min = 0,
+    y_max = 50,
+	fill_ratio = 0.01,
+	schematic = modpath .. "/schematics/tree_dark_snowy.mts",
+	rotation = "random",
+	flags = "place_center_x, place_center_z",
+	place_offset_y = 1,
 })
 
 -- minetest.register_decoration({

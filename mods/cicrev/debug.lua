@@ -8,6 +8,9 @@ local modpath = minetest.get_modpath(modname)
 local worldpath = minetest.get_worldpath()
 local storage = minetest.get_mod_storage()
 
+local switch = true
+
+
 local fs = {
 	"formspec_version[4]",
 	"size[10.75,11,<fixed_size>]",
@@ -99,10 +102,7 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
-		-- minetest.chat_send_all("time: " .. minetest.get_us_time())
-		local dir = placer:get_look_dir()
-		minetest.chat_send_all(math.atan2(-dir.x, dir.z))
-		-- minetest.chat_send_all(_VERSION)
+		switch = not switch
 
 		-- minetest.add_entity(pointed_thing.above, "cicrev:test_mob", "")
 	end,
@@ -144,10 +144,16 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 
 minetest.register_lbm({
 	name = "cicrev:debug_lbm",
-	nodenames = {"cicrev:test_node_3"},
+	nodenames = {"cicrev:test_node_3", "cicrev:test_node_4"},
 	run_at_every_load = true,
     action = function(pos, node)
-		minetest.chat_send_all("Found testnode at: " .. minetest.pos_to_string(pos))
+		if switch then
+			node.name = "cicrev:test_node_4"
+			minetest.set_node(pos, node)
+		else
+			node.name = "cicrev:test_node_3"
+			minetest.set_node(pos, node)
+		end
 	end,
 })
 
@@ -176,8 +182,6 @@ minetest.register_node("cicrev:test_node_1", {
 		-- minetest.chat_send_all("Time since last call: " .. minetest.get_gametime() - time)
 		return true
 	end,
-
-
 })
 minetest.register_node("cicrev:test_node_2", {
 	description = "test_node_2",
@@ -226,6 +230,18 @@ minetest.register_node("cicrev:test_node_4", {
 	description = "test_node_4",
 	tiles = {"test_node_4.png"},
 	groups = {test = 4},
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		local meta = minetest.get_meta(pos)
+		minetest.chat_send_all(meta:get_string("foo"))
+	end,
+	on_punch = function(pos, node, puncher, pointed_thing)
+		local meta = minetest.get_meta(pos)
+		minetest.chat_send_all(meta:get_string("foo"))
+	end,
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("foo", "bar")
+	end,
 })
 minetest.register_node("cicrev:mesh_node", {
 	description = "mesh node",
@@ -274,14 +290,14 @@ minetest.register_node("cicrev:variant_textures", {
 	paramtype2 = "facedir",
 })
 
-local orig_get = sfinv.pages["sfinv:crafting"].get
-sfinv.override_page("sfinv:crafting", {
-    get = function(self, player, context)
-        local fs = orig_get(self, player, context)
-        return fs .. "background[-0.1875,-0.2603;8.4,9.8378;cicrev_craft_background.png;false]"
-		.. "listcolors[#777777;#929292]"
-    end
-})
+-- local orig_get = sfinv.pages["sfinv:crafting"].get
+-- sfinv.override_page("sfinv:crafting", {
+--     get = function(self, player, context)
+--         local fs = orig_get(self, player, context)
+--         return fs .. "background[-0.1875,-0.2603;8.4,9.8378;cicrev_craft_background.png;false]"
+-- 		.. "listcolors[#777777;#929292]"
+--     end
+-- })
 
 
 minetest.register_node("cicrev:brick_mold", {
@@ -375,3 +391,32 @@ minetest.register_node("cicrev:bricks_dry", {
 		fixed = {{-7/16, -7/16, -8/16, 7/16, -2/16, 7/16}},
 	},
 })
+
+minetest.register_node("cicrev:tank", {
+	description = "Glass Tank",
+	drawtype = "glasslike_framed",
+	tiles = {"cicrev_glass.png", "cicrev_glass.png", "cicrev_bricks_dry.png", "cicrev_bricks_dry.png", "cicrev_bricks_dry.png", "cicrev_bricks_dry.png"},
+	-- overlay_tiles = {"", "cicrev_bricks_dry.png"},
+	special_tiles = {"cicrev_bricks_dry.png"},
+	use_texture_alpha = "blend",
+	paramtype = "light",
+	paramtype2 = "glasslikeliquidlevel",
+	sunlight_propagates = true,
+	groups = {hand = 2},
+})
+
+
+
+
+
+-- local a = vector.new(-4, 0, -4)
+-- local b = vector.new(-1, 0, -2)
+--
+-- -- direction form point a to point b ; red
+-- local dir = b - a
+--
+-- -- the same direction turned 90 degrees around the y axis ; cyan
+-- local right = vector.new(dir.z, dir.y, -dir.x)
+--
+-- -- right vector normailzed so it has a length of 1 ; orange
+-- right = right:normalize()

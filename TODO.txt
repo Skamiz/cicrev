@@ -1,6 +1,42 @@
 =====
 TODO:
 =====
+glass with dark edges as default
+
+one of the ways in which tools can improve is range!
+
+famable plants which grow sidways on blocks + (sidways 'farmland')
+
+is it possible to fix bad hud bar scaling by reading the player settings?
+
+-- 0123 4567 89ab cdef 777777
+
+instead of a caried torch. do a terraria style light pet
+
+torches are temporary, BUT there is a resource which can be farmed relatively easily which gives permanent light
+
+colorcode item category in descriptions; food, fuel, ore/metal, tool, buildingblock, etc...
+
+"thing is, turtles(robots) are supper lazy and stop working when nobody is close enough to watch them"
+
+think about normal play like building set pieces for rouglike game?
+
+an ore that only spawns in surface mountains
+
+its impossible to safely override ores since thier registration order matters but is not retrievable
+
+calling get_string with empty key returns table?
+
+make a time stop mod
+	command to enable, disable it
+	settings:
+		enabled, wheter it's enabled
+		time, at which day time time is frozen
+
+
+see how well inventory lists work in a scroll container
+	container takes scroll precednece, making it impossible to scroll the items
+
 concept idea for a game,
 	the player doesn't get the node they dig, they only get the resources
 	no crafting, at least for building blocks
@@ -10,7 +46,7 @@ concept idea for a game,
 	a dimension of depth can be gained from having to unlock the placeable nodes
 
 the glowing air everywhere thing just isn't working out.. on the surface that is, underground it seems to work fine
-	ass the player moves down the move through a realy dark layer with dark stone
+	as the player moves down the move through a realy dark layer with dark stone
 	then suddenly there comes a paint where a lot of glowdust ore is spread around and the glow air starts
 	the very high density doesn't last very long( maybe some 20 - 50 nodes?, depends on other heights)
 		and as an aside, don't use depth as a mesure of game progress you idiots
@@ -182,6 +218,11 @@ Dungeon
 	enemies
 		ball which rolls straight towards the player until it hits something, stops, turns towards the player, and rolls again
 		stationary turret
+
+Random stuff:
+	doodle god game?
+	'modular portals' game portals are interesting(the dialing)
+	carcassone game
 =====
 DONE:
 =====

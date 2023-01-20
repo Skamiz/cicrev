@@ -29,7 +29,7 @@ local orig_get = sfinv.pages["sfinv:crafting"].get
 sfinv.override_page("sfinv:crafting", {
     get = function(self, player, context)
         local fs = orig_get(self, player, context)
-        return fs .. "list[current_player;lantern;0,3;1,1]"
+        return fs .. "list[current_player;lantern;0.25,4;1,1]"
     end
 })
 

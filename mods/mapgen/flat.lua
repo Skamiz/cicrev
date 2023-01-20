@@ -1,5 +1,5 @@
 local c_dirt = minetest.get_content_id("cicrev:soil")
-local c_stone = minetest.get_content_id("cicrev:gravel")
+local c_stone = minetest.get_content_id("df_stones:phyllite")
 
 minetest.set_mapgen_setting("water_level", "0", true)
 
@@ -31,6 +31,9 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 
 				if y <= surface_level then
 					data[vi] = c_dirt
+				end
+				if y <= surface_level - 1 then
+					data[vi] = c_stone
 				end
 			end
 		end

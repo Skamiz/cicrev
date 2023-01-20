@@ -245,3 +245,42 @@ function cicrev.register_wall(name, def)
 
 	minetest.register_node(name, def)
 end
+
+
+local stalactite_prototype = {
+	description = "This stalactite is missing a descripttion.",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	sunlight_propagates = true,
+	groups = {},
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {-2/16, -8/16, -2/16, 2/16, 8/16, 2/16},
+	},
+	on_place = place_pillar,
+}
+local stala_box_2 = {-4/16, -8/16, -4/16, 4/16, 8/16, 4/16}
+local stala_box_3 = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16}
+
+function cicrev.register_stalactite(name, def1)
+	for k, v in pairs(stalactite_prototype) do
+		if def1[k] == nil then
+			def1[k] = v
+		end
+	end
+	def1.groups["stalactite"] = 1
+
+	local def2 = table.copy(def1)
+	local def3 = table.copy(def1)
+
+	def2.node_box.fixed = stala_box_2
+	def3.node_box.fixed = stala_box_3
+
+	def2.groups.stalactite = 2
+	def3.groups.stalactite = 3
+
+	minetest.register_node(name .. "_1", def1)
+	minetest.register_node(name .. "_2", def2)
+	minetest.register_node(name .. "_3", def3)
+end

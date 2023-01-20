@@ -1,9 +1,13 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+local rotations = dofile(modpath .. "/rotations.lua")
 -- dofile(modpath .. "/other_file.lua")
 
 --[[
+WARNING: some Minetest engine update broke this mod by making the entities completely black
+fix this by moving the new entities collisionbox to the point that was punched
+
 todo:
 rotate entity to reflect node rotation
 maybe figure out whats wrong with glow updating
@@ -31,7 +35,7 @@ minetest.register_entity(modname .. ":node_object", {
 		static_save = false,
 		glow = GLOW_STRENGTH,
 		shaded = false,
-		collisionbox = {-0.0, 0.0, -0.0, 0.0, 0.0, 0.0},
+		collisionbox = {-1.0, -1.0, -1.0, 1.0, 1.0, 1.0},
 	},
 	on_activate = function(self, staticdata, dtime_s)
 		self.time = 0
@@ -62,6 +66,14 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 		end
 
 		touched_nodes[minetest.hash_node_position(pointed_thing.under)] = true
+
+		do
+			local node_def = minetest.registered_nodes[node.name]
+			if node_def and node_def.paramtype2 == "facedir" then
+				local rot = rotations.facedir[node.param2]
+				node_obj:set_rotation(rot)
+			end
+		end
 	end
 end)
 

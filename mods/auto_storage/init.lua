@@ -31,7 +31,7 @@ sfinv.override_page("sfinv:crafting", {
     get = function(self, player, context)
         local fs = orig_get(self, player, context)
 		return fs .. "style_type[image_button;bgimg=slot_conf_button.png]"
-        .. "image_button[7,4.2;1,1;store_to_nearby.png;store_to_nearby;]"
+        .. "image_button[9,4;1,1;store_to_nearby.png;store_to_nearby;]"
 		.. "tooltip[store_to_nearby;Store to nearby]"
 		-- .. "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]" -- same as creative tabs
     end
@@ -80,19 +80,21 @@ local function store_to_nearby(player, range)
 
     local storage = minetest.find_nodes_in_area(p_pos:subtract(range), p_pos:add(range), {"group:storage"}, false)
     for _, s_pos in pairs(storage) do
-        local s_inv = minetest.get_inventory({type = "node", pos = s_pos})
+		if not minetest.is_protected(s_pos, name) then
+	        local s_inv = minetest.get_inventory({type = "node", pos = s_pos})
 
-        for i, lock in ipairs(locked) do
-            if not lock then
-                local stack = p_inv:get_stack("main", i)
-                if not stack:is_empty() then
-                    if s_inv:contains_item("main", stack:get_name(), false) then
-                        local leftover = s_inv:add_item("main", stack)
-                        p_inv:set_stack("main", i, leftover)
-                    end
-                end
-            end
-        end
+	        for i, lock in ipairs(locked) do
+	            if not lock then
+	                local stack = p_inv:get_stack("main", i)
+	                if not stack:is_empty() then
+	                    if s_inv:contains_item("main", stack:get_name(), false) then
+	                        local leftover = s_inv:add_item("main", stack)
+	                        p_inv:set_stack("main", i, leftover)
+	                    end
+	                end
+	            end
+	        end
+		end
     end
 end
 

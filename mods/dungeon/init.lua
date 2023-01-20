@@ -2,6 +2,7 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 dofile(modpath .. "/commands.lua")
+dofile(modpath .. "/interface.lua")
 
 -- reset = true
 
@@ -103,6 +104,13 @@ minetest.register_node("dungeon:stone_brick", {
 	tiles = {{name = "dungeon_stone_brick_4x4.png", align_style = "world", scale = 4}},
 	groups = {},
 })
+
+if minetest.get_modpath("xjoined") then
+	xjoined.register_wall("dungeon:wall_brick", {
+		description = "Brick Wall",
+		tiles = {{name = "dungeon_stone_brick_4x4.png", align_style = "world", scale = 4}},
+	})
+end
 
 minetest.register_node("dungeon:stone_block", {
 	description = "Stone Blocks",
