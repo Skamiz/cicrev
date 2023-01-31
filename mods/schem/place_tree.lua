@@ -7,10 +7,13 @@ local rotations = {
 }
 
 -- rotation of 'facedir' nodes, clockwise while looking toward -Y
-local y_rot = {[0] = 1,
-	2, 3, 0, 13, 14, 15, 12, 17,
-	18, 19, 16, 9, 10, 11, 8, 5,
-	6, 7, 4, 23, 20, 21, 22, nil,
+local y_rot = {
+	[0] = 1, 2, 3, 0,
+	13, 14, 15, 12,
+	17, 18, 19, 16,
+	 9, 10, 11,  8,
+	 5,  6,  7,  4,
+	23, 20, 21, 22,
 }
 
 -- rotates schematic by 90 `~degrees around Y axis

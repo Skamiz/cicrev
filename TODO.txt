@@ -1,6 +1,10 @@
 =====
 TODO:
 =====
+a way to carry spawner nodes, but the spawner continues working while being carried
+
+storage node where the player can determine number of inv slots
+
 glass with dark edges as default
 
 one of the ways in which tools can improve is range!

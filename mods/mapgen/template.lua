@@ -28,8 +28,9 @@ local np_2d = {
 }
 
 -- TODO: get sidelenght from chunksize setting
-local side_lenght = 80
-local chunk_size = {x = 80, y = 80, z = 80}
+local blocks_per_cunk = tonumber(minetest.settings:get("chunksize")) or 5
+local side_lenght = blocks_per_cunk * 16
+local chunk_size = {x = side_lenght, y = side_lenght, z = side_lenght}
 local chunk_area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge=chunk_size}
 
 local nobj_3d = noise_handler.get_noise_object(np_3d, chunk_size)
@@ -58,8 +59,8 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 				-- voxel area index, takes into acount overgenerated mapblocks
 				local vi = area:index(x, y, z)
 				-- index for flat noise maps, 3d and 2d respectively
-				local i3d = (z - minp.z) * 80 * 80 + (y - minp.y) * 80 + (x - minp.x) + 1
-				local i2d = (z - minp.z) * 80 + (x - minp.x) + 1
+				local i3d = (z - minp.z) * side_lenght * side_lenght + (y - minp.y) * side_lenght + (x - minp.x) + 1
+				local i2d = (z - minp.z) * side_lenght + (x - minp.x) + 1
 				ni = ni + 1
 
 				-- TODO: figure out how to use :index() here
@@ -74,7 +75,7 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 				local nv_2d = nvals_2d[i2d]
 
 				-- if y == minp.y then
-				-- 	minetest.chat_send_all((z-minp.z) * 80 + (x-minp.x) + 1 .. " | " .. flat_area:index(x, emin.y, z))
+				-- 	minetest.chat_send_all((z-minp.z) * side_lenght + (x-minp.x) + 1 .. " | " .. flat_area:index(x, emin.y, z))
 				-- end
 
 
