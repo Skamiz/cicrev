@@ -11,7 +11,7 @@ np = {
     lacunarity = 1.0,
 	flags = "absvalue",
 }
--- chunk_size is optional and defaults to: {x = 80, y = 80, z = 80}
+-- chunk_size is optional and defaults to the size of a mapgen chunk
 local nobj = noise_handler.get_noise_object(np, chunk_size)
 
 -- now you can treat the following functions like they are one object

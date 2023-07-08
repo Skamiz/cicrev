@@ -196,6 +196,7 @@ minetest.register_craftitem("chisel:chisel", {
                 new_matrix = rotate_matrix_to_param(new_matrix, i)
                 if matrix_equality(new_matrix, original_matrix) then
                     minetest.set_node(pointed_thing.under, {name = node_def._original .. "_chiseled_" .. node_def._missing + 1 .. "_" .. k, param2 = i})
+					return
                 end
             end
         end

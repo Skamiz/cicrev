@@ -5,6 +5,7 @@ local fs = {
 	"size[26,13]",
 	"padding[0,0]",
 	"bgcolor[#0000;neither;#000f]",
+	"container[11.5,10]",
 	"image_button[0,0;1,1;dungeon_arrow_turn.png^[transformFX;turn_left;]",
 	"image_button[2,0;1,1;dungeon_arrow_turn.png;turn_right;]",
 	"image_button[1,0;1,1;dungeon_arrow_forward.png;move_forward;]",
@@ -13,6 +14,7 @@ local fs = {
 	"image_button[2,1;1,1;dungeon_arrow_forward.png^[transformR270;move_right;]",
 	"",
 	"image_button[5,0;1,1;dungeon_arrow_forward.png;center;]",
+	"container_end[]",
 	"",
 }
 

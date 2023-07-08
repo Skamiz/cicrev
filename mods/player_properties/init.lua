@@ -3,7 +3,6 @@ local modpath = minetest.get_modpath(modname)
 
 
 --[[
-TODO: rename mod to player_properties
 
 equivalent to player_monoids
 	first evaluate +- then */

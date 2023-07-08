@@ -19,21 +19,45 @@ fast_craft.register_craft({
 	output = {"cicrev:knife_flint"},
 	input = {
 		["cicrev:knife_head_flint"] = 1,
-		["cicrev:stick"] = 1,
+		["group:tool_handle"] = 1,
 	},
 })
 fast_craft.register_craft({
 	output = {"cicrev:axe_flint"},
 	input = {
 		["cicrev:axe_head_flint"] = 1,
-		["cicrev:stick"] = 1,
+		["group:tool_handle"] = 1,
 	},
 })
 fast_craft.register_craft({
 	output = {"cicrev:mallet_wood"},
 	input = {
 		["group:log"] = 1,
-		["cicrev:stick"] = 1,
+		["group:tool_handle"] = 1,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:pickaxe_copper"},
+	input = {
+		["cicrev:ingot_copper"] = 5,
+		["group:tool_handle"] = 1,
+	},
+})
+fast_craft.register_craft({
+	output = {"cicrev:ingot_copper"},
+	input = {
+		["cicrev:ore_native_copper"] = 5,
+	},
+	condition = function(player)
+		local pos = player:get_pos()
+		return minetest.find_node_near(pos, 3, "cicrev:kiln", true)
+	end,
+})
+
+fast_craft.register_craft({
+	output = {"cicrev:kiln"},
+	input = {
+		["cicrev:brick"] = 8,
 	},
 })
 

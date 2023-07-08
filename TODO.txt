@@ -1,6 +1,88 @@
 =====
 TODO:
 =====
+creative should have silk touch by default
+
+ingame way to increase hotbar size
+
+storage containers should have buttons for:
+	take all
+	deposit all
+	deposit already present
+
+moss that grows in the underground
+when exposed to sunlight it turns into dry moss
+dry moss can be used as fuel?
+
+worldgen teleporters ala vintage story translocator
+	all teleporter locations of the world are predetermined from the start
+	when one is used for the first time it is linked up with a random other one
+
+little to no empty plains, if a forest can exist there a forest shall exist there
+
+grass/shrubs with 'move_resistance'
+
+different item name colors for: tools, craftitems, food, nodes, etc
+	have to test if it doesn't turn out to be too much with so many colors everywhere
+
+ore vein generation:
+	select start position
+	find all neighboring nodes
+	select one of the neighbor position
+		add all its neightbors to the pool of potential next ore positions
+	repeat
+
+
+
+group:airlike for nodes which are invisible, unwalkablable, and generally can be treated like air
+
+have flatbread instead of bread
+
+have the player character do idle animations/sit down/etc... when the player is afk
+
+decals as described here: https://forum.minetest.net/viewtopic.php?f=47&t=29548&p=425842#p425842
+
+a game/map focused on exploration (and adventure (and puzzles))
+	throughout the map there are shrines
+	the player has only a limited time to live
+	touching the shrines resets the timer
+	in the map there are colectibles which
+		increase the timer
+		make the player move faster
+	?locked door whch cost time to open?
+	hidden/unlockable shortcuts
+	secret shrines also exist
+
+	somewhere close to the begining is a long path that the player needs to take
+	but won't be able to until they get a bunch of upgrades
+
+have groups like: group:material_iron, group:material_wood, group:material_steel, etc...
+	- group:category_tool, group:category_(food/consumable?), group:category_ ...
+
+herbs which only spawn around a particular feature, like a specific rock or such
+
+resource crop/mystical agriculture style mode, but some resource required for the process (suitable soil maybe) is limited to mapgen only, so it isn't so exponential
+
+dungeon mode:
+	can I detect where things are and open a formspec button on the correct screen location?
+
+
+after harvesting a plant the node under it has a chance to become untilled
+
+chest that looks like something completely unexpected to have an inventory
+
+plant which ony grows when no one is watching (the area it's in is not loaded)
+
+checkout 'connect_sides' feature of nodeboxes, maybe it will help with lanter fence interaction?
+
+when a ladder is rightclicked with another ladder the existing ladder gets extended up/down depending on player looking angle
+
+different enemy type/behaviour in different parts of the word
+
+
+
+MOD: posable_objects, think minecraft aromor stands, but the object can have whatever visual/mesh/textures the player wants
+
 a way to carry spawner nodes, but the spawner continues working while being carried
 
 storage node where the player can determine number of inv slots
@@ -9,11 +91,12 @@ glass with dark edges as default
 
 one of the ways in which tools can improve is range!
 
-famable plants which grow sidways on blocks + (sidways 'farmland')
+farmable plants which grow sidways on blocks (+ sidways 'farmland')
 
 is it possible to fix bad hud bar scaling by reading the player settings?
 
 -- 0123 4567 89ab cdef 777777
+finding out grey
 
 instead of a caried torch. do a terraria style light pet
 
@@ -110,10 +193,21 @@ for dungeons - braziers and similar that the player can light up, see 'unepic'
 replace all air with glowing air
 
 respawn anchor - node at which you can set your spawn point, for a price
-		- has to be paid after every death?
 	- when mined (only valid tool is hand) moves one node in the direction it is being punched
+		- tool doesn't have to be hand necesarily, but it must always be a constant time, regardless of tech level, that is realtively slow, so it isn't too easy to cary them away
 		- can be pushed up slopes
+		- can be pushed into any node that is buildable_to
+	- gravity afected
+		- make sure it is never ever droped as an item
 	- spawns randomly in the world
+	configuration options:
+		- price for setting your respawn point - consider this further
+			- just specifying a single item seems like it's too unflexible
+			- maybe in code have a condition function for wether it respawn can be set
+			  and the settings menu is just a simple override for non-modders
+		- how often you can respawn at the given anchor
+			- negative/zero for infinite respawns
+
 
 collision_box es don't support type = "regular"
 
@@ -146,6 +240,7 @@ if a lantern doesn't protect from wind then the flame may flicker, the faster th
 ?make trees grow over time
 
 if mature farmed plants are left standing for too long they die/whiter/etc
+	consider: this makes it hard to do large fields for aesthetics
 
 equivalent to player_monoids
 	first evaluate +- then */
@@ -178,6 +273,8 @@ ore generation
 wind affecting players movement as a barier preventing the player from reaching a location
 
 ?in-between space before respawn
+yeah, adding a differnet place for thep layer after death could add a lot
+definitively a shakeup of the usual pater (this is good)
 
 ?robot mod, use abms to consistently time actions
 	works only if robot is a node, not an entity
@@ -230,10 +327,15 @@ Random stuff:
 =====
 DONE:
 =====
+mapgen distortion - before getting the noise offset the queried possition into some direction
+this might hopefully help disguise the perlin
+
+branches for all tree types
+
 cart
 	rightclick - opens inventory
 	shift + rightclick begin/stop pulling it
-	while pulling decrease movement speed and prevent jumping
+	while pulling, decrease movement speed and prevent jumping
 
 trees
 	make tree trunks grow through leaf blocks

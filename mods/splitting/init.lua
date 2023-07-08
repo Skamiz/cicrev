@@ -1,6 +1,5 @@
 --[[
 
-TODO: make it so that when a splitting log is dug it destroys any partialy split logs on top of it
 Goals:
 	Take a log and place it down. Now mine it with the splitting axe. A part of
 	 the log is taken off and the resulting item is dispensed with slight
@@ -79,8 +78,9 @@ function splitting.register_recipe(recipe)
 				type = "fixed",
 				fixed = {-0.5, -1, -0.5, (i / recipe.amount) - 0.5, 0, 0.5},
 			},
-			groups = {choppy = 1, not_in_creative_inventory = 1},
+			groups = {choppy = 1, not_in_creative_inventory = 1, split = recipe.amount - i},
 			drop = "",
+			_full_node = recipe.input,
 			after_dig_node = function(pos, oldnode, oldmetadata, digger)
 				minetest.set_node(pos, {name = "splitting" .. node_name .. "_" .. i-1})
 				local output = ItemStack(recipe.output)
@@ -98,7 +98,6 @@ minetest.register_node("splitting:chopping_block", {
 	description = "Chopping Block",
 	drawtype = "nodebox",
 	paramtype = "light",
-	-- TODO: chopping block needs it's own textures, also a recipe
 	tiles = {"splittiong_chopping_block_top.png", "splittiong_chopping_block_top.png", "splittiong_chopping_block.png"},
 	node_box = {
 		type = "fixed",
@@ -124,6 +123,16 @@ minetest.register_node("splitting:chopping_block", {
 			return itemstack
 		else
 			return minetest.item_place_node(itemstack, clicker, pointed_thing, param2, prevent_after_place)
+		end
+	end,
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		pos.y = pos.y + 1
+		local node = minetest.get_node(pos)
+		local split = minetest.get_item_group(node.name, "split")
+
+		minetest.remove_node(pos)
+		if split == 0 then
+			minetest.add_item(pos, minetest.registered_nodes[node.name]._full_node)
 		end
 	end,
 })

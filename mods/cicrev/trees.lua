@@ -1,4 +1,5 @@
 local modname = minetest.get_current_modname()
+local modprefix = modname .. ":"
 local modpath = minetest.get_modpath(modname)
 
 --[[
@@ -19,7 +20,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 
 	-- I could save me some concatations by doing them once here, istead everytime I need them
 
-	minetest.register_node("cicrev:sapling_" .. name, {
+	minetest.register_node(modprefix .. "sapling_" .. name, {
 		description = description .. " Sapling",
 		drawtype = "plantlike",
 		paramtype = "light",
@@ -45,37 +46,40 @@ function cicrev.register_tree(name, description, leaf_distance)
 		end,
 	})
 
-	minetest.register_node("cicrev:leaves_" .. name, {
+	minetest.register_node(modprefix .. "leaves_" .. name, {
 		description = description .. " Leaves",
 		drawtype = "allfaces_optional",
 		paramtype = "light",
 		tiles = {"cicrev_leaves_" .. name .. ".png"},
+		-- tiles = {"cicrev_leaves_simple_" .. name .. ".png"},
 		groups = {hand = 1, leaves = 1},
 		walkable = false,
+		move_resistance = 1,
 		drop = {
 			max_items = 1,
 			items = {
 				{
 					rarity = 50,
-					items = {"cicrev:sapling_" .. name}
+					items = {modprefix .. "sapling_" .. name}
 				},
 				{
 					rarity = 2,
-					items = {"cicrev:stick"},
+					items = {modprefix .. "stick"},
 				},
 			}
 		},
 		_leaves = {
 			grows_on = {
-				["cicrev:log_" .. name] = true,
-				["cicrev:bark_" .. name] = true,
+				[modprefix .. "log_" .. name] = true,
+				[modprefix .. "bark_" .. name] = true,
+				[modprefix .. "branch_" .. name] = true,
 			},
 			grow_distance = leaf_distance,
 		},
 		_on_update = cicrev.leaf_decay
 	})
 
-	minetest.register_node("cicrev:log_" .. name, {
+	minetest.register_node(modprefix .. "log_" .. name, {
 		description = description .. " Log",
 		tiles = {"cicrev_log_top_" .. name .. ".png", "cicrev_log_top_" .. name .. ".png", "cicrev_log_" .. name .. ".png"},
 		paramtype2 = "facedir",
@@ -84,7 +88,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		node_placement_prediction = "",
 	})
 
-	minetest.register_node("cicrev:log_stripped_" .. name, {
+	minetest.register_node(modprefix .. "log_stripped_" .. name, {
 		description = "Stripped " .. description .. " Log",
 		tiles = {"cicrev_log_top_stripped_" .. name .. ".png", "cicrev_log_top_stripped_" .. name .. ".png", "cicrev_log_stripped_" .. name .. ".png"},
 		paramtype2 = "facedir",
@@ -93,7 +97,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		node_placement_prediction = "",
 	})
 
-	minetest.register_node("cicrev:bark_" .. name, {
+	minetest.register_node(modprefix .. "bark_" .. name, {
 		description = description .. " Bark",
 		tiles = {"cicrev_log_" .. name .. ".png"},
 		paramtype2 = "facedir",
@@ -102,7 +106,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		node_placement_prediction = "",
 	})
 
-	minetest.register_node("cicrev:bark_stripped_" .. name, {
+	minetest.register_node(modprefix .. "bark_stripped_" .. name, {
 		description = "Stripped " .. description .. " Bark",
 		tiles = {"cicrev_log_stripped_" .. name .. ".png"},
 		paramtype2 = "facedir",
@@ -111,14 +115,33 @@ function cicrev.register_tree(name, description, leaf_distance)
 		node_placement_prediction = "",
 	})
 
-	minetest.register_node("cicrev:planks_" .. name, {
+	minetest.register_node(modprefix .. "branch_" .. name, {
+		description = description .. " Branch",
+		tiles = {"cicrev_log_" .. name .. ".png"},
+		groups = {choppy = 1, branch = 1},
+		paramtype = "light",
+		drawtype = "nodebox",
+		node_box = {
+			type = "connected",
+			fixed          = {-0.25, -0.25, -0.25, 0.25,  0.25, 0.25},
+			connect_top    = {-0.25, -0.25, -0.25, 0.25,  0.5,  0.25}, -- y+
+			connect_bottom = {-0.25, -0.5,  -0.25, 0.25,  0.25, 0.25}, -- y-
+			connect_front  = {-0.25, -0.25, -0.5,  0.25,  0.25, 0.25}, -- z-
+			connect_back   = {-0.25, -0.25,  0.25, 0.25,  0.25, 0.5 }, -- z+
+			connect_left   = {-0.5,  -0.25, -0.25, 0.25,  0.25, 0.25}, -- x-
+			connect_right  = {-0.25, -0.25, -0.25, 0.5,   0.25, 0.25}, -- x+
+		},
+		connects_to = {"group:tree", "group:log", "group:leaves", "group:branch"},
+	})
+
+	minetest.register_node(modprefix .. "planks_" .. name, {
 		description = description .. " Planks",
 		tiles = {{name = "cicrev_planks_" .. name .. ".png", align_style = "world"}},
 		groups = {choppy = 1, planks = 1, wood = 1},
 	})
-	make_chiseable("cicrev:planks_" .. name)
+	make_chiseable(modprefix .. "planks_" .. name)
 
-	minetest.register_node("cicrev:panel_" .. name, {
+	minetest.register_node(modprefix .. "panel_" .. name, {
 		description = description .. " Panel",
 		tiles = {{name = "cicrev_planks_" .. name .. ".png", align_style = "world"}},
 		drawtype = "nodebox",
@@ -133,7 +156,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		on_place = minetest.rotate_node,
 	})
 
-	minetest.register_craftitem("cicrev:plank_" .. name, {
+	minetest.register_craftitem(modprefix .. "plank_" .. name, {
 		description = description .. " Plank",
 		inventory_image = "cicrev_plank_" .. name .. ".png",
 		groups = {plank = 1},
@@ -142,85 +165,85 @@ function cicrev.register_tree(name, description, leaf_distance)
 	-- Recipes
 	-- Bark
 	fast_craft.register_craft({
-		output = {"cicrev:bark_" .. name, 2},
+		output = {modprefix .. "bark_" .. name, 2},
 		additional_output = {
-			["cicrev:log_stripped_" .. name] = 1
+			[modprefix .. "log_stripped_" .. name] = 1
 		},
 		input = {
-			["cicrev:log_" .. name] = 3,
+			[modprefix .. "log_" .. name] = 3,
 		},
 	})
 	-- Planks
 	fast_craft.register_craft({
-		output = {"cicrev:planks_" .. name},
+		output = {modprefix .. "planks_" .. name},
 		input = {
-			["cicrev:plank_" .. name] = 4,
+			[modprefix .. "plank_" .. name] = 4,
 		},
 	})
 	-- minetest.register_craft({
-	-- 	output = "cicrev:planks_" .. name,
+	-- 	output = modprefix .. "planks_" .. name,
 	-- 	recipe = {
-	-- 			{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
-	-- 			{"cicrev:plank_" .. name, "cicrev:plank_" .. name},
+	-- 			{modprefix .. "plank_" .. name, modprefix .. "plank_" .. name},
+	-- 			{modprefix .. "plank_" .. name, modprefix .. "plank_" .. name},
 	-- 		},
 	-- })
 
 	if minetest.get_modpath("splitting") then
 		splitting.register_recipe({
-			input = "cicrev:log_" .. name,
-			output = "cicrev:plank_" .. name,
+			input = modprefix .. "log_" .. name,
+			output = modprefix .. "plank_" .. name,
 			amount = 8,
 			innner_texture = "cicrev_log_inside_" .. name .. ".png"
 		})
 		splitting.register_recipe({
-			input = "cicrev:log_stripped_" .. name,
-			output = "cicrev:plank_" .. name,
+			input = modprefix .. "log_stripped_" .. name,
+			output = modprefix .. "plank_" .. name,
 			amount = 8,
 			innner_texture = "cicrev_log_inside_stripped_" .. name .. ".png"
 		})
 		splitting.register_recipe({
-			input = "cicrev:bark_" .. name,
-			output = "cicrev:plank_" .. name,
+			input = modprefix .. "bark_" .. name,
+			output = modprefix .. "plank_" .. name,
 			amount = 8,
 			innner_texture = "cicrev_log_inside_" .. name .. ".png"
 		})
 		splitting.register_recipe({
-			input = "cicrev:bark_stripped_" .. name,
-			output = "cicrev:plank_" .. name,
+			input = modprefix .. "bark_stripped_" .. name,
+			output = modprefix .. "plank_" .. name,
 			amount = 8,
 			innner_texture = "cicrev_log_inside_stripped_" .. name .. ".png"
 		})
 	else
 		minetest.register_craft({
-		    output = "cicrev:plank_" .. name .. " 8",
+		    output = modprefix .. "plank_" .. name .. " 8",
 		    recipe = {
-		            {"cicrev:log_" .. name},
+		            {modprefix .. "log_" .. name},
 		        },
 		})
 		minetest.register_craft({
-		    output = "cicrev:plank_" .. name .. " 8",
+		    output = modprefix .. "plank_" .. name .. " 8",
 		    recipe = {
-		            {"cicrev:log_stripped_" .. name},
+		            {modprefix .. "log_stripped_" .. name},
 		        },
 		})
 		minetest.register_craft({
-		    output = "cicrev:plank_" .. name .. " 8",
+		    output = modprefix .. "plank_" .. name .. " 8",
 		    recipe = {
-		            {"cicrev:bark_" .. name},
+		            {modprefix .. "bark_" .. name},
 		        },
 		})
 		minetest.register_craft({
-		    output = "cicrev:plank_" .. name .. " 8",
+		    output = modprefix .. "plank_" .. name .. " 8",
 		    recipe = {
-		            {"cicrev:bark_stripped_" .. name},
+		            {modprefix .. "bark_stripped_" .. name},
 		        },
 		})
 	end
 
 	if minetest.get_modpath("falling_trees") then
 		falling_trees.register_tree({
-			logs = {"cicrev:log_" .. name, "cicrev:bark_" .. name},
-			leaves = {"cicrev:leaves_" .. name}
+			logs = {modprefix .. "log_" .. name, modprefix .. "bark_" .. name},
+			leaves = {modprefix .. "leaves_" .. name, modprefix .. "branch_" .. name}
 		})
 	end
 

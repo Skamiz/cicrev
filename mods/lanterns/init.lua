@@ -14,6 +14,7 @@ local glowing_air = {
 	buildable_to = true,
 	-- light_source = minetest.LIGHT_MAX,
     pointable = false,
+	air_equivalent = true,
     on_timer = function(pos)
         minetest.remove_node(pos)
     end,
@@ -21,6 +22,7 @@ local glowing_air = {
 
 for i = 1, minetest.LIGHT_MAX do
     local light_def = table.copy(glowing_air)
+	light_def.description = light_def.description .. " " .. i
     light_def.light_source = i
     minetest.register_node("lanterns:light_" .. i, light_def)
 end

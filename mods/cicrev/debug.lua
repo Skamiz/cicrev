@@ -32,13 +32,17 @@ local fs = {
 local test_fs = {
 	"formspec_version[4]",
 	"size[10.25,5.25,<fixed_size>]",
-	"background[0,0;10.25,5.25;player_inv_bg.png;true]",
+	"image[5,0;1,1;[combine:32x32:0,0=fc_reload.png]",
+	"image[0,0;1,1;fc_reload.png]",
+	-- "background[0,0;10.25,5.25;player_inv_bg.png;true]",
 	-- "background[-0.05,-0.05;10.25,5.25;player_inv_bg.png;true]",
 	-- "listcolors[#837347;#a9986a;#cebc8c]",
 	-- "listcolors[#837347;#a9986a;#020202]",
 	-- "listcolors[#837347;#a9986a]",
-	"list[current_player;main;0.25,0.25;8,4;]",
+	-- "list[current_player;main;0.25,0.25;8,4;]",
 }
+fs = table.concat(fs)
+test_fs = table.concat(test_fs)
 
 minetest.register_chatcommand("debug", {
 	params = "",
@@ -46,12 +50,15 @@ minetest.register_chatcommand("debug", {
 	privs = {server=true},
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
+
+		minetest.show_formspec(player:get_player_name(), "test", test_fs)
+
 		-- param = param:split(" ")
 		-- for k, v in pairs(param) do
 		-- 	minetest.chat_send_all(v)
 		-- end
-		player:hud_set_hotbar_itemcount(param)
-		player:hud_set_hotbar_image(cicrev.get_hotbar_image("cicrev_hotbar.png", param))
+		-- player:hud_set_hotbar_itemcount(param)
+		-- player:hud_set_hotbar_image(cicrev.get_hotbar_image("cicrev_hotbar.png", param))
 		-- player:hud_set_hotbar_selected_image("cicrev_glass.png")
 		-- player:set_hp(param, "debug command")
 	end,
@@ -79,8 +86,9 @@ minetest.register_entity("cicrev:test_mob", {
 	end,
 })
 
-fs = table.concat(fs)
-test_fs = table.concat(test_fs)
+
+
+
 
 local function print_table(po)
 	for k, v in pairs(po) do
@@ -91,6 +99,7 @@ end
 
 local abm_detect
 
+local function f(i) return i * i end
 minetest.register_craftitem("cicrev:axe_of_debug", {
 	description = "axe of debug",
 	inventory_image = "cicrev_axe_of_trees.png",
@@ -102,9 +111,24 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
-		switch = not switch
+		-- minetest.show_formspec(placer:get_player_name(), "test", test_fs)
+		-- place_nodebox_object(pointed_thing.under, minetest.get_node(pointed_thing.under))
 
+		-- switch = not switch
 		-- minetest.add_entity(pointed_thing.above, "cicrev:test_mob", "")
+
+		-- local t0 = minetest.get_us_time()
+		-- local t1, t2 = {}, {}
+		-- for i = 1, 1000000 do
+		-- 	table.insert(t1, i)
+		-- end
+		-- print("'insert' time: " .. (minetest.get_us_time() - t0) / 1000000 .. " s")
+		-- local sqrt = math.sqrt
+		-- local t0 = minetest.get_us_time()
+		-- for i = 1, 1000000 do
+		-- 	t2[#t2 + 1] = i
+		-- end
+		-- print(" '# + 1' time: " .. (minetest.get_us_time() - t0) / 1000000 .. " s")
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_effects.add_effect(user, {
@@ -142,20 +166,21 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 --     end,
 -- })
 
-minetest.register_lbm({
-	name = "cicrev:debug_lbm",
-	nodenames = {"cicrev:test_node_3", "cicrev:test_node_4"},
-	run_at_every_load = true,
-    action = function(pos, node)
-		if switch then
-			node.name = "cicrev:test_node_4"
-			minetest.set_node(pos, node)
-		else
-			node.name = "cicrev:test_node_3"
-			minetest.set_node(pos, node)
-		end
-	end,
-})
+-- minetest.register_lbm({
+-- 	name = "cicrev:debug_lbm",
+-- 	nodenames = {"cicrev:test_node_3", "cicrev:test_node_4"},
+-- 	run_at_every_load = true,
+--     action = function(pos, node)
+-- 		minetest.chat_send_all("lmb tick")
+-- 		if switch then
+-- 			node.name = "cicrev:test_node_4"
+-- 			minetest.set_node(pos, node)
+-- 		else
+-- 			node.name = "cicrev:test_node_3"
+-- 			minetest.set_node(pos, node)
+-- 		end
+-- 	end,
+-- })
 
 
 minetest.register_node("cicrev:test_node_1", {
@@ -178,11 +203,20 @@ minetest.register_node("cicrev:test_node_1", {
 		meta:set_int("n", n + 1)
 		meta:set_int("time", minetest.get_gametime())
 
-		minetest.chat_send_all("" .. n)
+		-- minetest.chat_send_all("Timer tick: " .. n)
 		-- minetest.chat_send_all("Time since last call: " .. minetest.get_gametime() - time)
 		return true
 	end,
 })
+-- minetest.register_abm({
+--     label = "abm detection",
+--     nodenames = {"cicrev:test_node_1"},
+--     interval = 1,
+--     chance = 1,
+--     action = function(pos, node, active_object_count, active_object_count_wider)
+-- 		minetest.chat_send_all("ABM tick: ")
+--     end,
+-- })
 minetest.register_node("cicrev:test_node_2", {
 	description = "test_node_2",
 	tiles = {"test_node_2.png"},
@@ -218,10 +252,62 @@ minetest.register_node("cicrev:test_node_2", {
 		minetest.debug("face_normal: \n"..dump(normal))
 	end,
 })
+local eight = 12
 minetest.register_node("cicrev:test_node_3", {
 	description = "test_node_3",
+	drawtype = "nodebox",
 	tiles = {"test_node_3.png"},
 	groups = {test = 3},
+	node_box = {
+		type = "fixed",
+		-- fixed = {
+		-- 	{-eight/16, -eight/16, -eight/16, 0/16, 0/16, 0/16},
+		-- 	{-eight/16, -0/16, -eight/16, 0/16, eight/16, 0/16},
+		-- 	{-0/16, -eight/16, -eight/16, eight/16, 0/16, 0/16},
+		-- 	{-0/16, -0/16, -eight/16, eight/16, eight/16, 0/16},
+		-- 	{-eight/16, -eight/16, -0/16, 0/16, 0/16, eight/16},
+		-- 	{-eight/16, -0/16, -0/16, 0/16, eight/16, eight/16},
+		-- 	{-0/16, -eight/16, -0/16, eight/16, 0/16, eight/16},
+		-- 	{-0/16, -0/16, -0/16, eight/16, eight/16, eight/16},
+		-- },
+		fixed = {
+			{-8/16, -8/16, -8/16, -3/16, -3/16, -3/16},
+			{-3/16, -8/16, -8/16,  3/16, -3/16, -3/16},
+			{ 3/16, -8/16, -8/16,  8/16, -3/16, -3/16},
+
+			{-8/16, -8/16, -3/16, -3/16, -3/16,  3/16},
+			{-3/16, -8/16, -3/16,  3/16, -3/16,  3/16},
+			{ 3/16, -8/16, -3/16,  8/16, -3/16,  3/16},
+
+			{-8/16, -8/16,  3/16, -3/16, -3/16,  8/16},
+			{-3/16, -8/16,  3/16,  3/16, -3/16,  8/16},
+			{ 3/16, -8/16,  3/16,  8/16, -3/16,  8/16},
+
+			{-8/16, -3/16, -8/16, -3/16,  3/16, -3/16},
+			{-3/16, -3/16, -8/16,  3/16,  3/16, -3/16},
+			{ 3/16, -3/16, -8/16,  8/16,  3/16, -3/16},
+
+			{-8/16, -3/16, -3/16, -3/16,  3/16,  3/16},
+			{-3/16, -3/16, -3/16,  3/16,  3/16,  3/16},
+			{ 3/16, -3/16, -3/16,  8/16,  3/16,  3/16},
+
+			{-8/16, -3/16,  3/16, -3/16,  3/16,  8/16},
+			{-3/16, -3/16,  3/16,  3/16,  3/16,  8/16},
+			{ 3/16, -3/16,  3/16,  8/16,  3/16,  8/16},
+
+			{-8/16,  3/16, -8/16, -3/16,  8/16, -3/16},
+			{-3/16,  3/16, -8/16,  3/16,  8/16, -3/16},
+			{ 3/16,  3/16, -8/16,  8/16,  8/16, -3/16},
+
+			{-8/16,  3/16, -3/16, -3/16,  8/16,  3/16},
+			{-3/16,  3/16, -3/16,  3/16,  8/16,  3/16},
+			{ 3/16,  3/16, -3/16,  8/16,  8/16,  3/16},
+
+			{-8/16,  3/16,  3/16, -3/16,  8/16,  8/16},
+			{-3/16,  3/16,  3/16,  3/16,  8/16,  8/16},
+			{ 3/16,  3/16,  3/16,  8/16,  8/16,  8/16},
+		},
+	},
 	-- can_dig = function(pos, player)
 	-- 	return pos.x%2 == 0
 	-- end,
@@ -406,8 +492,18 @@ minetest.register_node("cicrev:tank", {
 })
 
 
-
-
+local all_items = {}
+for k, _ in pairs(minetest.registered_items) do
+	all_items[#all_items + 1] = k
+end
+for i = 1, 50 do
+	fast_craft.register_craft({
+		output = {all_items[math.random(#all_items)], math.random(5)},
+		input = {
+			["cicrev:thatch"] = math.ceil(i/10),
+		},
+	})
+end
 
 -- local a = vector.new(-4, 0, -4)
 -- local b = vector.new(-1, 0, -2)

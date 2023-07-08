@@ -191,6 +191,10 @@ minetest.register_node("dungeon:gate_open", {
 	end,
 })
 
+--[[
+idea:
+a one time use version swaps into another node and can be easily reset by swaping it back to this one
+]]
 minetest.register_node("dungeon:item_spawner", {
 	description = "Item Spawner",
 	tiles = {"dungeon_item_spawner.png"},

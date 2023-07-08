@@ -1,12 +1,12 @@
-
+-- TODO: a setting, even if just in code, that can turn of tool wear
 minetest.register_craftitem("cicrev:hand", {
 	description = "Hand",
     inventory_image = "cicrev_hand.png",
+	range = 5,
     tool_capabilities = {
         full_punch_interval = 1.5,
         groupcaps = {
-            hand = {maxlevel=0, times = { [1]=0.60, [2]=1.20, [3]=5.00 }
-            },
+            hand = {maxlevel=0, times = {[1] = 0.60, [2] = 1.20, [3] = 5.00}},
         },
     },
 })
@@ -19,7 +19,7 @@ minetest.register_tool("cicrev:creative_tool", {
 	tool_capabilities = {
 		full_punch_interval = 1,
 		groupcaps = {
-			everything = {maxlevel=0, times = {0.2, 0.2}},
+			everything = {maxlevel = 0, times = {0.2, 0.2}},
 		},
 	},
 })
@@ -68,7 +68,17 @@ minetest.register_tool("cicrev:mallet_wood", {
 	tool_capabilities = {
 		full_punch_interval = 5, -- no effect on dig swing speed
 		groupcaps={
-			cracky = {times = {[1] = 10.00}, uses = 20, maxlevel = 0},
+			cracky = {times = {[1] = 15.00}, uses = 20, maxlevel = 0},
+		},
+	},
+	groups = {pickaxe = 1},
+})
+minetest.register_tool("cicrev:pickaxe_copper", {
+	description = "Copper Pickaxe",
+	inventory_image = "cicrev_pickaxe_copper.png",
+	tool_capabilities = {
+		groupcaps={
+			cracky = {times = {[1] = 5.00}, uses = 30, maxlevel = 0},
 		},
 	},
 	groups = {pickaxe = 1},

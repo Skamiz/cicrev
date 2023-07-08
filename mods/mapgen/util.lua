@@ -2,7 +2,6 @@ u = {}
 
 --[[
 	Undersmapling
-	TODO: only generate needed samples
 	Prety sure this whole thing is a bust since the builtin noise is already undersampled
 ]]
 
@@ -10,10 +9,15 @@ local area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge={x = 80, y = 8
 
 local function lerp(a, b, ratio)
 	return a * (1 - ratio) + b * ratio
-	-- return a
 end
 
+local function ilerp(a, b, value)
+	return (value - a) / (b - a)
+end
 
+local function remap(in_a, in_b, out_a, out_b, value)
+	return lerp(out_a, out_b, ilerp(in_a, in_b, value))
+end
 -- asumes distance incerases along axis
 -- lerps values for positions between pos and pos[axis] += distance
 local function c_lerp(data, pos, axis, distance)

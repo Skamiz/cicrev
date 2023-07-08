@@ -35,3 +35,14 @@ touch_glow_strength (Touch brightening) int 2 1 15
 #
 # Maximal light level at touched position to activate touch navigation.
 touch_max_light (Maximal touch light) int 1 0 15
+
+
+# Automatic storage range
+#
+# Range determines how far away the automatic storage system looks for compatible containers.
+auto_storage_range (Automatic storage range) int 2 1 8
+
+# Visual storage
+#
+# When enabled Auto Storage will visually display items moveing from the player to containers.
+auto_storage_visual (Visual storage) bool true

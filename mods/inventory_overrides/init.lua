@@ -2,6 +2,8 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 -- dofile(modpath .. "/foo.lua")
 
+return 
+
 sfinv.override_page("sfinv:crafting", {
 	get = function(self, player, context)
 		local s = ""

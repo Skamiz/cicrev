@@ -1,7 +1,7 @@
 minetest.register_craftitem("cicrev:stick", {
 	description = "Stick",
 	inventory_image = "cicrev_stick.png",
-	groups = {stick = 1},
+	groups = {stick = 1, tool_handle = 1},
 	on_place = function(itemstack, placer, pointed_thing)
 		if minetest.get_node(pointed_thing.under).name == "cicrev:campfire_lit" then
 			itemstack:take_item()
@@ -16,6 +16,10 @@ minetest.register_craftitem("cicrev:stick", {
 minetest.register_craftitem("cicrev:flint", {
 	description = "Flint stone",
 	inventory_image = "cicrev_flint.png",
+})
+minetest.register_craftitem("cicrev:ore_native_copper", {
+	description = "Native Copper Ore",
+	inventory_image = "cicrev_ore_native_copper.png",
 })
 minetest.register_craftitem("cicrev:axe_head_flint", {
 	description = "Axe head (flint)",
@@ -36,6 +40,10 @@ minetest.register_craftitem("cicrev:grass_rope", {
 minetest.register_craftitem("cicrev:brick", {
 	description = "Brick",
 	inventory_image = "cicrev_brick.png",
+})
+minetest.register_craftitem("cicrev:ingot_copper", {
+	description = "Copper Cube",
+	inventory_image = "cicrev_ingot_copper.png",
 })
 minetest.register_craftitem("cicrev:clay_lump", {
 	description = "Wet Lump of Clay",

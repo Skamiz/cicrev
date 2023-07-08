@@ -8,8 +8,7 @@ code cleanup
 
 Stretch goals:
 make the objects rotate to the nodes rotation to stop jaring transition between node and object
-	- 6 of 24 positions are unreachable due to gimbal lock
-	- actually rotating attached objects is impossible
+	see 'touch' mod for rotation reference
 --]]
 
 

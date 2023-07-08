@@ -33,6 +33,7 @@ end
 
 local function get_distance(p1, p2)
     local distance_squared = 0
+	local axis_distance
     for axis, _ in pairs(p1) do
         axis_distance = p1[axis] - p2[axis]
         distance_squared = distance_squared + (axis_distance * axis_distance)
@@ -52,6 +53,7 @@ end
 
 local function get_too_long(p1, p2, max_straight)
     local distance_squared = 0
+	local axis_distance
     for axis, _ in pairs(p1) do
         axis_distance = p1[axis] - p2[axis]
         distance_squared = distance_squared + (axis_distance * axis_distance)

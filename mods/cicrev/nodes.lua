@@ -1,7 +1,6 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
--- TODO: add thatch as cheap building material
 
 --[[
 cicrev:tall_grass_1
@@ -260,34 +259,35 @@ cicrev.register_tree("oak", "Oak", 3)
 cicrev.register_tree("dark", "Dark", 4)
 cicrev.register_tree("chaktekok", "Chakte Kok", 4)
 cicrev.register_tree("chestnut", "Chestnut", 4)
+cicrev.register_tree("osage", "Osage", 4)
 
 
 -- ====
 -- WOOD
 -- ====
 
-cicrev.register_fence("cicrev:fence_oak", {
+xjoined.register_fence("cicrev:fence_oak", {
 	description = "Oak Fence",
 	tiles = {"cicrev_fence_oak_top.png", "cicrev_fence_oak_top.png", "cicrev_fence_oak_side.png"},
 	groups = {choppy = 1, wood = 1},
 	use_texture_alpha = "opaque",
 })
 
-cicrev.register_fence("cicrev:fence_chestnut", {
+xjoined.register_fence("cicrev:fence_chestnut", {
 	description = "Chestnut Fence",
 	tiles = {"cicrev_fence_chestnut_top.png", "cicrev_fence_chestnut_top.png", "cicrev_fence_chestnut_side.png"},
 	groups = {choppy = 1, wood = 1},
 	use_texture_alpha = "opaque",
 })
 
-cicrev.register_fence("cicrev:fence_chaktekok", {
+xjoined.register_fence("cicrev:fence_chaktekok", {
 	description = "Chakte Kok Fence",
 	tiles = {"cicrev_fence_chaktekok_top.png", "cicrev_fence_chaktekok_top.png", "cicrev_fence_chaktekok_side.png"},
 	groups = {choppy = 1, wood = 1},
 	use_texture_alpha = "opaque",
 })
 
-cicrev.register_fence("cicrev:fence_dark", {
+xjoined.register_fence("cicrev:fence_dark", {
 	description = "Dark Fence",
 	tiles = {"cicrev_fence_dark_top.png", "cicrev_fence_dark_top.png", "cicrev_fence_dark_side.png"},
 	groups = {choppy = 1, wood = 1},
@@ -553,6 +553,13 @@ minetest.register_node("cicrev:corite", {
 	paramtype = "light",
 })
 
+minetest.register_node("cicrev:kiln", {
+	description = "Brick Kiln",
+	tiles = {"cicrev_kiln_top.png", "cicrev_kiln_bottom.png", "cicrev_kiln_side.png", "cicrev_kiln_side.png", "cicrev_kiln_front.png"},
+	groups = {cracky = 1},
+	paramtype2 = "facedir",
+})
+
 -- ====
 -- ORES
 -- ====
@@ -561,6 +568,13 @@ minetest.register_node("cicrev:tetrahedrite", {
 	description = "Tetrahedrite",
 	tiles = {"cicrev_tetrahedrite.png"},
 	groups = {hand = 2},
+})
+minetest.register_node("cicrev:vein_native_copper", {
+	description = "Native Copper Vein",
+	tiles = {"cicrev_tetrahedrite.png^cicrev_vein_native_copper.png"},
+	-- tiles = {"df_stones_phyllite.png^cicrev_vein_native_copper.png"},
+	groups = {ore_vein = 1, copper_ore = 1, hand = 2, cracky = 1},
+	drop = "cicrev:ore_native_copper",
 })
 minetest.register_node("cicrev:bituminous_coal", {
 	description = "Bituminous coal",
@@ -753,7 +767,7 @@ minetest.register_node("cicrev:lantern", {
 		connect_top = {-2/16, 5/16, -2/16, 2/16, 8/16, 2/16},
 		connect_bottom = {-2/16, -8/16, -2/16, 2/16, -5/16, 2/16},
 	},
-	-- TODO: for whatever godforsaken reason, the connection doesn't work when the to be connected node is also a connected node
+	-- ENGINEBUG: for whatever godforsaken reason, the connection doesn't work when the to be connected node is also a connected node
 	connects_to = {"group:fence", "group:wall", "group:solid_node", "cicrev:lantern"},
 	walkable = true,
 	paramtype = "light",
@@ -771,6 +785,7 @@ minetest.register_node("cicrev:thatch", {
 	tiles = {"cicrev_thatch.png"},
 	groups = {hand = 2},
 	walkable = false,
+	move_resistance = 2,
 })
 minetest.register_node("cicrev:fabric", {
 	description = "Fabric",
@@ -793,7 +808,6 @@ minetest.register_node("cicrev:fabric", {
 })
 
 minetest.register_node("cicrev:bricks", {
-	-- TODO:needs inventory_image
 	description = "Bricks",
 	inventory_image = minetest.inventorycube("cicrev_bricks_inventory.png", nil, nil),
 	tiles = {{name = "cicrev_bricks_4x4.png", align_style = "world", scale = 4}},
@@ -858,7 +872,6 @@ minetest.register_node("cicrev:campfire_lit", {
 		fixed = {-7/16, -0.5, -7/16, 7/16, 0/16, 7/16}},
 	collision_box = {type = "fixed",
 		fixed = {-7/16, -0.5, -7/16, 7/16, 0/16, 7/16}},
-	-- TODO: after burning down only ashes remain
 	on_construct = function(pos)
 		get_and_set_timer(pos, 600) -- 10 minutes
 	end,

@@ -8,7 +8,6 @@ local c_ring_i = minetest.get_content_id("cicrev:corite")
 
 minetest.set_mapgen_setting("water_level", "0", true)
 
--- TODO: move rings to their own file
 
 local depth = 25
 local surface_limit = 0.1
