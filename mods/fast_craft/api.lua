@@ -13,23 +13,25 @@ end)
 
 -- RECIPE REGISTRATION
 
+-- TODO: make a simmilar function which serializes complete recipe
 -- helps to filter out duplicate recipes
 local function recipe_to_string(recipe)
-	local rs = "o:" .. recipe.output[1] .. " " .. recipe.output[2] .. "a:"
+	local rs = {}
+	rs[#rs + 1] = "o:" .. recipe.output[1] .. " " .. recipe.output[2]
 	-- TODO: this needs to order the lists alphabetically first to avoid duplicates with switched order
-	for item, count in pairs(recipe.additional_output) do
-		rs = rs .. item .. " " .. count .. ","
+	if #recipe.additional_output > 0 then
+		rs[#rs + 1] = " ao:"
+		for item, count in pairs(recipe.additional_output) do
+			rs[#rs + 1] = item .. " " .. count .. ","
+		end
 	end
-	rs = rs .. "i:"
+	rs[#rs + 1] = " i:"
 	for item, count in pairs(recipe.input) do
-		rs = rs .. item .. " " .. count .. ","
+		rs[#rs + 1] = item .. " " .. count .. ","
 	end
-	-- not checking for condition
 
-	return rs
+	return table.concat(rs)
 end
-
-local recipe_strings = {}
 
 -- baring exceptional circumstances there never will be a larger factor
 local factors = {2, 3, 5, 7}
@@ -76,19 +78,41 @@ function fast_craft.simplify_recipe(recipe)
 	return recipe
 end
 
+local recipes_by_rs = {}
 function fast_craft.register_craft(recipe)
 	-- TODO: some validation that all the involved items exist, if not -> warning
 
+	-- first, flest out the recipe definition, so we can count on all the field existing
 	if not recipe.output[2] then recipe.output[2] = 1 end
 	if not recipe.additional_output then recipe.additional_output = {} end
+	if not recipe.tags then recipe.tags = {} end
+	if not recipe.conditions then recipe.conditions = {["none"] = true} end
 
 	local rs = recipe_to_string(recipe)
-	if not recipe_strings[rs] then
-	-- if true then
-		recipe_strings[rs] = true
+	if not recipes_by_rs[rs] then
+		assert(recipe.conditions, dump(recipe))
 		recipe.output.def = minetest.registered_items[recipe.output[1]]
 		registered_crafts[#registered_crafts + 1] = recipe
+		recipes_by_rs[rs] = recipe
+	else
+		-- if recipe is already registred, we just merge in tags and conditions
+		assert(recipe.conditions, dump(recipe))
+		local r_def = recipes_by_rs[rs]
+		for tag, value in pairs(recipe.tags) do
+			r_def.tags[tag] = value
+		end
+		for condition, _ in pairs(recipe.conditions) do
+			r_def.conditions[condition] = true
+		end
 	end
+end
+
+function fast_craft.register_condition(name, def)
+	if fast_craft.registered_conditions[name] then
+		minetest.log("warning", "[fast_craft] Crafting condition: '" .. name .. "' is being overrident")
+	end
+	def.name = name
+	fast_craft.registered_conditions[name] = def
 end
 
 
@@ -107,8 +131,28 @@ function fast_craft.inv_to_table(inv, list)
 	return t
 end
 
+-- checks wheter a recipes condition are met
+-- returns true if ANY condition is met
+function fast_craft.is_recipe_condition_fulfiled(recipe, player)
+	for condition, _ in pairs(recipe.conditions) do
+		if fast_craft.registered_conditions[condition].func(player) then
+			return true
+		end
+	end
+	return false
+end
+
+-- returns a table of the curernt status of all conditions for a player
+function fast_craft.get_condition_table(player)
+	local t = {}
+	for name, def in pairs(fast_craft.registered_conditions) do
+		t[name] = def.func(player)
+	end
+	return t
+end
+
 -- returns number of times recipe can be crafted from inventory
-function fast_craft.can_craft(recipe, inv)
+function fast_craft.get_craft_amount(recipe, inv)
 	local n = 999
 	for item, count in pairs(recipe.input) do
 		-- some items could be counted twice here, see warning
@@ -136,6 +180,7 @@ function fast_craft.can_craft(recipe, inv)
 	return n
 end
 
+
 -- returns array of recipe indexes, the player can craft
 -- checks for custom condition
 function fast_craft.get_craftable_recipes(player)
@@ -143,7 +188,7 @@ function fast_craft.get_craftable_recipes(player)
 	local inv = fast_craft.inv_to_table(player:get_inventory())
 
 	for i, recipe in ipairs(registered_crafts) do
-		if fast_craft.can_craft(recipe, inv) > 0 and ((not recipe.condition) and true or recipe.condition(player)) then
+		if fast_craft.get_craft_amount(recipe, inv) > 0 and fast_craft.is_recipe_condition_fulfiled(recipe, player) then
 			r[#r + 1] = i
 		end
 	end
@@ -158,9 +203,9 @@ function fast_craft.craft(player, recipe_index, amount)
 	local inv = player:get_inventory()
 	local inv_list = fast_craft.inv_to_table(inv)
 
-	amount = math.min(amount, fast_craft.can_craft(recipe, inv_list))
+	amount = math.min(amount, fast_craft.get_craft_amount(recipe, inv_list))
 	if amount == 0 then return end
-	if recipe.condition and not recipe.condition(player) then return end
+	if not fast_craft.is_recipe_condition_fulfiled(recipe, player) then return end
 
 	-- taking input
 	for in_item, count in pairs(recipe.input) do

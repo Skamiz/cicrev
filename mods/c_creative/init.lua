@@ -7,6 +7,7 @@ add all nodes to 'everyting' group
 TODO:
 	creative priv
 	button to toggle creative hand
+		chat command to show primitive formspec to manualy set hand/alt_hand
 	button to toggle item spam
 	?button to toggle not_in_creative_inventory items
 ]]
