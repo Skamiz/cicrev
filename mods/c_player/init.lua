@@ -8,10 +8,14 @@ sfinv.override_page("sfinv:crafting", {
 		local fs = {
 			"formspec_version[6]",
 			"size[13.25,12]",
+			"padding[0,0]",
+
 			sfinv and sfinv.get_nav_fs(player, context, context.nav_titles, context.nav_idx) or "",
 			"container[0.5,0.5]",
 			"box[" .. -2*p .. "," .. 6.25 - 2*p .. ";" .. 12.25 + 4*p .. "," .. 4.75 + 4*p .. ";#FFF0]",
 			"list[current_player;main;0,6.25;10,4;]",
+			-- "list[current_player;craft;3,0;3,3;]",
+    		-- "list[current_player;craftpreview;7,1;1,1;]",
 			"container[0,6.25]",
 			auto_storage.get_locked_highlight(player),
 			"container_end[]",
@@ -47,3 +51,28 @@ end)
 -- minetest.override_item(":", {
 --
 -- })
+sfinv.register_page("c_creative", {
+title = "Creative",
+get = function(self, player, context)
+	local fs = {
+		"formspec_version[6]",
+		"size[13.25,12]",
+		"padding[0,0]",
+
+		sfinv and sfinv.get_nav_fs(player, context, context.nav_titles, context.nav_idx) or "",
+		"container[0.5,0.5]",
+			"box[" .. -1*p .. "," .. 0 - 1*p .. ";" .. 12.25 + 2*p .. "," .. 0.75 + 2*p .. ";#FFF0]",
+			"box[" .. -2*p .. "," .. 6.25 - 2*p .. ";" .. 12.25 + 4*p .. "," .. 4.75 + 4*p .. ";#FFF0]",
+			c_creative.get_creative_inv_fs(player, 10, 4),
+			"list[current_player;main;0,6.25;10,4;]",
+			"listring[]",
+		"container_end[]",
+	}
+	fs = table.concat(fs)
+	if minetest.global_exists("cfs") then
+		fs = cfs.style_formspec(fs, player)
+	end
+	return fs
+end,
+})
+c_creative.register_callback("", sfinv.set_player_inventory_formspec)

@@ -239,8 +239,8 @@ np_generic = {
         spread = {x = 10, y = 10, z = 10},
         seed = 0,
         octaves = 1,
-        -- persist = 0.63,
-        -- lacunarity = 2.0,
+        persist = 0.63,
+        lacunarity = 2.0,
 }
 
 np_terrain_height = {
@@ -345,5 +345,5 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	vm:calc_lighting()
 	vm:write_to_map()
 
-	minetest.chat_send_all("Chunk generation time: " .. (minetest.get_us_time() - t0)/1000 .. " ms")
+	print("Chunk generation time: " .. (minetest.get_us_time() - t0)/1000 .. " ms")
 end)

@@ -1,6 +1,53 @@
+===========
+CONVENTION:
+===========
+
+fs_[width/height] - refers to raw formspec units
+[width/height] - refers to inventory slots with (0.25) padding
+
 =====
 TODO:
 =====
+Generic Minetest Game
+	Stone:
+		varieties: limestone, slate, granite
+	 	shapes: boulder, 3 pebels, full rock, cobble, small bricks, large bricks, block, pillar?, wall
+	plants:
+		3 farmable plants: hemp(for string and fabric), rice(for glue and food), yams(for food and dye)
+	evaporation pools for salt making
+
+
+EVERY FORMSPEC MUST USE: "padding[0,0]" MANDATORY!!!!!
+
+Hud when hovering over chests/furnaces dispalying their content
+
+terraria style hammer for changing node shapes in world, no extra crafting necessary
+
+cassava, "brown" tuber
+
+"roomba" which does grass cutting, land plowing, farming?
+
+keeping track of loaded blocks: https://forum.minetest.net/viewtopic.php?p=429505#p429505
+
+stairs, slabs, etc ... are 1 to 1, 1 full node crafts to 1 slab crafts to 1 stair. no messing with ratios
+
+inventory textures for glowing_air
+a setting which when true, invisible nodes will have a texture
+
+game simmilar to decked out
+	a way to defeat the beasts, might even be the main objective
+	sneak around to complete tasks and find required items to dereat them
+		the goal is to slay a specific beast, but you can also hunt the others to clear the way and get some bonus reward
+
+instead of items despawning, they turn into a "pile of items" node
+
+creative:
+	creative inventory
+	immediate node digging
+	infinite stacks
+	no excesive node drops
+	creative priv
+
 creative should have silk touch by default
 
 ingame way to increase hotbar size

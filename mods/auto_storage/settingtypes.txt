@@ -5,5 +5,5 @@ auto_storage_range (Automatic storage range) int 2 1 8
 
 # Visual storage
 #
-# When enabled Auto Storage will visually display items moveing from the player to containers.
+# When enabled Auto Storage will visually display items moving from the player to containers.
 auto_storage_visual (Visual storage) bool true

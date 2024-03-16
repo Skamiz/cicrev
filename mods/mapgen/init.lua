@@ -2,10 +2,12 @@ local mod_name = minetest.get_current_modname()
 local mod_path = minetest.get_modpath(mod_name)
 
 mapgen = {}
+mapgen.mod_storage = minetest.get_mod_storage()
 
 -- TODO: consider putting content ID's in their own file, maybe into the table 'c'
 
 dofile(mod_path.."/util.lua")
+dofile(mod_path.."/cartography.lua")
 -- dofile(mod_path.."/make_frame.lua")
 -- dofile(mod_path.."/flat.lua")
 
@@ -30,13 +32,17 @@ dofile(mod_path.."/util.lua")
 -- dofile(mod_path.."/layer_transition.lua")
 -- dofile(mod_path.."/mountains.lua")
 -- dofile(mod_path.."/plateaus.lua")
-dofile(mod_path.."/offset.lua")
+-- dofile(mod_path.."/offset.lua")
+dofile(mod_path.."/concentric.lua")
 
-dofile(mod_path.."/ore_veins.lua")
+-- dofile(mod_path.."/ore_veins.lua")
 -- dofile(mod_path.."/caves.lua")
 -- dofile(mod_path.."/template.lua")
+-- dofile(mod_path.."/fake3d.lua")
+-- dofile(mod_path.."/template_async.lua")
 -- dofile(mod_path.."/noise_research.lua")
 -- dofile(mod_path.."/test.lua")
+-- dofile(mod_path.."/delete_map.lua")
 
 
 

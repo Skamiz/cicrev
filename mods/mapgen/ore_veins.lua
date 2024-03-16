@@ -2,8 +2,7 @@
 ore vein generation test
 
 ]]
-local storage = minetest.get_mod_storage()
-local random -- because math.random doesn't apparently? give deterministic results
+local random
 
 local registered_ores = {}
 mapgen.registered_ores = registered_ores
@@ -70,11 +69,12 @@ end)
 
 mapgen.register_ore({
 	ore = {"cicrev:vein_native_copper"}, -- can be multiple nodes
-	wherein = { "group:natural_stone"}, -- if this is nil, generates in "group:natural_stone"
+	-- wherein = {"group:natural_stone"}, -- if this is nil, generates in "group:natural_stone"
+	wherein = {"air"}, -- if this is nil, generates in "group:natural_stone"
 	minp = 0, -- if it's a single number take it to mean the y value
 	maxp = 20, -- can also be a vector
 	clust_num_ores = 20, -- if this is a function, it is called with the given position as argument and returns a number
-	clust_scarcity = 8 * 8 * 8,
+	clust_scarcity = 20 * 20 * 20,
 	-- noise_threshold = 0, -- see lua_api
 	-- noise_params = {}
 })
@@ -102,7 +102,7 @@ local function get_ore_positions(start_pos, size)
 		-- bias the positions index to be more likely to select more recently added positions
 		-- resulting in more "stringy" ore veins, which are less clustered towards the middle
 		-- local l = next_index / #neighbor_positions
-		-- l = math.pow(l, 0.5)
+		-- l = math.pow(l, 0.5) -- best exponent to use here depends a bit on cluster size, biger cluster -> smaler exponent
 		-- l = l * #neighbor_positions
 		-- next_index = math.max(1, math.ceil(l))
 

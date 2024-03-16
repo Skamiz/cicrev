@@ -12,6 +12,7 @@ local c_stone = minetest.get_content_id("df_stones:andesite")
 minetest.set_mapgen_setting("water_level", "0", true)
 local world_seed = minetest.get_mapgen_setting("seed")
 world_seed = world_seed % 5000 -- when the seed is too large it breaks things
+math.randomseed(world_seed)
 
 --noise parameters
 local np_3d = {
@@ -49,20 +50,19 @@ local nobj_2d = noise_handler.get_noise_object(np_2d, chunk_size)
 local data = {}
 
 minetest.register_on_generated(function(minp, maxp, chunkseed)
+	math.randomseed(chunkseed)
 	-- early exit if the mapgen doesn't operate in this hight range
 	-- if maxp.y < -100 or minp.y > 100 then return end
 
 	-- local t0 = minetest.get_us_time()
 
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
+	local area = VoxelArea(emin, emax)
 	vm:get_data(data)
 
 	-- get noise data in a flat array
 	local nvals_3d = nobj_3d:get_3d_map_flat(minp)
 	local nvals_2d = nobj_2d:get_2d_map_flat(minp)
-
-	math.randomseed(chunkseed)
 
 	-- noise index, same as i3d
 	local ni = 0
@@ -101,5 +101,5 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 	-- vm:set_lighting({day = 0, night = 0})
 	-- vm:calc_lighting()
 	vm:write_to_map()
-	-- print(((minetest.get_us_time() - t0) / 1000000) .. " s" )
+	-- print(((minetest.get_us_time() - t0) / 1000) .. " ms" )
 end)

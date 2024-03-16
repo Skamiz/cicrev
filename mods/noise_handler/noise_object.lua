@@ -2,33 +2,21 @@
 -- which is when the noise object is registered
 -- and 'PerlinNoise()' doesn't take into acount the map seed
 local function get_2d(noise, pos)
-	if not noise.noise_obj then
-		noise.noise_obj = minetest.get_perlin(noise.params)
-	end
 	-- switched around z and y as this is the usual use case
-	return noise.noise_obj:get_2d({x = pos.x, y = pos.z, z = 0})
+	return noise.noise_obj:get_2d({x = pos.x, y = pos.z})
 end
 
 local function get_3d(noise, pos)
-	if not noise.noise_obj then
-		noise.noise_obj = minetest.get_perlin(noise.params)
-	end
 	return noise.noise_obj:get_3d(pos)
 end
 
 local function get_2d_map_flat(noise, minp)
-	if not noise.noise_map_obj then
-		noise.noise_map_obj = minetest.get_perlin_map(noise.params, noise.chunk_size)
-	end
 	-- switched around z and y as this is the usual use case
-	noise.noise_map_obj:get_2d_map_flat({x = minp.x, y = minp.z, z = 0}, noise.buffer_2d)
+	noise.noise_map_obj:get_2d_map_flat({x = minp.x, y = minp.z}, noise.buffer_2d)
 	return noise.buffer_2d
 end
 
 local function get_3d_map_flat(noise, minp)
-	if not noise.noise_map_obj then
-		noise.noise_map_obj = minetest.get_perlin_map(noise.params, noise.chunk_size)
-	end
 	noise.noise_map_obj:get_3d_map_flat(minp, noise.buffer_3d)
 	return noise.buffer_3d
 end
@@ -79,7 +67,14 @@ function noise_handler.get_noise_object(params, chunk_size)
 		amplitude = amplitude,
 		min = min,
 		max = max,
+
+		noise_obj = nil,
+		noise_map_obj = nil,
 	}
+	minetest.after(0, function()
+		noise_object.noise_obj = minetest.get_perlin(noise_object.params, noise_object.chunk_size)
+		noise_object.noise_map_obj = minetest.get_perlin_map(noise_object.params, noise_object.chunk_size)
+	end)
 
 	return noise_object
 end

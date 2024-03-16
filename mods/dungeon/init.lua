@@ -1,7 +1,11 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+dungeon = {}
+dungeon.TILE_SIZE = 3 -- size of dungeon tiles in nodes
+
 dofile(modpath .. "/commands.lua")
+dofile(modpath .. "/player_movement.lua")
 dofile(modpath .. "/interface.lua")
 
 -- reset = true
@@ -97,6 +101,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	player:set_wielded_item(item)
 end)
 
+minetest.register_on_joinplayer(function(player)
+	player:set_properties({eye_height = 1.5})
+end)
 
 
 minetest.register_node("dungeon:stone_brick", {
@@ -162,6 +169,9 @@ minetest.register_node("dungeon:gate_closed", {
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		minetest.swap_node(pos, {name = "dungeon:gate_open", param2 = node.param2})
 	end,
+	_on_interact = function(pos, node, player)
+		minetest.swap_node(pos, {name = "dungeon:gate_open", param2 = node.param2})
+	end,
 })
 
 minetest.register_node("dungeon:gate_open", {
@@ -172,7 +182,7 @@ minetest.register_node("dungeon:gate_open", {
 	tiles = {"dungeon_gate_top.png", "dungeon_gate_top.png", "dungeon_gate_top.png^[transformR90", "dungeon_gate_top.png^[transformR90",
 			"[combine:48x48:0,-40=dungeon_gate.png", "[combine:48x48:0,-40=dungeon_gate.png"},
 	use_texture_alpha = "opaque",
-	groups = {},
+	groups = {walkable = 1},
 	visual_scale = 3,
 	node_box = {
         type = "fixed",
@@ -187,6 +197,9 @@ minetest.register_node("dungeon:gate_open", {
         fixed = {-1.5, 1, -3/16, 1.5, 1.5, 3/16}
     },
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		minetest.swap_node(pos, {name = "dungeon:gate_closed", param2 = node.param2})
+	end,
+	_on_interact = function(pos, node, player)
 		minetest.swap_node(pos, {name = "dungeon:gate_closed", param2 = node.param2})
 	end,
 })
@@ -250,7 +263,7 @@ minetest.register_on_mods_loaded(function()
 		if def._on_lbm then
 			local groups = table.copy(def.groups)
 			groups["_on_lbm"] = 1
-			minetest.override_item(name,{
+			minetest.override_item(name, {
 				groups = groups,
 			})
 		end

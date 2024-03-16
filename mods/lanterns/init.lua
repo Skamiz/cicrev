@@ -24,6 +24,7 @@ for i = 1, minetest.LIGHT_MAX do
     local light_def = table.copy(glowing_air)
 	light_def.description = light_def.description .. " " .. i
     light_def.light_source = i
+    light_def.inventory_image = "lanterns_light_" .. i .. ".png"
     minetest.register_node("lanterns:light_" .. i, light_def)
 end
 

@@ -10,16 +10,16 @@ local function show_pysiscs_formspec(name)
 	local player = minetest.get_player_by_name(name)
 	local po = player:get_physics_override()
 	local fs = "formspec_version[4]" ..
-	"size[10.75,8.5]"..
+	"size[8.75,10.75]"..
 	"container[0.5,0.5]"
 
 	local n = 0
 	for k, v in pairs(po) do
-		fs = fs .. "label[0," .. n + 0.5 .. ";" .. k .. "]"
+		fs = fs .. "label[0," .. n * 0.75 + 0.5 .. ";" .. k .. "]"
 		if type(v) == "boolean" then
-			fs = fs .. "checkbox[5," .. n + 0.5 .. ";" .. k .. ";;" .. tostring(v) .. "]"
+			fs = fs .. "checkbox[5," .. n * 0.75 + 0.5 .. ";" .. k .. ";;" .. tostring(v) .. "]"
 		elseif type(v) == "number" then
-			fs = fs .. "field[5," .. n + 0.25 .. ";2,0.5;" .. k .. ";;" .. v .. "]"
+			fs = fs .. "field[5," .. n * 0.75 + 0.25 .. ";2,0.5;" .. k .. ";;" .. v .. "]"
 		end
 		n = n + 1
 	end

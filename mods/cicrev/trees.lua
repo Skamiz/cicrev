@@ -37,8 +37,8 @@ function cicrev.register_tree(name, description, leaf_distance)
 	        },
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			local t = minetest.get_node_timer(pos)
-			t:start(math.random(60 * 20, 60 * 60))
-			-- t:start(math.random(1, 5))
+			-- t:start(math.random(60 * 20, 60 * 60))
+			t:start(math.random(1, 5))
 		end,
 		on_timer = function(pos, elapsed)
 			minetest.remove_node(pos)

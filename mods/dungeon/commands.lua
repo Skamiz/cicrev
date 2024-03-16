@@ -7,7 +7,7 @@ local worldpath = minetest.get_worldpath()
 minetest.register_chatcommand("dungeon", {
 	params = "<dungeon data file> <schematic 1> <schematic 2> ... ",
 	description = "Place dungeon. First argumet is a lua file specifying the structure. Following arguments are schematics to be used.",
-	privs = {server=true},
+	privs = {server = true},
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		local params = param:split(" ")
@@ -30,5 +30,44 @@ minetest.register_chatcommand("dungeon", {
 						true)
 			end
 		end
+	end,
+})
+minetest.register_chatcommand("fov", {
+	params = "<val>",
+	description = "Set player FOV property.",
+	privs = {},
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		local fov = tonumber(param)
+		if fov then
+			player:set_fov(fov, nil, 1)
+		end
+	end,
+})
+minetest.register_chatcommand("offs", {
+	params = "<val>",
+	description = "Set player camera offset property.",
+	privs = {},
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		local offs = tonumber(param)
+		if offs then
+			player:set_eye_offset(vector.new(0, 0, offs))
+		end
+	end,
+})
+minetest.register_chatcommand("fog", {
+	params = "<val>",
+	description = "Set player fog property.",
+	privs = {},
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		player:set_sky({
+			base_color = param,
+			type = "plain",
+			-- fog = {
+			--
+			-- },
+		})
 	end,
 })

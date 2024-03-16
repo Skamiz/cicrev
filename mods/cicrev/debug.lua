@@ -100,6 +100,146 @@ end
 local abm_detect
 
 local function f(i) return i * i end
+
+local function hi()
+	print("hi")
+end
+local function run_async()
+	local np_terrain = {
+		offset = 0,
+		scale = 1,
+		spread = {x = 1944, y = 3078, z = 1944},
+		seed = 110013,
+		octaves = 5,
+		persist = 0.3,
+		lacunarity = 3,
+		--flags = 'noeased',
+	}
+	local nobj_terrain = minetest.get_perlin(np_terrain)
+
+	minetest.handle_async(function(a_nobj_terrain)
+
+		return a_nobj_terrain:get_2d({x = 100, y = 100})
+	end,
+	function(val)
+		print("returned val: " .. val)
+	end,
+	nobj_terrain)
+
+	print("actual val: " .. nobj_terrain:get_2d({x = 100,y  = 100}))
+
+	-- print("outside async:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+
+
+end
+
+local buffer = {}
+local function run_noise_speed_test()
+	local np = {
+		offset = 3,
+		scale = 10,
+		spread = {x = 100, y = 30, z = 40},
+		seed = 30,
+		octaves = 5,
+		persist = 0.6,
+		lacunarity = 2.3,
+		flags = "eased",
+	}
+	local chunk_size = vector.new(80, 80, 80)
+	local noise_obj = minetest.get_perlin(np, chunk_size)
+	local noise_map_obj = minetest.get_perlin_map(np, chunk_size)
+
+	local positions = {}
+	for x = 1, 80 do
+		for y = 1, 80 do
+			for z = 1, 80 do
+				-- table.insert(positions, vector.new(x, y, z))
+				table.insert(positions, vector.new(math.random(-5000, 5000), math.random(-5000, 5000), math.random(-5000, 5000)))
+			end
+		end
+	end
+
+	local t0 = minetest.get_us_time()
+	for k, pos in pairs(positions) do
+		-- noise_obj:get_2d(pos)
+		noise_obj:get_3d(pos)
+	end
+	print("single noise:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+
+	local t0 = minetest.get_us_time()
+	for i = 1, 80 do
+		noise_map_obj:get_2d_map_flat(positions[i], buffer)
+	end
+	print("2d noise:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+
+	local t0 = minetest.get_us_time()
+	noise_map_obj:get_3d_map_flat(positions[1], buffer)
+	print("3d noise:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+end
+
+local function run_speed_speed_test()
+	local t0 = minetest.get_us_time()
+	for i = 1, 80*80*4 do
+		minetest.get_us_time()
+	end
+	print("get_time:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+end
+
+local function add(a, b)
+	return a + b
+end
+
+local function run_function_speed_test()
+	-- conclusion: not mesured diference
+	local t0 = minetest.get_us_time()
+	for i = 1, 80*80*80 do
+		local result = i + (i + 1)
+	end
+	print("direct:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+
+	local t0 = minetest.get_us_time()
+	for i = 1, 80*80*80 do
+		local result = add(i, i + 1)
+	end
+	print("function:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+	print(result)
+end
+
+local max = math.max
+local function run_localization_speed_test()
+	-- conclusion: no mesured diference
+	local t0 = minetest.get_us_time()
+	for i = 1, 80*80*80000 do
+		local result = math.max(i, (i + 1))
+	end
+	print("math.max:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+
+	local t0 = minetest.get_us_time()
+	for i = 1, 80*80*80000 do
+		local result = max(i, i + 1)
+	end
+	print("local max:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+end
+
+local function run_loop_speed_test()
+	-- conclusion: no mesured diference
+
+	local t0 = minetest.get_us_time()
+	for i = 1, 80*80*80000 do
+
+	end
+	print("loop speed:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+
+	local t = true
+	local t0 = minetest.get_us_time()
+	for i = 1, 80*80*80000 do
+		if t then end
+	end
+	print("if loop speed:  " .. (minetest.get_us_time() - t0) / 1000 .. " ms")
+end
+
+
+
 minetest.register_craftitem("cicrev:axe_of_debug", {
 	description = "axe of debug",
 	inventory_image = "cicrev_axe_of_trees.png",
@@ -114,21 +254,33 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		-- minetest.show_formspec(placer:get_player_name(), "test", test_fs)
 		-- place_nodebox_object(pointed_thing.under, minetest.get_node(pointed_thing.under))
 
-		-- switch = not switch
-		-- minetest.add_entity(pointed_thing.above, "cicrev:test_mob", "")
+		-- run_noise_speed_test()
+		-- run_speed_speed_test()
+		-- run_function_speed_test()
+		-- run_localization_speed_test()
+		run_loop_speed_test()
 
+		-- run_async()
+
+		-- local np_terrain = {
+		-- 	offset = 0,
+		-- 	scale = 1,
+		-- 	spread = {x = 1944, y = 3078, z = 1944},
+		-- 	seed = 110013,
+		-- 	octaves = 5,
+		-- 	persist = 0.3,
+		-- 	lacunarity = 3,
+		-- 	--flags = 'noeased',
+		-- }
+		-- local no = minetest.get_perlin(np_terrain)
 		-- local t0 = minetest.get_us_time()
-		-- local t1, t2 = {}, {}
-		-- for i = 1, 1000000 do
-		-- 	table.insert(t1, i)
+		-- for x = 1, 600 do
+		-- 	for z = 1, 600 do
+		-- 		no:get_2d({x = x * 100,y = z * 100})
+		-- 		no:get_2d({x = x * 100 + 50,y = z * 100 + 50})
+		-- 	end
 		-- end
-		-- print("'insert' time: " .. (minetest.get_us_time() - t0) / 1000000 .. " s")
-		-- local sqrt = math.sqrt
-		-- local t0 = minetest.get_us_time()
-		-- for i = 1, 1000000 do
-		-- 	t2[#t2 + 1] = i
-		-- end
-		-- print(" '# + 1' time: " .. (minetest.get_us_time() - t0) / 1000000 .. " s")
+		-- print(" perlin time: " .. (minetest.get_us_time() - t0) / 1000000 .. " s")
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_effects.add_effect(user, {
@@ -143,6 +295,7 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 	on_use = function(itemstack, user, pointed_thing)
 		-- abm_detect = true
 		player_effects.remove_effect(user,"speed", "debuging_axe")
+
 		--
 		-- local node = minetest.get_node(pointed_thing.under)
 		-- node.param2 = y_rot[node.param2]

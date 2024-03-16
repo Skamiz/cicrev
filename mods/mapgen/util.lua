@@ -7,17 +7,25 @@ u = {}
 
 local area = VoxelArea:new{MinEdge={x = 1, y = 1, z = 1}, MaxEdge={x = 80, y = 84, z = 80}}
 
+local function clamp(n, min, max)
+	return math.min(max, math.max(min, n))
+end
+mapgen.clamp = clamp
+
 local function lerp(a, b, ratio)
 	return a * (1 - ratio) + b * ratio
 end
+mapgen.lerp = lerp
 
 local function ilerp(a, b, value)
 	return (value - a) / (b - a)
 end
+mapgen.ilerp = ilerp
 
 local function remap(in_a, in_b, out_a, out_b, value)
 	return lerp(out_a, out_b, ilerp(in_a, in_b, value))
 end
+mapgen.remap = remap
 -- asumes distance incerases along axis
 -- lerps values for positions between pos and pos[axis] += distance
 local function c_lerp(data, pos, axis, distance)
