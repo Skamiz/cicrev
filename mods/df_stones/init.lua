@@ -90,7 +90,7 @@ for _, v in pairs(stones) do
 	-- })
 
 	local recipes = minetest.get_modpath("fast_craft")
-	local walls = minetest.get_modpath("xjoined")
+	local walls = minetest.get_modpath("shapes")
 
 	if recipes then
 		fast_craft.register_craft({
@@ -102,7 +102,7 @@ for _, v in pairs(stones) do
 	end
 
 	if walls then
-		xjoined.register_wall(modname .. ":wall_brick_" .. lower, {
+		shapes.register.wall(modname .. ":wall_brick_" .. lower, {
 			description = v .. " Brick Wall",
 			tiles = {{name = mod_textures[bricks_texture] and bricks_texture or texture_name .. ".png^df_stones_brick.png"}},
 		})

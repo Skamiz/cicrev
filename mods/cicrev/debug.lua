@@ -669,3 +669,151 @@ end
 --
 -- -- right vector normailzed so it has a length of 1 ; orange
 -- right = right:normalize()
+
+
+
+
+
+-- PLETTE STUFF
+local function clamp(n, min, max)
+	return math.min(max, math.max(min, n))
+end
+local function lerp(a, b, ratio)
+	return (a * (1 - ratio)) + (b * ratio)
+end
+local function ilerp(a, b, value)
+	return (value - a) / (b - a)
+end
+local function remap(in_a, in_b, out_a, out_b, value)
+	return lerp(out_a, out_b, ilerp(in_a, in_b, value))
+end
+
+
+
+
+
+
+local function rgb_to_srgb(c)
+	local c = table.copy(c)
+	for k, v in pairs(c) do
+		local nv
+		if v >= 0.0031308 then
+			c[k] = 1.055 * v^(1/2.4) - 0.055
+		else
+			c[k] = 12.92 * v
+		end
+	end
+	return c
+end
+local function srgb_to_rgb(c)
+	local c = table.copy(c)
+	for k, v in pairs(c) do
+		local nv
+		if v >= 0.04045 then
+			c[k] = ((v + 0.55) / (1 + 0.055))^2.4
+		else
+			c[k] = v / 12.92
+		end
+	end
+	return c
+end
+local function scale_1_to_255(c)
+	local c = table.copy(c)
+	for k, v in pairs(c) do
+		c[k] = remap(0, 1, 0, 255, v)
+	end
+	return c
+end
+
+
+local function lch_to_lab(c)
+	local lab = {}
+	lab.L = c.L
+	lab.a = c.C * math.cos(c.h)
+	lab.b = c.C * math.sin(c.h)
+	return lab
+end
+
+
+local function oklab_to_rgb(c)
+	local l_ = c.L + 0.3963377774 * c.a + 0.2158037573 * c.b
+	local m_ = c.L - 0.1055613458 * c.a - 0.0638541728 * c.b
+	local s_ = c.L - 0.0894841775 * c.a - 1.2914855480 * c.b
+
+	local l = l_*l_*l_
+	local m = m_*m_*m_
+	local s = s_*s_*s_
+
+	local rgb = {
+		r =  4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+		b = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+		g = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
+    }
+
+	return rgb
+end
+
+
+
+
+
+
+
+local transparent = {r = 0, g = 0, b = 0, a = 0}
+local function get_palette_image()
+	local image_data = {}
+
+	-- for C = 0, 15 do
+	-- 	for h = 0, 15 do
+	-- 		local lch = {L = C/30 + 0.5, C = 0.1, h = math.rad(h/15*360)}
+	-- 		image_data[#image_data + 1] = scale_1_to_255(rgb_to_srgb(oklab_to_rgb(lch_to_lab(lch))))
+	-- 	end
+	-- end
+
+
+	for L = 1, 16 do
+		for a = 1, 8 do
+			local lab_color = {L = remap(1, 16, 0, 1, L), a = remap(1, 8, -1, 1, a), b = 0}
+			image_data[#image_data + 1] = scale_1_to_255(rgb_to_srgb(oklab_to_rgb(lab_color)))
+		end
+	end
+	for L = 1, 16 do
+		for b = 1, 8 do
+			local lab_color = {L = L/16, a = 0, b = remap(1, 8, -1, 1, b)}
+			image_data[#image_data + 1] = scale_1_to_255(rgb_to_srgb(oklab_to_rgb(lab_color)))
+		end
+	end
+
+	-- for r = 1, 4 do
+	-- 	for g = 1, 8 do
+	-- 		for b = 1, 8 do
+	-- 			image_data[#image_data + 1] = {r = remap(1, 4, 1, 255, r), b = remap(1, 8, 1, 255, b), g = remap(1, 8, 1, 255, g), a = 255}
+	-- 		end
+	-- 	end
+	-- end
+
+	for i = 1, 16*16 do
+		if not image_data[i] then
+			image_data[i] = transparent
+		end
+	end
+	return "image[1,1;5,5;[png:" .. minetest.encode_base64(minetest.encode_png(16, 16, image_data)) .. "]"
+end
+
+minetest.register_chatcommand("c", {
+	params = "",
+	description = "color palette test",
+	privs = {},
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		local fs = {
+			"formspec_version[6]",
+			"size[7,7]",
+			"padding[0,0]",
+			"box[0,0;7,7;#888F]",
+			get_palette_image()
+		}
+
+		minetest.show_formspec(player:get_player_name(), "test", table.concat(fs))
+	end,
+})

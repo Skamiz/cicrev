@@ -112,8 +112,8 @@ minetest.register_node("dungeon:stone_brick", {
 	groups = {},
 })
 
-if minetest.get_modpath("xjoined") then
-	xjoined.register_wall("dungeon:wall_brick", {
+if minetest.get_modpath("shapes") then
+	shapes.register.wall("dungeon:wall_brick", {
 		description = "Brick Wall",
 		tiles = {{name = "dungeon_stone_brick_4x4.png", align_style = "world", scale = 4}},
 	})

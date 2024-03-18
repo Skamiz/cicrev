@@ -498,6 +498,7 @@ local function show_cartography_map(player, category)
 	local fs = {
 		"formspec_version[6]",
 		"size[11,11]",
+		"padding[0,0]",
 		get_fs_tabs(category),
 		"container[0.5,0.5]",
 		get_cartography_map(10, category),

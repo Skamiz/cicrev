@@ -266,28 +266,28 @@ cicrev.register_tree("osage", "Osage", 4)
 -- WOOD
 -- ====
 
-xjoined.register_fence("cicrev:fence_oak", {
+shapes.register.fence("cicrev:fence_oak", {
 	description = "Oak Fence",
 	tiles = {"cicrev_fence_oak_top.png", "cicrev_fence_oak_top.png", "cicrev_fence_oak_side.png"},
 	groups = {choppy = 1, wood = 1},
 	use_texture_alpha = "opaque",
 })
 
-xjoined.register_fence("cicrev:fence_chestnut", {
+shapes.register.fence("cicrev:fence_chestnut", {
 	description = "Chestnut Fence",
 	tiles = {"cicrev_fence_chestnut_top.png", "cicrev_fence_chestnut_top.png", "cicrev_fence_chestnut_side.png"},
 	groups = {choppy = 1, wood = 1},
 	use_texture_alpha = "opaque",
 })
 
-xjoined.register_fence("cicrev:fence_chaktekok", {
+shapes.register.fence("cicrev:fence_chaktekok", {
 	description = "Chakte Kok Fence",
 	tiles = {"cicrev_fence_chaktekok_top.png", "cicrev_fence_chaktekok_top.png", "cicrev_fence_chaktekok_side.png"},
 	groups = {choppy = 1, wood = 1},
 	use_texture_alpha = "opaque",
 })
 
-xjoined.register_fence("cicrev:fence_dark", {
+shapes.register.fence("cicrev:fence_dark", {
 	description = "Dark Fence",
 	tiles = {"cicrev_fence_dark_top.png", "cicrev_fence_dark_top.png", "cicrev_fence_dark_side.png"},
 	groups = {choppy = 1, wood = 1},
