@@ -1,6 +1,6 @@
 
 local MODNAME = minetest.get_current_modname()
-dofile(minetest.get_modpath(MODNAME).."/nodebox_definitions.lua")
+local nodeboxes = dofile(minetest.get_modpath(MODNAME).."/nodebox_definitions.lua")
 
 local chiseable_nodes = {}
 
@@ -49,13 +49,13 @@ end
 
 local offsets = {
     {x = -0.5, y = -0.5, z = -0.5},
-    {x = -0.5, y = -0.5, z = 0.5},
-    {x = -0.5, y = 0.5, z = -0.5},
-    {x = -0.5, y = 0.5, z = 0.5},
-    {x = 0.5, y = -0.5, z = -0.5},
-    {x = 0.5, y = -0.5, z = 0.5},
-    {x = 0.5, y = 0.5, z = -0.5},
-    {x = 0.5, y = 0.5, z = 0.5},
+    {x = -0.5, y = -0.5, z =  0.5},
+    {x = -0.5, y =  0.5, z = -0.5},
+    {x = -0.5, y =  0.5, z =  0.5},
+    {x =  0.5, y = -0.5, z = -0.5},
+    {x =  0.5, y = -0.5, z =  0.5},
+    {x =  0.5, y =  0.5, z = -0.5},
+    {x =  0.5, y =  0.5, z =  0.5},
 }
 
 
@@ -200,7 +200,6 @@ minetest.register_craftitem("chisel:chisel", {
                 end
             end
         end
-
     end,
 
     on_place = function(itemstack, placer, pointed_thing)

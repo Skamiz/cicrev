@@ -88,7 +88,7 @@ minetest.register_craftitem("cicrev:coal", {
 		-- minetest.chat_send_all(node_def.drawtype)
 		if node_def.drawtype ~= "normal" then return end
 		local pos = pointed_thing.above
-		local param2 = get_arrow_rotation(user, pointed_thing)
+		local param2 = cicrev.get_arrow_rotation(user, pointed_thing)
 
 		minetest.set_node(pos, {name = "cicrev:coal_arrow", param2 = param2})
 	end

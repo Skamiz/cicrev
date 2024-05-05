@@ -294,11 +294,6 @@ shapes.register.fence("cicrev:fence_dark", {
 	use_texture_alpha = "opaque",
 })
 
-cicrev.register_wall("cicrev:wall_dark", {
-	description = "Dark Wall",
-	tiles = {"cicrev_planks_dark.png"},
-	groups = {choppy = 1, wood = 1},
-})
 
 -- =====
 -- SOILS
@@ -487,51 +482,6 @@ cicrev.register_stalactite("cicrev:ice_spike", {
 	use_texture_alpha = "blend",
 	groups = {slippery = 5},
 })
--- minetest.register_node("cicrev:ice_spike_1", {
--- 	description = "Ice Spike",
--- 	drawtype = "nodebox",
--- 	sunlight_propagates = true,
--- 	paramtype = "light",
--- 	paramtype2 = "facedir",
--- 	tiles = {"cicrev_ice.png^[opacity:200"},
--- 	use_texture_alpha = "blend",
--- 	groups = {slippery = 5},
--- 	node_box = {
--- 		type = "fixed",
--- 		fixed = {-2/16, -8/16, -2/16, 2/16, 8/16, 2/16},
--- 	},
--- 	on_place = place_pillar,
--- })
--- minetest.register_node("cicrev:ice_spike_2", {
--- 	description = "Ice Spike",
--- 	drawtype = "nodebox",
--- 	sunlight_propagates = true,
--- 	paramtype = "light",
--- 	paramtype2 = "facedir",
--- 	tiles = {"cicrev_ice.png^[opacity:200"},
--- 	use_texture_alpha = "blend",
--- 	groups = {slippery = 5},
--- 	node_box = {
--- 		type = "fixed",
--- 		fixed = {-4/16, -8/16, -4/16, 4/16, 8/16, 4/16},
--- 	},
--- 	on_place = place_pillar,
--- })
--- minetest.register_node("cicrev:ice_spike_3", {
--- 	description = "Ice Spike",
--- 	tiles = {"cicrev_ice.png^[opacity:200"},
--- 	drawtype = "nodebox",
--- 	paramtype = "light",
--- 	paramtype2 = "facedir",
--- 	sunlight_propagates = true,
--- 	use_texture_alpha = "blend",
--- 	groups = {slippery = 5},
--- 	node_box = {
--- 		type = "fixed",
--- 		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
--- 	},
--- 	on_place = place_pillar,
--- })
 
 minetest.register_node("cicrev:path", {
 	description = "Path",

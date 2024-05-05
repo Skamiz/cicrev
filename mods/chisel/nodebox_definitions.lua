@@ -1,4 +1,4 @@
-nodeboxes = {
+local nodeboxes = {
     -- 1 missing
     [1] = {{
             type = "fixed",
@@ -141,3 +141,5 @@ nodeboxes = {
             matrix = {1, 0, 0, 0, 0, 0, 0, 0}
         }},
 }
+
+return nodeboxes

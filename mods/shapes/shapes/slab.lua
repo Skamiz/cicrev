@@ -4,6 +4,7 @@ local prototype = {
 	description = "nameless " .. shape_name,
 	paramtype = "light",
 	paramtype2 = "facedir",
+	node_placement_prediction = "",
 	groups = {},
 	drawtype = "nodebox",
 	node_box = {
@@ -12,6 +13,7 @@ local prototype = {
 			{-8/16, -8/16, -8/16,  8/16,  0/16,  8/16},
 		},
 	},
+	on_place = shapes.place.slab,
 }
 
 shapes.register[shape_name] = function(name, def)

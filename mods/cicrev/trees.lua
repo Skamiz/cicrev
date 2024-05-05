@@ -84,7 +84,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		tiles = {"cicrev_log_top_" .. name .. ".png", "cicrev_log_top_" .. name .. ".png", "cicrev_log_" .. name .. ".png"},
 		paramtype2 = "facedir",
 		groups = {choppy = 1, log = 1, wood = 1},
-		on_place = place_pillar,
+		on_place = shapes.place.pillar,
 		node_placement_prediction = "",
 	})
 
@@ -93,7 +93,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		tiles = {"cicrev_log_top_stripped_" .. name .. ".png", "cicrev_log_top_stripped_" .. name .. ".png", "cicrev_log_stripped_" .. name .. ".png"},
 		paramtype2 = "facedir",
 		groups = {choppy = 1, log = 1, wood = 1},
-		on_place = place_pillar,
+		on_place = shapes.place.pillar,
 		node_placement_prediction = "",
 	})
 
@@ -102,7 +102,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		tiles = {"cicrev_log_" .. name .. ".png"},
 		paramtype2 = "facedir",
 		groups = {choppy = 1, log = 1, wood = 1},
-		on_place = place_pillar,
+		on_place = shapes.place.pillar,
 		node_placement_prediction = "",
 	})
 
@@ -111,7 +111,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		tiles = {"cicrev_log_stripped_" .. name .. ".png"},
 		paramtype2 = "facedir",
 		groups = {choppy = 1, log = 1, wood = 1},
-		on_place = place_pillar,
+		on_place = shapes.place.pillar,
 		node_placement_prediction = "",
 	})
 
@@ -141,17 +141,10 @@ function cicrev.register_tree(name, description, leaf_distance)
 	})
 	make_chiseable(modprefix .. "planks_" .. name)
 
-	minetest.register_node(modprefix .. "panel_" .. name, {
+	shapes.register.panel(modprefix .. "panel_" .. name, {
 		description = description .. " Panel",
 		tiles = {{name = "cicrev_planks_" .. name .. ".png", align_style = "world"}},
-		drawtype = "nodebox",
-		paramtype = "light",
-		paramtype2 = "facedir",
 		groups = {choppy = 1, planks = 1, wood = 1},
-		node_box = {
-			type = "fixed",
-			fixed = {-8/16, -8/16, -8/16, 8/16, -4/16, 8/16}
-		},
 		node_placement_prediction = "",
 		on_place = minetest.rotate_node,
 	})

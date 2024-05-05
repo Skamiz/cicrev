@@ -2,6 +2,7 @@
 local test_def = {
 	description = "shapes test node",
 	tiles = {"shapes_test_node.png"},
+	groups = {["not_in_survival_inventory"] = 1},
 }
 minetest.register_node("shapes:test_node", test_def)
 

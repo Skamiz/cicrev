@@ -1,9 +1,8 @@
-local shape_name = "wedge"
+local shape_name = "panel"
 
 local prototype = {
 	description = "nameless " .. shape_name,
 	paramtype = "light",
-	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	node_placement_prediction = "",
 	groups = {},
@@ -11,10 +10,10 @@ local prototype = {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-8/16, -8/16,  0/16,  8/16,  0/16,  8/16},
+			{-8/16, -8/16, -8/16,  8/16,  -4/16,  8/16},
 		},
 	},
-	on_place = shapes.place.stair,
+	on_place = shapes.place.slab,
 }
 
 shapes.register[shape_name] = function(name, def)

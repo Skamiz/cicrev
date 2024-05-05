@@ -1,7 +1,12 @@
+--[[
+TODO: placement functions
+]]
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 shapes = {}
+-- disatnce from center of a node face which causes slabs to be placed rotated
+shapes.orthogonal_slab_margin = 6/16
 
 function shapes.add_group(def, group, rating)
 	if not def.groups[group] then
@@ -10,12 +15,16 @@ function shapes.add_group(def, group, rating)
 end
 
 shapes.place = {}
--- dofile(modpath .. "/placer_functions.lua")
+dofile(modpath .. "/pointed_pos.lua")
+dofile(modpath .. "/placer_functions.lua")
 
 shapes.register = {}
 dofile(modpath .. "/shapes/stair.lua")
 dofile(modpath .. "/shapes/slab.lua")
 dofile(modpath .. "/shapes/wedge.lua")
+
+dofile(modpath .. "/shapes/panel.lua")
+dofile(modpath .. "/shapes/pillar.lua")
 
 dofile(modpath .. "/shapes/fence.lua")
 dofile(modpath .. "/shapes/wall.lua")

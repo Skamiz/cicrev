@@ -46,7 +46,7 @@ minetest.register_tool("cicrev:knife_flint", {
 			choppy = {times = {[1]=7.0}, uses = 20, maxlevel = 0},
 		},
 	},
-	on_place = strip_bark,
+	on_place = cicrev.strip_bark,
 })
 
 minetest.register_tool("cicrev:axe_flint", {
@@ -59,7 +59,7 @@ minetest.register_tool("cicrev:axe_flint", {
 			choppy = {times = {[1]=2.0}, uses = 50, maxlevel = 0},
 		},
 	},
-	on_place = strip_bark,
+	on_place = cicrev.strip_bark,
 })
 
 minetest.register_tool("cicrev:mallet_wood", {

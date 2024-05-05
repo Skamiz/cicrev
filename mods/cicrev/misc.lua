@@ -120,12 +120,12 @@ local function get_arrow_direction(u, v)
 	return dir
 end
 
-function get_arrow_rotation(user, pointed_thing)
+function cicrev.get_arrow_rotation(user, pointed_thing)
 	local normal = vector.subtract(pointed_thing.under, pointed_thing.above)
 	local side = 0
 	local direction = 0
 	local pos = minetest.pointed_thing_to_face_pos(user, pointed_thing)
-	pos  = vector.subtract(pos, pointed_thing.above)
+	pos = vector.subtract(pos, pointed_thing.above)
 
 	direction = get_arrow_direction(pos.x, pos.z)
 	if normal.z < 0 then side = 4
@@ -142,17 +142,6 @@ function get_arrow_rotation(user, pointed_thing)
 	return side + direction
 end
 
-function place_pillar(itemstack, placer, pointed_thing)
-		local pt = pointed_thing
-		local param2 = 0
-		if pt.above.x ~= pt.under.x then
-			param2 = 12
-		elseif pt.above.z ~= pt.under.z then
-			param2 = 4
-		end
-
-	return minetest.item_place(itemstack, placer, pointed_thing, param2)
-end
 
 local barks_to_strip = {
 	["cicrev:log_oak"] = "cicrev:log_stripped_oak",
@@ -167,7 +156,7 @@ local barks_to_strip = {
 }
 
 -- if pointed_thing.under is a suitable block, replace it with a stripped variant
-function strip_bark(itemstack, placer, pointed_thing)
+function cicrev.strip_bark(itemstack, placer, pointed_thing)
 	local node_under = minetest.get_node(pointed_thing.under)
 	if  barks_to_strip[node_under.name] ~= nil then
 		minetest.set_node(pointed_thing.under, {name = barks_to_strip[node_under.name], param2 = node_under.param2})
@@ -178,119 +167,17 @@ function strip_bark(itemstack, placer, pointed_thing)
 	end
 end
 
-local fence_prototype = {
-	description = "This fence is missing a description.",
-	paramtype = "light",
-	paramtype2 = "facedir",
-	sunlight_propagates = true,
-	drawtype = "nodebox",
-	node_box = {
-		type = "connected",
-		fixed = {{-1/8, -1/2, -1/8, 1/8, 1/2, 1/8}},
-		connect_front = {
-			{-1/16, 2/16,-1/2, 1/16, 6/16,-1/8},
-			{-1/16,-6/16,-1/2, 1/16,-2/16,-1/8},
-			-- { -2/16, -7/16,  -7/16, -1/16,  7/16,  -4/16},
-		},
-		connect_left = {
-			{-1/2, 2/16,-1/16,-1/8, 6/16, 1/16},
-			{-1/2,-6/16,-1/16,-1/8,-2/16, 1/16},
-		},
-		connect_back = {
-			{-1/16, 2/16, 1/8, 1/16, 6/16, 1/2},
-			{-1/16,-6/16, 1/8, 1/16,-2/16, 1/2},
-			-- {  1/16, -7/16,  4/16,  2/16,  7/16,  7/16},
-		},
-		connect_right = {
-			{ 1/8, 2/16,-1/16, 1/2, 6/16, 1/16},
-			{ 1/8,-6/16,-1/16, 1/2,-2/16, 1/16},
-		},
-	},
-	connects_to = {"group:fence", "group:wall", "group:solid_node"},
-	groups = {}
-}
-
--- The definition should povide:
--- 		description
--- 		tiles
--- 		groups
-
-function cicrev.register_fence(name, def)
-	-- This probably won't beak anything as long as nobody treis to redefine a fence
-	for k, v in pairs(fence_prototype) do
-		if def[k] == nil then
-			def[k] = v
-		end
-	end
-	def.groups["fence"] = 1
-
-	minetest.register_node(name, def)
-end
-
-local wall_prototype = {
-	description = "This wall is missing a descripttion.",
-	paramtype = "light",
-	sunlight_propagates = true,
-	drawtype = "nodebox",
-	node_box = {
-		-- type = "fixed",
-		type = "connected",
-		fixed = 		{-3/16, -1/2, -3/16, 3/16, 1/2, 3/16},
-		connect_front = {-3/16, -1/2, -1/2, 3/16, 1/2, -3/16},
-		connect_left = 	{-1/2, -1/2, -3/16, -3/16, 1/2, 3/16},
-		connect_back = 	{-3/16, -1/2, 3/16, 3/16, 1/2, 1/2},
-		connect_right = {3/16, -1/2, -3/16, 1/2, 1/2, 3/16},
-	},
-	connects_to = {"group:wall", "group:fence", "group:solid_node"},
-	groups = {},
-}
-
-function cicrev.register_wall(name, def)
-	for k, v in pairs(wall_prototype) do
-		if def[k] == nil then
-			def[k] = v
-		end
-	end
-	def.groups["wall"] = 1
-
-	minetest.register_node(name, def)
-end
 
 
-local stalactite_prototype = {
-	description = "This stalactite is missing a descripttion.",
-	paramtype = "light",
-	paramtype2 = "facedir",
-	sunlight_propagates = true,
-	groups = {},
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {-2/16, -8/16, -2/16, 2/16, 8/16, 2/16},
-	},
-	on_place = place_pillar,
-}
-local stala_box_2 = {-4/16, -8/16, -4/16, 4/16, 8/16, 4/16}
-local stala_box_3 = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16}
 
 function cicrev.register_stalactite(name, def1)
-	for k, v in pairs(stalactite_prototype) do
-		if def1[k] == nil then
-			def1[k] = v
-		end
-	end
+	if not def1.groups then def1.groups = {} end
 	def1.groups["stalactite"] = 1
 
 	local def2 = table.copy(def1)
 	local def3 = table.copy(def1)
 
-	def2.node_box.fixed = stala_box_2
-	def3.node_box.fixed = stala_box_3
-
-	def2.groups.stalactite = 2
-	def3.groups.stalactite = 3
-
-	minetest.register_node(name .. "_1", def1)
-	minetest.register_node(name .. "_2", def2)
-	minetest.register_node(name .. "_3", def3)
+	shapes.register.pillar(name .. "_1", def1, 2)
+	shapes.register.pillar(name .. "_2", def2, 4)
+	shapes.register.pillar(name .. "_3", def3, 6)
 end

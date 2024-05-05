@@ -19,6 +19,10 @@ Generic Minetest Game
 
 EVERY FORMSPEC MUST USE: "padding[0,0]" MANDATORY!!!!!
 
+darksouls style comunication drop masks, way for players to comunicate ingame
+
+raillike drawtype path
+
 Hud when hovering over chests/furnaces dispalying their content
 
 terraria style hammer for changing node shapes in world, no extra crafting necessary
