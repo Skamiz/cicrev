@@ -43,3 +43,22 @@ end
 
 minetest.register_on_joinplayer(setup_player_data)
 minetest.register_on_leaveplayer(clear_player_data)
+
+
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+	return minetest.is_creative_enabled(placer:get_player_name())
+end)
+
+local old_handle_node_drops = minetest.handle_node_drops
+minetest.handle_node_drops = function(pos, drops, digger)
+	if not minetest.is_creative_enabled(digger:get_player_name()) then
+		return old_handle_node_drops(pos, drops, digger)
+	else
+		local inv = digger:get_inventory()
+		for _, item in pairs(drops) do
+			if not inv:contains_item("main", item) then
+				inv:add_item("main", item)
+			end
+		end
+	end
+end

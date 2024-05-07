@@ -10,7 +10,7 @@ local prototype = {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-4/16, -8/16, -4/16,  4/16,  8/16,  4/16},
+			{-6/16, -8/16, -6/16,  6/16,  8/16,  6/16},
 		},
 	},
 	on_place = shapes.place.pillar,
