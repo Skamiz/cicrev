@@ -37,6 +37,7 @@ sfinv.register_page(modname .. ":config", {
 		local fs = {
 			"formspec_version[6]",
 			"size[".. (auto_storage.inv_width * 1.25) + 0.75 .. ",6.25]",
+			"padding[0,0]",
 			"label[0.5,0.5;Configure which inventory slots can be automatically stored to nearby containers.]",
 			"container[0.5,1]",
 			auto_storage.get_slot_conf_formspec(player, auto_storage.inv_width),

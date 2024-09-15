@@ -8,6 +8,32 @@ fs_[width/height] - refers to raw formspec units
 =====
 TODO:
 =====
+Gamemode: teleportitis diseas
+	every minite (randomized) of so the player gets teleported to a random location [in a radius?]
+	foods/consumables/altar blesings/whatever,
+		to prolong the time to teleport
+		limit it's distance
+		bias it's destination?
+	goal is to cure the diseas
+
+tape measure - punch two positions so it tells you the distance
+
+just stright up no sticks, like terraria
+
+trophies - bronze, silver, gold
+
+player model statues
+	half the size of the player, so standing up they are 1 node tall
+	various positions - standing, sitting, laying down, etc
+
+stool, for sitting
+
+Can you use forspec prepend to add custom buttons to the Esc menu?
+
+infinnite tool durability, but the durability bar is repurposed to be tool sharpness ("condition")
+	decreasing sharpness decreases tool dig speed
+	5 stages - they appear in item description as "Condition: " .. new/worn/damaged/shabby/broken
+
 Generic Minetest Game
 	Stone:
 		varieties: limestone, slate, granite
@@ -15,6 +41,16 @@ Generic Minetest Game
 	plants:
 		3 farmable plants: hemp(for string and fabric), rice(for glue and food), yams(for food and dye)
 	evaporation pools for salt making
+	metals:
+		copper - native copper
+		iron - hematite, steel production
+		?platinum - native platinum
+	ore:
+		material - shimmer
+	trees
+		oak - https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.IC-MmE51g01H3lE68REkrwHaF-%26pid%3DApi&f=1&ipt=d39e2f8a155a6eed99211daafbbb43e1b2f162f0b9776772c9289e4f09bda3e3&ipo=images
+		pine
+	?breadfruit [probably not]
 
 
 EVERY FORMSPEC MUST USE: "padding[0,0]" MANDATORY!!!!!
@@ -40,7 +76,7 @@ a setting which when true, invisible nodes will have a texture
 
 game simmilar to decked out
 	a way to defeat the beasts, might even be the main objective
-	sneak around to complete tasks and find required items to dereat them
+	sneak around to complete tasks and find required items to defeat them
 		the goal is to slay a specific beast, but you can also hunt the others to clear the way and get some bonus reward
 
 instead of items despawning, they turn into a "pile of items" node
@@ -185,12 +221,13 @@ concept idea for a game,
 
 the glowing air everywhere thing just isn't working out.. on the surface that is, underground it seems to work fine
 	as the player moves down the move through a realy dark layer with dark stone
-	then suddenly there comes a paint where a lot of glowdust ore is spread around and the glow air starts
+	then suddenly there comes a point where a lot of glowdust ore is spread around and the glow air starts
 	the very high density doesn't last very long( maybe some 20 - 50 nodes?, depends on other heights)
 		and as an aside, don't use depth as a mesure of game progress you idiots
 		if you need to slow the player down, find other mechanics
 	after that the glow dust ore is present in much humbler quantities (all the way down until there is a erason to stop)
 	and the glow air effect remains
+	material shimmer
 
 
 a wand which uses arx fatalis like casting to select spells, though the shape spell asocation is up to the user
@@ -325,7 +362,7 @@ wind affecting players movement as a barier preventing the player from reaching 
 
 ?in-between space before respawn
 yeah, adding a differnet place for thep layer after death could add a lot
-definitively a shakeup of the usual pater (this is good)
+definitively a shakeup of the usual patern (this is good)
 
 ?robot mod, use abms to consistently time actions
 	works only if robot is a node, not an entity
@@ -378,6 +415,8 @@ Random stuff:
 =====
 DONE:
 =====
+die - when placed it comes up with a random number on top
+
 mapgen distortion - before getting the noise offset the queried possition into some direction
 this might hopefully help disguise the perlin
 

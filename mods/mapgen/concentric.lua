@@ -28,8 +28,8 @@ local ocean_depth = -200 * SCALE
 
 -- change nodes as necessary
 local c_dirt = minetest.get_content_id("cicrev:soil_with_grass")
-local c_stone = minetest.get_content_id("df_stones:andesite")
-local c_stone_2 = minetest.get_content_id("df_stones:phyllite")
+local c_stone = minetest.get_content_id("c_stone:granite")
+local c_stone_2 = minetest.get_content_id("c_stone:slate")
 local c_water = minetest.get_content_id("cicrev:water_source")
 
 minetest.set_mapgen_setting("water_level", "0", true)

@@ -44,6 +44,8 @@ cicrev:torch
 cicrev:lantern
 cicrev:fabric
 cicrev:bricks
+
+cicrev:die
 --]]
 
 -- ======
@@ -514,18 +516,12 @@ minetest.register_node("cicrev:kiln", {
 -- ORES
 -- ====
 
-minetest.register_node("cicrev:tetrahedrite", {
-	description = "Tetrahedrite",
-	tiles = {"cicrev_tetrahedrite.png"},
-	groups = {hand = 2},
-})
-minetest.register_node("cicrev:vein_native_copper", {
-	description = "Native Copper Vein",
-	tiles = {"cicrev_tetrahedrite.png^cicrev_vein_native_copper.png"},
-	-- tiles = {"df_stones_phyllite.png^cicrev_vein_native_copper.png"},
-	groups = {ore_vein = 1, copper_ore = 1, hand = 2, cracky = 1},
-	drop = "cicrev:ore_native_copper",
-})
+-- minetest.register_node("cicrev:tetrahedrite", {
+-- 	description = "Tetrahedrite",
+-- 	tiles = {"cicrev_tetrahedrite.png"},
+-- 	groups = {hand = 2},
+-- })
+
 minetest.register_node("cicrev:bituminous_coal", {
 	description = "Bituminous coal",
 	tiles = {"cicrev_bituminous_coal.png"},
@@ -827,6 +823,22 @@ minetest.register_node("cicrev:campfire_lit", {
 	end,
 	on_timer = function(pos, elapsed)
 		minetest.set_node(pos, {name = "cicrev:ash"})
+	end,
+})
+
+
+minetest.register_node(modname .. ":die", {
+	description = "Die",
+	tiles = {"cicrev_die_1.png", "cicrev_die_6.png", "cicrev_die_2.png", "cicrev_die_5.png", "cicrev_die_3.png", "cicrev_die_4.png"},
+	paramtype2 = "facedir",
+	on_construct = function(pos)
+		get_and_set_timer(pos, 0)
+	end,
+	on_timer = function(pos, elapsed)
+		minetest.swap_node(pos, {name = modname .. ":die", param2 = math.random(24) - 1})
+		if math.random() > 0.15 and elapsed < 0.5 then
+			get_and_set_timer(pos, elapsed + 0.05)
+		end
 	end,
 })
 

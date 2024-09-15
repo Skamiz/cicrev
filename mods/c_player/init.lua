@@ -40,11 +40,34 @@ minetest.register_on_joinplayer(function(player, last_login)
 	local inv = player:get_inventory()
 	inv:set_size("main", 40) -- only required on first join
 	player:set_properties({
-		zoom_fov = 15.0,
+		-- zoom_fov = 15.0,
+		visual = "mesh",
+		mesh = "player_joints.b3d",
+		-- mesh = "character.b3d",
+		textures = {"skin_template_joints.png"},
+		-- visual_size = {x = 1/2, y = 1/2, z = 1/2},
+		-- visual_size = {x = 2, y = 2, z = 2},
+		visual_size = {x = 1, y = 1, z = 1},
 	})
 	player:hud_set_hotbar_itemcount(hotbar_length)
 	player:hud_set_hotbar_image(cicrev.get_hotbar_image("cicrev_hotbar.png", hotbar_length))
 	player:hud_set_hotbar_selected_image("cicrev_hotbar_selected.png")
+end)
+
+local r = 0
+minetest.register_globalstep(function(dtime)
+	r = r + 1
+	-- minetest.chat_send_all(r)
+	for _, player in pairs(minetest.get_connected_players()) do
+		-- player:set_bone_override("head", {
+		-- 	rotation = {
+		-- 		vec = vector.new(0, math.rad(r), 0),
+		-- 		interpolation = 0,
+		-- 		absolute = true,
+		-- 	}
+		-- })
+		-- player:set_animation({x=1, y=20}, 10, 0, true)
+	end
 end)
 
 

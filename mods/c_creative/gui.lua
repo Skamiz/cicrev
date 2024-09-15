@@ -21,7 +21,7 @@ function c_creative.get_creative_widgets_fs(player, width)
 	local player_data = c_creative.get_player_data(player)
 
 	local fs_width = width * (1 + padding) - padding
-	local filter_string = player:get_meta():get_string("filter_string")
+	local filter_string = player:get_meta():get_string("creative_filter_string")
 
 	local inv_index = player_data.inv_index
 	local inv_size = player_data.inv_size

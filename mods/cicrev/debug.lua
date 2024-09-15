@@ -51,7 +51,8 @@ minetest.register_chatcommand("debug", {
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 
-		minetest.show_formspec(player:get_player_name(), "test", test_fs)
+		minetest.chat_send_all("<foo> multi\nline\ntext")
+		-- minetest.show_formspec(player:get_player_name(), "test", test_fs)
 
 		-- param = param:split(" ")
 		-- for k, v in pairs(param) do
@@ -251,6 +252,13 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
+		placer:set_bone_override("head", {
+			rotation = {
+				vec = vector.new(0, math.rad(180), 0),
+				interpolation = 1,
+				absolute = true,
+			}
+		})
 
 		-- minetest.show_formspec(placer:get_player_name(), "test", test_fs)
 		-- place_nodebox_object(pointed_thing.under, minetest.get_node(pointed_thing.under))
@@ -284,6 +292,9 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		-- print(" perlin time: " .. (minetest.get_us_time() - t0) / 1000000 .. " s")
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
+
+		local bones = user:get_bone_overrides()
+		print(dump(bones))
 
 		-- player_effects.add_effect(user, {
 		-- 	source = "debuging_axe",

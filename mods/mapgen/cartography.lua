@@ -527,7 +527,7 @@ end)
 
 
 minetest.register_craftitem("mapgen:map", {
-	description = "Map",
+	description = "Map\n[place] - collect map data\n[use] - show map",
 	inventory_image = "mapgen_map.png",
 	stack_max = 1,
 	on_place = function(itemstack, placer, pointed_thing)

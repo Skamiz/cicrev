@@ -18,6 +18,7 @@ local prototype = {
 
 -- radius is in 16tht of a node aka 1 pixel on a 16*16 texture
 shapes.register[shape_name] = function(name, def, radius)
+	def = table.copy(def)
 	for property, value in pairs(prototype) do
 		if def[property] == nil then
 			def[property] = value

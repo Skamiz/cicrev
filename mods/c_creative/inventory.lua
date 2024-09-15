@@ -48,14 +48,18 @@ end
 function c_creative.update_player_creative_list(player)
 	local meta = player:get_meta()
 	local player_data = c_creative.get_player_data(player)
-	local filter_string = meta:get_string("filter_string")
+	local filter_string = meta:get_string("creative_filter_string")
+	-- local lang = minetest.get_player_information(player:get_player_name()).lang_code
 
 	local player_list = {}
 
 	-- TODO: implement better filtereing
 	for _, name in pairs(c_creative.all_items) do
-		if (not minetest.registered_items[name].groups.not_in_creative_inventory) and
-				name:find(filter_string) then
+		local def = minetest.registered_items[name]
+		if (not def.groups.not_in_creative_inventory)
+				and	(string.find(name, filter_string, 1, true)
+				or string.find(def.description:lower(), filter_string:lower(), 1, true))
+			then
 			table.insert(player_list, name)
 		end
 	end
@@ -66,7 +70,7 @@ end
 
 function c_creative.set_player_filter_string(player, search)
 	local meta = player:get_meta()
-	meta:set_string("filter_string", search)
+	meta:set_string("creative_filter_string", search)
 
 	c_creative.update_player_creative_list(player)
 end

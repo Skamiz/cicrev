@@ -17,10 +17,6 @@ minetest.register_craftitem("cicrev:flint", {
 	description = "Flint stone",
 	inventory_image = "cicrev_flint.png",
 })
-minetest.register_craftitem("cicrev:ore_native_copper", {
-	description = "Native Copper Ore",
-	inventory_image = "cicrev_ore_native_copper.png",
-})
 minetest.register_craftitem("cicrev:axe_head_flint", {
 	description = "Axe head (flint)",
 	inventory_image = "cicrev_axe_head_flint.png",

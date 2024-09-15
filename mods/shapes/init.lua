@@ -6,7 +6,7 @@ local modpath = minetest.get_modpath(modname)
 
 shapes = {}
 -- disatnce from center of a node face which causes slabs to be placed rotated
-shapes.orthogonal_slab_margin = 6/16
+shapes.orthogonal_slab_margin = 4/16
 
 function shapes.add_group(def, group, rating)
 	if not def.groups[group] then
@@ -32,6 +32,18 @@ dofile(modpath .. "/shapes/pane.lua")
 
 
 dofile(modpath .. "/test_node.lua")
+
+shapes.register.quaters = function(name, def)
+	local stair_def = table.copy(def)
+	stair_def.description = stair_def.description .. " Stair"
+	shapes.register.stair(name .. "_stair", stair_def)
+	local slab_def = table.copy(def)
+	slab_def.description = slab_def.description .. " Slab"
+	shapes.register.slab(name .. "_slab", slab_def)
+	local wedge_def = table.copy(def)
+	wedge_def.description = wedge_def.description .. " Wedge"
+	shapes.register.wedge(name .. "_wedge", wedge_def)
+end
 
 
 -- so connective nodes can attach to full nodes

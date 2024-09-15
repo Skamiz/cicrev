@@ -267,7 +267,7 @@ local function add_noise_hud(player)
 	local hud_info = {}
 	huds[player] = hud_info
 	hud_info.id = player:hud_add({
-		hud_elem_type = "text",
+		type = "text",
 		position = {x = 0, y = 0.5},
 		alignment = {x = 1, y = 0},
 		name = "dynamic noise display",

@@ -146,7 +146,7 @@ function cicrev.register_tree(name, description, leaf_distance)
 		tiles = {{name = "cicrev_planks_" .. name .. ".png", align_style = "world"}},
 		groups = {choppy = 1, planks = 1, wood = 1},
 		node_placement_prediction = "",
-		on_place = minetest.rotate_node,
+		-- on_place = minetest.rotate_node,
 	})
 
 	minetest.register_craftitem(modprefix .. "plank_" .. name, {

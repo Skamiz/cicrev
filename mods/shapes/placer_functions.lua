@@ -1,4 +1,7 @@
 -- given a pointed_thing determine which position, if any, a node would be placed in
+
+-- TODO: refactor so functions calculating the param2 value are sepparate from funcitons placing the node
+
 function shapes.get_place_pos(pointed_thing)
 	local node_under = minetest.get_node(pointed_thing.under)
 	local def_under = minetest.registered_nodes[node_under.name]
@@ -92,10 +95,10 @@ end
 local slab_direction = {
 	["y-"] = 0,
 	["z-"] = 4,
-	["z+"] = 8,
-	["x-"] = 12,
-	["x+"] = 16,
-	["y+"] = 20,
+	["z+"] = 10,
+	["x-"] = 13,
+	["x+"] = 19,
+	["y+"] = 22,
 }
 function shapes.place.slab(itemstack, placer, pointed_thing)
 	local placement_pos = shapes.get_place_pos(pointed_thing)

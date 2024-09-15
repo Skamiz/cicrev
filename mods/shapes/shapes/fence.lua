@@ -56,6 +56,7 @@ local nodebox_fence_nopost = {
 }
 
 shapes.register[shape_name] = function(name, def)
+	def = table.copy(def)
 	for property, value in pairs(prototype) do
 		if def[property] == nil then
 			def[property] = value
