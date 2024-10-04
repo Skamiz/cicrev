@@ -58,7 +58,7 @@ minetest.register_craftitem("cicrev:rune_speed", {
 	description = "Speed",
 	inventory_image = "cicrev_rune_speed.png",
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		player_effects.add_effect(user, {
+		player_properties.add_effect(user, {
 			source = "rune",
 			effect_name = "speed",
 			-- text_influence = "function (s) return s + 0.3 end",

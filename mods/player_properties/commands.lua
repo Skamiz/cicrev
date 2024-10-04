@@ -65,15 +65,15 @@ minetest.register_chatcommand("effect", {
 		print_po(params)
 
 		if params[1] == "add" then
-			player_effects.add_effect(player, {
+			player_properties.add_effect(player, {
 				effect_name = params[2],
 				source = params[3],
-				influence = player_effects.influence_funcitons[params[4]](params[5]),
+				influence = player_properties.influence_funcitons[params[4]](params[5]),
 				priority = tonumber(params[6]),
 				timeout = tonumber(params[7])
 			})
 		elseif params[1] == "remove" then
-			player_effects.remove_effect(player, params[2], params[3])
+			player_properties.remove_effect(player, params[2], params[3])
 		else
 			minetest.chat_send_player(name, "Instructions unclear, use 'add' or 'remove'.")
 		end

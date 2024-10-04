@@ -35,7 +35,7 @@ minetest.register_globalstep(function(dtime)
 		if walkover_speed then
 			-- only do something if the value actually changes
 			if walkover_speed ~= players[name] then
-				player_effects.add_effect(player, {
+				player_properties.add_effect(player, {
 					source = "walkover_speed",
 					effect_name = "speed",
 					influence = function(speed) return speed * walkover_speed end,
@@ -45,7 +45,7 @@ minetest.register_globalstep(function(dtime)
 			end
 		-- maintian last speed while in air
 		elseif minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].walkable and players[name] then
-			player_effects.remove_effect(player, "speed", "walkover_speed")
+			player_properties.remove_effect(player, "speed", "walkover_speed")
 			players[name] = nil
 		end
     end

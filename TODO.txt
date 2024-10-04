@@ -8,6 +8,11 @@ fs_[width/height] - refers to raw formspec units
 =====
 TODO:
 =====
+base health regeneration rate
+	food acts as buff items, for this, and/or other things
+	maybe, after recieving damage, stop regneration for a bit
+		could be spunn of into it's own stat tbh
+
 Gamemode: teleportitis diseas
 	every minite (randomized) of so the player gets teleported to a random location [in a radius?]
 	foods/consumables/altar blesings/whatever,
@@ -15,6 +20,13 @@ Gamemode: teleportitis diseas
 		limit it's distance
 		bias it's destination?
 	goal is to cure the diseas
+
+infusions, a way to handle player buffs
+	basically instead of potions you 'infuse' your soul? with effects like speed
+	jump boost, slowfall, resistance, glowing, more hp, double jump? blink(short range teleport)
+	if I can figure out a controll scheme, flight
+	ok, maybe this needs to be split into two types for passives and actives
+	limited infustion "slots", players must choose their prefered loadout
 
 tape measure - punch two positions so it tells you the distance
 

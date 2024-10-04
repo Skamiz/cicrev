@@ -25,7 +25,7 @@ local function get_effect_string(player, players_effects)
 	return s
 end
 
-function player_effects.show_effect_hud(player, players_effects)
+function player_properties.show_effect_hud(player, players_effects)
 	local player_name = player:get_player_name()
 	local effect_string = get_effect_string(player, players_effects)
 
@@ -41,7 +41,7 @@ function player_effects.show_effect_hud(player, players_effects)
 	end
 end
 
-function player_effects.hide_effect_hud(player)
+function player_properties.hide_effect_hud(player)
 	local player_name = player.get_player_name()
 	player:hud_remove(players[player_name])
 	players[player_name] = nil

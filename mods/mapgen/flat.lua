@@ -1,4 +1,4 @@
-local c_dirt = minetest.get_content_id("c_soil:soil")
+local c_dirt = minetest.get_content_id("c_soil:soil_with_grass")
 local c_stone = minetest.get_content_id("c_stone:granite")
 
 minetest.set_mapgen_setting("water_level", "0", true)

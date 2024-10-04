@@ -2,7 +2,7 @@
 minetest.register_on_joinplayer(function(player)
 	player:set_properties({
 		eye_height = 1.5,
-		stepheight = 1.1,
+		-- stepheight = 1.1,
 	})
 	-- player:set_physics_override({
 	-- 	speed = 0,

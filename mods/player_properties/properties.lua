@@ -1,4 +1,22 @@
-player_effects.register_effect_type({
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+player_properties.register_property({
 	name = "speed",
 	default_value = 1,
 	set = function(player, value)
@@ -6,7 +24,7 @@ player_effects.register_effect_type({
 	end,
 })
 
-player_effects.register_effect_type({
+player_properties.register_property({
 	name = "jump",
 	default_value = 1,
 	set = function(player, value)

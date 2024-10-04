@@ -1,4 +1,7 @@
 --[[
+-- TODO: adjust this template to work in new paradigm
+	-- need to update noise_handler to double load into mapgen env
+-- TODO: new template with my own paradigm
 Template mapgen
 
 Chunk generation time seems to be at about 0.04 seconds.
@@ -35,6 +38,7 @@ local np_2d = {
 	lacunarity = 1.0,
 	flags = "noeased",
 }
+
 
 -- automatically detect necessary chunk_size
 -- though in some circumstances you will want to increase it afterwards

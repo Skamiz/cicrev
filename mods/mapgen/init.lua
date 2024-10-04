@@ -1,51 +1,59 @@
-local mod_name = minetest.get_current_modname()
-local mod_path = minetest.get_modpath(mod_name)
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 
 mapgen = {}
 mapgen.mod_storage = minetest.get_mod_storage()
 
 -- TODO: consider putting content ID's in their own file, maybe into the table 'c'
 
-dofile(mod_path.."/util.lua")
-dofile(mod_path.."/cartography.lua")
--- dofile(mod_path.."/make_frame.lua")
-dofile(mod_path.."/flat.lua")
+dofile(modpath .. "/util.lua")
+dofile(modpath .. "/cartography.lua")
 
--- dofile(mod_path.."/mount_meru.lua")
--- dofile(mod_path.."/mesa.lua")
--- dofile(mod_path.."/yaml_1.lua")
--- dofile(mod_path.."/edge_distance.lua")
--- dofile(mod_path.."/pudles.lua")
--- dofile(mod_path.."/undersampling.lua")
--- dofile(mod_path.."/coastline.lua")
--- dofile(mod_path.."/island.lua")
--- dofile(mod_path.."/shrooms.lua")
--- dofile(mod_path.."/procedural_fortress.lua")
--- dofile(mod_path.."/frac.lua")
--- dofile(mod_path.."/caelid.lua")
--- dofile(mod_path.."/forest.lua")
--- dofile(mod_path.."/basal.lua")
--- dofile(mod_path.."/rings.lua")
--- dofile(mod_path.."/mc.lua")
--- dofile(mod_path.."/karst.lua")
--- dofile(mod_path.."/caverns.lua")
--- dofile(mod_path.."/layer_transition.lua")
--- dofile(mod_path.."/mountains.lua")
--- dofile(mod_path.."/plateaus.lua")
--- dofile(mod_path.."/offset.lua")
--- dofile(mod_path.."/concentric.lua")
--- dofile(mod_path.."/mapgen_env.lua")
--- minetest.register_mapgen_script(mod_path.."/mapgen_env.lua")
+if mapgen.mod_storage:contains("mapgen_override") then
+	local override = mapgen.mod_storage:get_string("mapgen_override")
+	dofile(modpath .. "/" .. override  .. ".lua")
+else
+	-- dofile(modpath .. "/make_frame.lua")
+	-- dofile(modpath .. "/flat.lua")
 
--- dofile(mod_path.."/ore_veins.lua")
--- dofile(mod_path.."/caves.lua")
--- dofile(mod_path.."/template.lua")
--- dofile(mod_path.."/fake3d.lua")
--- dofile(mod_path.."/template_async.lua")
--- dofile(mod_path.."/noise_research.lua")
--- dofile(mod_path.."/test.lua")
--- dofile(mod_path.."/delete_map.lua")
+	-- dofile(modpath .. "/mount_meru.lua")
+	-- dofile(modpath .. "/mesa.lua")
+	-- dofile(modpath .. "/yaml_1.lua")
+	-- dofile(modpath .. "/edge_distance.lua")
+	-- dofile(modpath .. "/pudles.lua")
+	-- dofile(modpath .. "/undersampling.lua")
+	-- dofile(modpath .. "/coastline.lua")
+	-- dofile(modpath .. "/island.lua")
+	-- dofile(modpath .. "/shrooms.lua")
+	-- dofile(modpath .. "/procedural_fortress.lua")
+	-- dofile(modpath .. "/frac.lua")
+	-- dofile(modpath .. "/caelid.lua")
+	dofile(modpath .. "/forest.lua")
+	-- dofile(modpath .. "/basal.lua")
+	-- dofile(modpath .. "/rings.lua")
+	-- dofile(modpath .. "/mc.lua")
+	-- dofile(modpath .. "/karst.lua")
+	-- dofile(modpath .. "/caverns.lua")
+	-- dofile(modpath .. "/layer_transition.lua")
+	-- dofile(modpath .. "/mountains.lua")
+	-- dofile(modpath .. "/plateaus.lua")
+	-- dofile(modpath .. "/offset.lua")
+	-- dofile(modpath .. "/concentric.lua")
+	-- dofile(modpath .. "/mapgen_env.lua")
+	-- minetest.register_mapgen_script(modpath .. "/mapgen_env.lua")
 
+	-- dofile(modpath .. "/template_vanilla.lua")
+	-- minetest.register_mapgen_script(modpath .. "/template_vanilla.lua")
+
+	-- dofile(modpath .. "/ore_veins.lua")
+	-- dofile(modpath .. "/caves.lua")
+	-- dofile(modpath .. "/template.lua")
+	-- dofile(modpath .. "/fake3d.lua")
+	-- dofile(modpath .. "/template_async.lua")
+	-- dofile(modpath .. "/noise_research.lua")
+	-- dofile(modpath .. "/test.lua")
+	-- mapgen.delete_world()
+end
 
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
@@ -92,3 +100,19 @@ minetest.register_chatcommand("deletechunk", {
 		end
 	end,
 })
+
+minetest.register_chatcommand("mapgen_override", {
+	params = "[mapgen file]",
+	description = "Override file from which mapgen is loaded. Only takes effect on world reload.",
+	privs = {server = true},
+	func = function(name, param)
+		mapgen.mod_storage:set_string("mapgen_override", param)
+	end,
+})
+
+minetest.set_mapgen_setting("water_level", "0", true)
+
+mapgen.delete_world = function()
+	local worldpath = minetest.get_worldpath()
+	minetest.rmdir(worldpath .. "/map.sqlite", false)
+end
