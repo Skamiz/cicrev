@@ -38,12 +38,12 @@ mafgaha.register_spell("rhaa, vitae", {
 mafgaha.register_spell("rhaa, tempus", {
 	name = "Slow Time",
 	on_cast = function(caster)
-		player_effects.add_effect(caster, {
-			source = "spell",
-			effect_name = "speed",
+		player_properties.add_effect(caster, {
+			name = "spell",
+			property = "speed",
 			-- text_influence = "function (s) return s + 0.3 end",
 			text_influence = "function (s) return s + 0.8 end",
-			timeout = 20,
+			duration = 20,
 			priority = 70,
 			persistant = true,
 		})

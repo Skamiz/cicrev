@@ -66,11 +66,11 @@ minetest.register_chatcommand("effect", {
 
 		if params[1] == "add" then
 			player_properties.add_effect(player, {
-				effect_name = params[2],
-				source = params[3],
+				property = params[2],
+				name = params[3],
 				influence = player_properties.influence_funcitons[params[4]](params[5]),
 				priority = tonumber(params[6]),
-				timeout = tonumber(params[7])
+				duration = tonumber(params[7])
 			})
 		elseif params[1] == "remove" then
 			player_properties.remove_effect(player, params[2], params[3])

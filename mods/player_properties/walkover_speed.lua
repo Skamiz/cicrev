@@ -36,8 +36,9 @@ minetest.register_globalstep(function(dtime)
 			-- only do something if the value actually changes
 			if walkover_speed ~= players[name] then
 				player_properties.add_effect(player, {
-					source = "walkover_speed",
-					effect_name = "speed",
+					icon = "player_properties_walkover.png",
+					name = "walkover_speed",
+					property = "speed",
 					influence = function(speed) return speed * walkover_speed end,
 					priority = 120,
 				})

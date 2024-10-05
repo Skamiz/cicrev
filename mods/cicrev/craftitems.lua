@@ -59,11 +59,12 @@ minetest.register_craftitem("cicrev:rune_speed", {
 	inventory_image = "cicrev_rune_speed.png",
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		player_properties.add_effect(user, {
-			source = "rune",
-			effect_name = "speed",
+			name = "rune",
+			property = "speed",
+			icon = "cicrev_speed_buff.png",
 			-- text_influence = "function (s) return s + 0.3 end",
 			text_influence = "function (s) return s + 0.5 end",
-			timeout = 30,
+			duration = 30,
 			priority = 80,
 			persistant = true,
 		})

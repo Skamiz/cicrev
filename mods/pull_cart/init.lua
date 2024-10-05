@@ -10,7 +10,6 @@ things one might want to do in case of adaptation:
 - more appropriate texture
 - add an inventory_image
 
-note that the player_effects mod this can depend on is the one mady by skamiz, not wuzzy
 --]]
 
 local pull_cart = {}
@@ -23,19 +22,19 @@ local speed_multiplier = tonumber(minetest.settings:get("cart_speed_multiplier")
 local offroad_cart = minetest.settings:get("offroad_cart") == "true"
 local jump_multiplier = offroad_cart and 0.9 or 0.5
 -- if you change this don't forget to also change the formspec
-local cart_inv_size = 2*8
+local cart_inv_size = 2 * 8
 -- how far the cart stays behind the player
 local distance_to_cart = 1.2
 
 local slowdown = {
-	effect_name = "speed",
-	source = "pull_cart",
+	property = "speed",
+	name = "pull_cart",
 	influence = function(speed) return speed * speed_multiplier end,
 	priority = 156,
 }
 local weightdown = {
-	effect_name = "jump",
-	source = "pull_cart",
+	property = "jump",
+	name = "pull_cart",
 	influence = function(jump) return jump * jump_multiplier end,
 	priority = 156,
 }
@@ -108,9 +107,9 @@ minetest.register_entity(modname .. ":pull_cart", {
 		end
 		pull_cart.players[player_name] = self
 
-		if player_effects then
-			player_effects.add_effect(player, slowdown)
-			player_effects.add_effect(player, weightdown)
+		if player_properties then
+			player_properties.player_properties(player, slowdown)
+			player_properties.player_properties(player, weightdown)
 		else
 			local po = player:get_physics_override()
 			po.speed = speed_multiplier
@@ -135,9 +134,9 @@ minetest.register_entity(modname .. ":pull_cart", {
 		local vel = self.object:get_velocity()
 		self.object:set_velocity({x=0,y=vel.y,z=0})
 
-		if player_effects then
-			player_effects.remove_effect(player,"speed", "pull_cart")
-			player_effects.remove_effect(player,"jump", "pull_cart")
+		if player_properties then
+			player_properties.remove_effect(player,"speed", "pull_cart")
+			player_properties.remove_effect(player,"jump", "pull_cart")
 		else
 			local po = player:get_physics_override()
 			po.speed = 1

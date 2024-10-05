@@ -8,6 +8,9 @@ fs_[width/height] - refers to raw formspec units
 =====
 TODO:
 =====
+health effects
+	poked out eye [either or both] and use screen overlay to impair vision
+
 base health regeneration rate
 	food acts as buff items, for this, and/or other things
 	maybe, after recieving damage, stop regneration for a bit

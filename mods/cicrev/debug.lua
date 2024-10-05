@@ -293,21 +293,21 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 	end,
 	on_secondary_use = function(itemstack, user, pointed_thing)
 
-		local bones = user:get_bone_overrides()
-		print(dump(bones))
+		-- local bones = user:get_bone_overrides()
+		-- print(dump(bones))
 
-		-- player_effects.add_effect(user, {
-		-- 	source = "debuging_axe",
-		-- 	effect_name = "speed",
-		-- 	-- influence = function(speed) return speed*2 end,
-		-- 	text_influence = "function(speed) return speed*2 end",
-		-- 	priority = 5,
-		-- 	persistant = true,
-		-- })
+		player_properties.add_effect(user, {
+			name = "debuging_axe",
+			property = "speed",
+			-- influence = function(speed) return speed*2 end,
+			text_influence = "function(speed) return speed*2 end",
+			priority = 5,
+			persistant = true,
+		})
 	end,
 	on_use = function(itemstack, user, pointed_thing)
 		-- abm_detect = true
-		player_effects.remove_effect(user,"speed", "debuging_axe")
+		player_properties.remove_effect(user,"speed", "debuging_axe")
 
 		--
 		-- local node = minetest.get_node(pointed_thing.under)
