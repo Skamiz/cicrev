@@ -8,6 +8,74 @@ fs_[width/height] - refers to raw formspec units
 =====
 TODO:
 =====
+
+lazer drill
+	basically jsut a tool with high range
+	when in use, place a lazer object stretching from the player to the pointed node pos
+	play start noise, then looping lazer hum
+	stretch goals:
+		configurable mining speed
+		colored lenses for the lazer which change it's color and have mingng effects(autosmelt/silktouch/higher yield (thoguh only a little)/etc..)
+
+protection levels
+	construction
+	interaction
+	noninteraction
+	more thoughtsput into this you should
+
+
+sticky gunk monster if it sucessfully reaches the player it latches on and fills one or more inv slots with gunk that can't be moved or removed
+player needs to dip in water to wash off the monster and clear their inventory
+
+terraria style sprinting
+	sprint is toggled by just by walking forward for a while
+	while sprinting leave behindn dust particles
+
+on death add a "death certificate" item, stating time, location, and reason
+
+instead of grass seeds the way to move around grass is turf patches
+	an be placed on a dirt node to turn it into a grass node
+	cn be crafted into a full block
+
+Game: deckbuilder dungeon crawler
+	the 'deck' are dungeon components
+		enemies, rooms, themes, items, shops, modifiers, etc...
+
+
+Hand slot
+	- players can place special tools into it, the mining speed never gets super high, but the purpose is that with the best such tools the player can comfortably mine any material
+
+if aplayer murders another while near the others bones (presumably to prevent them from getting them)
+	put a curse on them and or prolong bone protection timer
+
+gothic controll scheme
+
+https://youtu.be/yVrc1v34HfM?t=2466 more something for building blocks but the stone color in that shot
+
+tomb/headstone, if in inventory on death, it auto places and collects your dropped items
+otherwise they get scattered
+
+player animations
+	walk
+	run
+	sneak
+	crawl
+	sidestep?
+	climb
+	mine
+	'idle' * several
+	dead
+	asleep
+	climb up one node
+	climb up two nodes
+
+	sit
+	lay down
+	wave
+	point
+	t-pose
+
+
 health effects
 	poked out eye [either or both] and use screen overlay to impair vision
 
@@ -26,7 +94,7 @@ Gamemode: teleportitis diseas
 
 infusions, a way to handle player buffs
 	basically instead of potions you 'infuse' your soul? with effects like speed
-	jump boost, slowfall, resistance, glowing, more hp, double jump? blink(short range teleport)
+	jump boost, slowfall, resistance, glowing, more hp, double jump? blink(short range teleport), waterbraeth
 	if I can figure out a controll scheme, flight
 	ok, maybe this needs to be split into two types for passives and actives
 	limited infustion "slots", players must choose their prefered loadout
@@ -47,14 +115,14 @@ Can you use forspec prepend to add custom buttons to the Esc menu?
 
 infinnite tool durability, but the durability bar is repurposed to be tool sharpness ("condition")
 	decreasing sharpness decreases tool dig speed
-	5 stages - they appear in item description as "Condition: " .. new/worn/damaged/shabby/broken
+	5 stages - they appear in item description as "Condition: " .. pristine/used/worn/damaged/shabby/broken
 
 Generic Minetest Game
 	Stone:
 		varieties: limestone, slate, granite
 	 	shapes: boulder, 3 pebels, full rock, cobble, small bricks, large bricks, block, pillar?, wall
 	plants:
-		3 farmable plants: hemp(for string and fabric), rice(for glue and food), yams(for food and dye)
+		3 farmable plants: flax(for string and fabric, seed oil), rice(for glue and food), yams(for food and dye)
 	evaporation pools for salt making
 	metals:
 		copper - native copper

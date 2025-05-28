@@ -1,5 +1,8 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
+
+dofile(modpath .. "/model.lua")
+dofile(modpath .. "/animation.lua")
 -- dofile(modpath .. "/foo.lua")
 
 dofile(modpath .. "/regeneration.lua")
@@ -43,17 +46,18 @@ minetest.register_on_joinplayer(function(player, last_login)
 	inv:set_size("main", 40) -- only required on first join
 	player:set_properties({
 		-- zoom_fov = 15.0,
-		visual = "mesh",
-		mesh = "player_joints.b3d",
+		-- visual = "mesh",
+		-- mesh = "player_joints.b3d",
 		-- mesh = "character.b3d",
-		textures = {"skin_template_joints.png"},
+		-- textures = {"skin_template_joints.png"},
 		-- visual_size = {x = 1/2, y = 1/2, z = 1/2},
 		-- visual_size = {x = 2, y = 2, z = 2},
-		visual_size = {x = 1, y = 1, z = 1},
+		-- visual_size = {x = 1, y = 1, z = 1},
 	})
 	player:hud_set_hotbar_itemcount(hotbar_length)
 	player:hud_set_hotbar_image(cicrev.get_hotbar_image("cicrev_hotbar.png", hotbar_length))
 	player:hud_set_hotbar_selected_image("cicrev_hotbar_selected.png")
+
 end)
 
 local r = 0

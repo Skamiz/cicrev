@@ -252,13 +252,13 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 		},
 	},
 	on_place = function(itemstack, placer, pointed_thing)
-		placer:set_bone_override("head", {
-			rotation = {
-				vec = vector.new(0, math.rad(180), 0),
-				interpolation = 1,
-				absolute = true,
-			}
-		})
+		-- placer:set_bone_override("head", {
+		-- 	rotation = {
+		-- 		vec = vector.new(0, math.rad(180), 0),
+		-- 		interpolation = 1,
+		-- 		absolute = true,
+		-- 	}
+		-- })
 
 		-- minetest.show_formspec(placer:get_player_name(), "test", test_fs)
 		-- place_nodebox_object(pointed_thing.under, minetest.get_node(pointed_thing.under))
@@ -308,6 +308,15 @@ minetest.register_craftitem("cicrev:axe_of_debug", {
 	on_use = function(itemstack, user, pointed_thing)
 		-- abm_detect = true
 		player_properties.remove_effect(user,"speed", "debuging_axe")
+
+		-- local meta = getmetatable(user)
+		-- -- print_table(meta)
+		-- local old_get_inventory = meta.get_inventory
+		--
+		-- meta.get_inventory = function(self)
+		-- 	core.chat_send_all("inventory acessed")
+		-- 	return old_get_inventory(self)
+		-- end
 
 		--
 		-- local node = minetest.get_node(pointed_thing.under)

@@ -13,7 +13,7 @@ if mapgen.mod_storage:contains("mapgen_override") then
 	local override = mapgen.mod_storage:get_string("mapgen_override")
 	dofile(modpath .. "/" .. override  .. ".lua")
 else
-	-- dofile(modpath .. "/make_frame.lua")
+	dofile(modpath .. "/make_frame.lua")
 	-- dofile(modpath .. "/flat.lua")
 
 	-- dofile(modpath .. "/mount_meru.lua")
@@ -28,7 +28,7 @@ else
 	-- dofile(modpath .. "/procedural_fortress.lua")
 	-- dofile(modpath .. "/frac.lua")
 	-- dofile(modpath .. "/caelid.lua")
-	dofile(modpath .. "/forest.lua")
+	-- dofile(modpath .. "/forest.lua")
 	-- dofile(modpath .. "/basal.lua")
 	-- dofile(modpath .. "/rings.lua")
 	-- dofile(modpath .. "/mc.lua")

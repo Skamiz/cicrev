@@ -302,6 +302,11 @@ minetest.register_on_joinplayer(
 		add_noise_hud(player)
 	end
 )
+minetest.register_on_leaveplayer(
+	function(player, timed_out)
+		remove_noise_hud(player)
+	end
+)
 minetest.register_globalstep(function(dtime)
 	for player, hud_info in pairs(huds) do
 		local new_pos = player:get_pos()
