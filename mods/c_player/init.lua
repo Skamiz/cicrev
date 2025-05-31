@@ -45,6 +45,7 @@ minetest.register_on_joinplayer(function(player, last_login)
 	local inv = player:get_inventory()
 	inv:set_size("main", 40) -- only required on first join
 	player:set_properties({
+		eye_height = 1.75,
 		-- zoom_fov = 15.0,
 		-- visual = "mesh",
 		-- mesh = "player_joints.b3d",

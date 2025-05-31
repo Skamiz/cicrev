@@ -55,6 +55,19 @@ https://youtu.be/yVrc1v34HfM?t=2466 more something for building blocks but the s
 tomb/headstone, if in inventory on death, it auto places and collects your dropped items
 otherwise they get scattered
 
+
+player state
+	standing
+	crawling
+	climbing
+	swiming
+	flying
+	stunned
+	dead
+	asleep
+	need to think more about this
+
+
 player animations
 	walk
 	run
