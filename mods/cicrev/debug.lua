@@ -52,9 +52,10 @@ minetest.register_chatcommand("debug", {
 	privs = {server=true},
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
+		c_player.animation.set_animation_override(player,"sneaking", 6)
 
 		-- minetest.chat_send_all("<foo> multi\nline\ntext")
-		minetest.show_formspec(player:get_player_name(), "test", test_fs)
+		-- minetest.show_formspec(player:get_player_name(), "test", test_fs)
 
 		-- param = param:split(" ")
 		-- for k, v in pairs(param) do

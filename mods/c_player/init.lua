@@ -1,6 +1,8 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+c_player = {}
+
 dofile(modpath .. "/model.lua")
 dofile(modpath .. "/animation.lua")
 -- dofile(modpath .. "/foo.lua")

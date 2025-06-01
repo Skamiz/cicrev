@@ -13,6 +13,8 @@ player = 'p_data'{
 
 ]]
 
+c_player.animation = {}
+
 -- TODO: expand this to check under the four corners of the collision box instead
 local function is_on_ground(player)
 	local pos = player:get_pos()
@@ -21,6 +23,7 @@ local function is_on_ground(player)
 	local def = core.registered_nodes[node.name]
 	return def.walkable
 end
+c_player.is_on_ground = is_on_ground
 local function is_climbing(player)
 	local pos = player:get_pos()
 	pos.y = pos.y
@@ -28,6 +31,7 @@ local function is_climbing(player)
 	local def = core.registered_nodes[node.name]
 	return def.climable
 end
+c_player.is_climbing = is_climbing
 local function is_moving(controls)
 	return (math.abs(controls.movement_x) + math.abs(controls.movement_y)) > 0.1
 end
@@ -50,11 +54,28 @@ local players = {}
 local function start_handling_animations(player)
 	players[player] = {
 		idle_timer = 0,
+		animation_override = nil,
+		override_timeout = nil,
 	}
 end
+c_player.animation.start_handling_animations = start_handling_animations
 local function stop_handling_animations(player)
 	players[player] = nil
 end
+c_player.animation.stop_handling_animations = stop_handling_animations
+
+local function set_animation_override(player, animation_name, timeout)
+	local p_data = players[player]
+	p_data.animation_override = animation_name
+	p_data.override_timeout = timeout
+end
+c_player.animation.set_animation_override = set_animation_override
+local function end_animation_override(player)
+	local p_data = players[player]
+	p_data.animation_override = nil
+	p_data.override_timeout = nil
+end
+c_player.animation.end_animation_override = end_animation_override
 
 local function set_animation(player, animation_name, speed_multiplier)
 	local p_data = players[player]
@@ -74,9 +95,15 @@ local function set_animation(player, animation_name, speed_multiplier)
 		player:set_animation_frame_speed(p_data.base_speed * speed_multiplier)
 	end
 end
+c_player.animation.set_animation = set_animation
 
 local function select_animation(player)
 	local p_data = players[player]
+
+	if p_data.animation_override then
+		return p_data.animation_override
+	end
+
 	local controls = player:get_player_control()
 	local velocity = player:get_velocity()
 	local grounded = is_on_ground(player) and velocity.y == 0
@@ -108,6 +135,8 @@ local function select_animation(player)
 	-- print("FOOOOOOOOOOOOOOOOOOOOOO:  " .. animation)
 	return animation, speed
 end
+c_player.animation.select_animation = select_animation
+
 
 local function control_player_animations(player)
 	local animation_name, speed_multiplier = select_animation(player)
@@ -116,6 +145,12 @@ end
 local function update_player_data(player, dtime)
 	local p_data = players[player]
 	p_data.idle_timer = p_data.idle_timer + dtime
+	if p_data.override_timeout then
+		p_data.override_timeout = p_data.override_timeout - dtime
+		if p_data.override_timeout <= 0 then
+			end_animation_override(player)
+		end
+	end
 end
 core.register_globalstep(function(dtime)
 	for player, p_data in pairs(players) do
