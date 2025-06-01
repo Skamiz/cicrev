@@ -30,10 +30,12 @@ local fs = {
 }
 
 local test_fs = {
-	"formspec_version[4]",
-	"size[10.25,5.25,<fixed_size>]",
-	"image[5,0;1,1;[combine:32x32:0,0=fc_reload.png]",
-	"image[0,0;1,1;fc_reload.png]",
+	"formspec_version[9]",
+	"size[5.25,5.25,<fixed_size>]",
+	"padding[0,0]",
+	"tabheader[0,0;header;<caption 1>,<caption 2>,...,<caption n>;<current_tab>;<transparent>;<draw_border>]",
+	-- "image[5,0;1,1;[combine:32x32:0,0=fc_reload.png]",
+	-- "image[0,0;1,1;fc_reload.png]",
 	-- "background[0,0;10.25,5.25;player_inv_bg.png;true]",
 	-- "background[-0.05,-0.05;10.25,5.25;player_inv_bg.png;true]",
 	-- "listcolors[#837347;#a9986a;#cebc8c]",
@@ -51,8 +53,8 @@ minetest.register_chatcommand("debug", {
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 
-		minetest.chat_send_all("<foo> multi\nline\ntext")
-		-- minetest.show_formspec(player:get_player_name(), "test", test_fs)
+		-- minetest.chat_send_all("<foo> multi\nline\ntext")
+		minetest.show_formspec(player:get_player_name(), "test", test_fs)
 
 		-- param = param:split(" ")
 		-- for k, v in pairs(param) do

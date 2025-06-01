@@ -9,6 +9,8 @@ fs_[width/height] - refers to raw formspec units
 TODO:
 =====
 
+slab fence/railing fence that occupies only a side(or quarter, if that's too much) half of a block + corner variant with twosidese filled
+
 lazer drill
 	basically jsut a tool with high range
 	when in use, place a lazer object stretching from the player to the pointed node pos
