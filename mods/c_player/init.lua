@@ -2,8 +2,24 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 c_player = {}
+-- desired size in pixels / current size in nodes
+local scale = (30 / 32) / (1.6 / 2)
+c_player.default_properties = {
+	visual = "mesh",
+	mesh = "player_joints.glb",
+	textures = {"skin_template_joints.png"},
+	visual_size = {x = scale, y = scale, z = scale},
 
-dofile(modpath .. "/model.lua")
+	eye_height = 1.75,
+	collisionbox = {-0.3, 0, -0.3, 0.3, 30/16, 0.3},
+	selectionbox = {-0.3, 0, -0.3, 0.3, 30/16, 0.3},
+}
+minetest.register_on_joinplayer(function(player, last_login)
+	player:set_properties(table.copy(c_player.default_properties))
+end)
+
+dofile(modpath .. "/sneaking.lua")
+-- dofile(modpath .. "/model.lua")
 dofile(modpath .. "/animation.lua")
 -- dofile(modpath .. "/foo.lua")
 
