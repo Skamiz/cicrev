@@ -9,6 +9,11 @@ fs_[width/height] - refers to raw formspec units
 TODO:
 =====
 
+storage object that floats after the player, until it's in a certain range of them
+	can be punched to cause it to relocate to another nearby position so it's not in the way
+
+check out: core.get_node_boxes(box_type, pos, [node])
+
 slab fence/railing fence that occupies only a side(or quarter, if that's too much) half of a block + corner variant with twosidese filled
 
 lazer drill
@@ -59,9 +64,10 @@ otherwise they get scattered
 
 
 player state
-	standing
+	default/free move
+	sneaking
 	crawling
-	climbing
+	climbing?
 	swiming
 	flying
 	stunned

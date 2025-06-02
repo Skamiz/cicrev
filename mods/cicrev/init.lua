@@ -12,6 +12,7 @@ dofile(modpath .. "/mapgen.lua")
 dofile(modpath .. "/commands.lua")
 dofile(modpath .. "/debug.lua")
 dofile(modpath .. "/growing_trees.lua")
+dofile(modpath .. "/sleep.lua")
 
 
 local function override_stack_limits(node_limit, item_limit)

@@ -1,5 +1,17 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
+--[[
+TODO: player state
+{
+name = ,
+animation_controller = func,
+on_enter
+on_exit
+def_properties?
+}
+]]
+
+
 
 c_player = {}
 -- desired size in pixels / current size in nodes
