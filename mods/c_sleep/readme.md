@@ -75,3 +75,41 @@ c_sleep.register_on_count_changed(function(n_sleeping, n_total))
 
 
 ## Integration
+
+Although this mod by default doesn't implement any sleeping effects,
+it does provide some helper functions to easily set up common behaviours.
+These are located in the 'c_sleep.integration' table.
+
+Time parametrers range from 0.0 to 1.0 as used by 'core.set_timeofday(val)'
+
+integration.limit_sleep_time(start_time, end_time)
+- limit ability to start sleep to between 'start_time' and 'end_time'
+
+integration.prevent_sleep_while_moving()
+- prevent moving players from startin sleep
+
+integration.skip_to_morning(time, player_fraction)
+- after 'player_fraction' of online players are asleep set day time to 'time'
+- wakes everyone up after
+
+integration.limit_interaction()
+- takes away players interact priv while they are asleep
+- doesn't work in singleplayer and for admins due to luanti fuckery
+- IMPORTANT! give the player a way to wake up without the interact priv,
+otherwise they will be trapped
+
+integration.speedup_time(multiplier, player_fraction)
+- while 'player_fraction' of players is asleep mutiply time speed by 'multiplier'
+
+integration.show_sleeping_players()
+- sleeping players get a HUD showing how many other players are sleeping
+
+integration.sleepers_snore(snore_percenatage)
+- 'snore_percenatage' not implemented yet
+- converts sleeping players messeges to snoring sounds
+
+integration.force_3rd_person_camera()
+- on start of sleep forces player camera to 3rd person
+
+integration.stop_sleeping_on_damage()
+- wakes sleeping players up, when they take damage

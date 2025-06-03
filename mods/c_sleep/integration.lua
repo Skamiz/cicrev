@@ -35,7 +35,7 @@ end
 -- if enough players are sleeping, skip to specified time
 integration.skip_to_morning = function(time, player_fraction)
 	c_sleep.register_on_count_changed(function(n_sleeping, n_total)
-		if (n_sleeping / n_total) > player_fraction then
+		if (n_sleeping / n_total) >= player_fraction then
 			core.set_timeofday(time)
 			c_sleep.wake_everyone_up()
 		end
@@ -63,7 +63,7 @@ end
 integration.speedup_time = function(multiplier, player_fraction)
 	local time_speed = tonumber(core.settings:get("time_speed"))
 	c_sleep.register_on_count_changed(function(n_sleeping, n_total)
-		if (n_sleeping / n_total) > player_fraction then
+		if (n_sleeping / n_total) >= player_fraction then
 			core.settings:set("time_speed", time_speed * multiplier)
 		else
 			core.settings:set("time_speed", time_speed)
