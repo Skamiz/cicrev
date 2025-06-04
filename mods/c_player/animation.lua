@@ -21,7 +21,7 @@ local function is_on_ground(player)
 	pos.y = pos.y - 0.1
 	local node = core.get_node(pos)
 	local def = core.registered_nodes[node.name]
-	return def.walkable
+	return def and def.walkable
 end
 c_player.is_on_ground = is_on_ground
 local function is_climbing(player)
@@ -29,7 +29,7 @@ local function is_climbing(player)
 	pos.y = pos.y
 	local node = core.get_node(pos)
 	local def = core.registered_nodes[node.name]
-	return def.climable
+	return def and def.climable
 end
 c_player.is_climbing = is_climbing
 local function is_moving(controls)
