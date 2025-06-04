@@ -2,8 +2,18 @@
 CONVENTION:
 ===========
 
+FORMSPECS:
+EVERY FORMSPEC MUST USE: "padding[0,0]" MANDATORY!!!!!
+
 fs_[width/height] - refers to raw formspec units
 [width/height] - refers to inventory slots with (0.25) padding
+
+GROUPS:
+material groups: group:material_iron, group:material_wood, group:material_steel, etc...
+shape groups: group:shape_slab, group:shape_ingot, ...
+category groups: group:category_tool, group:category_(food/consumable?), group:category_ ...
+other: group:storage, group:creative
+group:technical(maybe rename?) for items that shouldn't/aren't usefull to be acessible even in creative
 
 =====
 TODO:
@@ -157,7 +167,7 @@ Generic Minetest Game
 	?breadfruit [probably not]
 
 
-EVERY FORMSPEC MUST USE: "padding[0,0]" MANDATORY!!!!!
+
 
 darksouls style comunication drop masks, way for players to comunicate ingame
 

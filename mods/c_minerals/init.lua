@@ -1,6 +1,5 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
--- dofile(modpath .. "/foo.lua")
 
 
 local name_prefix = modname .. ":"
@@ -110,20 +109,23 @@ minetest.register_node(item_name("block_copper"), {
 	},
 })
 minetest.register_node(item_name("block_iron"), {
-	description = "Copper Iron",
+	description = "Iron Block",
 	tiles = {
 		world_tile("block_iron"),
 	},
 })
 minetest.register_node(item_name("block_steel"), {
-	description = "Copper Steel",
+	description = "Steel Block",
 	tiles = {
 		world_tile("block_steel"),
 	},
 })
 minetest.register_node(item_name("block_platinum"), {
-	description = "Copper Platinum",
+	description = "Platinum Block",
 	tiles = {
 		world_tile("block_platinum"),
 	},
 })
+
+
+dofile(modpath .. "/recipes.lua")

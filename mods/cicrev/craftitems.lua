@@ -37,10 +37,10 @@ minetest.register_craftitem("cicrev:brick", {
 	description = "Brick",
 	inventory_image = "cicrev_brick.png",
 })
-minetest.register_craftitem("cicrev:ingot_copper", {
-	description = "Copper Cube",
-	inventory_image = "cicrev_ingot_copper.png",
-})
+-- minetest.register_craftitem("cicrev:ingot_copper", {
+-- 	description = "Copper Cube",
+-- 	inventory_image = "cicrev_ingot_copper.png",
+-- })
 minetest.register_craftitem("cicrev:clay_lump", {
 	description = "Wet Lump of Clay",
 	inventory_image = "cicrev_clay_lump.png",

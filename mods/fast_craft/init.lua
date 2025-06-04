@@ -15,6 +15,7 @@ requested by group
 	both of which replace with empty bucket
 	this mod will give two empty buckets when the recipe is crafted
 
+TODO: show recipes in inv that the player has items for, but whichs conditions aren't being fulfilled?
 
 
 - only once there is an active need
