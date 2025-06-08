@@ -505,13 +505,6 @@ minetest.register_node("cicrev:corite", {
 	paramtype = "light",
 })
 
-minetest.register_node("cicrev:kiln", {
-	description = "Brick Kiln",
-	tiles = {"cicrev_kiln_top.png", "cicrev_kiln_bottom.png", "cicrev_kiln_side.png", "cicrev_kiln_side.png", "cicrev_kiln_front.png"},
-	groups = {cracky = 1},
-	paramtype2 = "facedir",
-})
-
 -- ====
 -- ORES
 -- ====

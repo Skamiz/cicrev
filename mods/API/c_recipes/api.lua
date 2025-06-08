@@ -11,7 +11,7 @@ local bad_modname = "Recipe name must follow 'mod_name:recipe_name' format. Was 
 local already_registered = "Failed to register recipe as recipe '%s' already exists."
 c_recipes.register_recipe = function(name, def)
 	local mod_origin = core.get_current_modname()
-	local mod_name = name:match("(^%S+):%S+")
+	local mod_name = name:match("([^:%s]+):")
 	assert(mod_name == mod_origin, bad_modname:format(name))
 
 	if c_recipes.registered_recipes[name] then
@@ -21,7 +21,7 @@ c_recipes.register_recipe = function(name, def)
 
 	def.name = name
 	def.mod_origin = mod_origin
-	def.image = def.image or next(def.inputs) or "blank.png"
+	def.image = def.image or next(def.outputs) or "blank.png"
 	def.description = def.description or ""
 	def.inputs = def.inputs or {}
 	def.outputs = def.outputs or {}
@@ -84,34 +84,28 @@ end
 local nonexistent_item = "Recipe '%s' uses item '%s', which doesn't exist."
 c_recipes.resolve_recipe_aliases = function(recipe)
 	for input, amount in pairs(recipe.inputs) do
-		local is_group = input:find("^group:%S$")
-		local is_item = input:find("^%S:%S$")
+		local new_input = c_recipes.resolve_alias(input)
 
-		if (not is_group) and is_item then
-			local new_input = c_recipes.resolve_alias(input)
-
-			recipe.inputs[new_input] = (recipe.inputs[new_input] or 0) + amount
+		if new_input ~= input then
 			recipe.inputs[input] = nil
-
-			if not core.registered_items[new_input] then
-				core.log("warning", nonexistent_item:format(recipe.name, new_input))
-			end
+			recipe.inputs[new_input] = (recipe.inputs[new_input] or 0) + amount
 		end
+
+		-- if not core.registered_items[new_input] then
+		-- 	core.log("warning", nonexistent_item:format(recipe.name, new_input))
+		-- end
 	end
 	for output, amount in pairs(recipe.outputs) do
-		local is_group = output:find("^group:%S$")
-		local is_item = output:find("^%S:%S$")
+		local new_output = c_recipes.resolve_alias(output)
 
-		if (not is_group) and is_item then
-			local new_output = c_recipes.resolve_alias(output)
-
-			recipe.outputs[new_output] = (recipe.outputs[new_output] or 0) + amount
+		if new_output ~= output then
 			recipe.outputs[output] = nil
-
-			if not core.registered_items[new_output] then
-				core.log("warning", nonexistent_item:format(recipe.name, new_output))
-			end
+			recipe.outputs[new_output] = (recipe.outputs[new_output] or 0) + amount
 		end
+
+		-- if not core.registered_items[new_output] then
+		-- 	core.log("warning", nonexistent_item:format(recipe.name, new_output))
+		-- end
 	end
 end
 

@@ -15,9 +15,18 @@ category groups: group:category_tool, group:category_(food/consumable?), group:c
 other: group:storage, group:creative
 group:technical(maybe rename?) for items that shouldn't/aren't usefull to be acessible even in creative
 
+for recipes:
+group:crafting_anvil, group:crafting_loom, ...
+
 =====
 TODO:
 =====
+
+maybe for general formspec theme something light bluish?
+
+tree sap? for torches and as adhesive
+
+when leaves decay, they my spawn leaf litter under them
 
 storage object that floats after the player, until it's in a certain range of them
 	can be punched to cause it to relocate to another nearby position so it's not in the way

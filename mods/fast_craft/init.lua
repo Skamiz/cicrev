@@ -15,8 +15,8 @@ requested by group
 	both of which replace with empty bucket
 	this mod will give two empty buckets when the recipe is crafted
 
+TODO: separate sections for recipe handling and for crafting
 TODO: show recipes in inv that the player has items for, but whichs conditions aren't being fulfilled?
-
 
 - only once there is an active need
 TODO: if an item is required, but imediately returned count it as if infinite

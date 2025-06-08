@@ -671,7 +671,7 @@ minetest.register_node("cicrev:tank", {
 
 
 local all_items = {}
-for k, _ in pairs(minetest.registered_items) do
+for k, _ in pairs(core.registered_items) do
 	all_items[#all_items + 1] = k
 end
 for i = 1, 50 do
@@ -680,5 +680,20 @@ for i = 1, 50 do
 		input = {
 			["cicrev:thatch"] = math.ceil(i/10),
 		},
+	})
+
+	local outputs = {
+		[all_items[math.random(#all_items)]] = math.random(5),
+	}
+	local inputs = {
+		["cicrev:thatch"] = math.ceil(i/10),
+	}
+	
+	c_recipes.register_recipe("cicrev:recipe_" .. i, {
+		description = "Random recipe number " .. i,
+		inputs = inputs,
+		outputs = outputs,
+		groups = {["crafting_workbench"] = 1, ["randomized"] = 1},
+		-- on_craft = func(crafter),
 	})
 end
