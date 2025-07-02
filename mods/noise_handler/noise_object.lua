@@ -1,6 +1,3 @@
--- These guards are here because 'minetest.get_perlin' isn't aviable at startup,
--- which is when the noise object is registered
--- and 'PerlinNoise()' doesn't take into acount the map seed
 local function get_2d(noise, pos)
 	-- switched around z and y as this is the usual use case
 	return noise.noise_obj:get_2d({x = pos.x, y = pos.z})
@@ -11,7 +8,7 @@ local function get_3d(noise, pos)
 end
 
 local function get_2d_map_flat(noise, minp)
-	-- switched around z and y as this is the usual use case
+	-- switch around z and y as this is the usual use case
 	noise.noise_map_obj:get_2d_map_flat({x = minp.x, y = minp.z}, noise.buffer_2d)
 	return noise.buffer_2d
 end
@@ -71,9 +68,12 @@ function noise_handler.get_noise_object(params, chunk_size)
 		noise_obj = nil,
 		noise_map_obj = nil,
 	}
+	-- initiate noise objects
+	-- 'ValueNoise()' isn't available during the mod loading stage
+	-- this runs before 'registered_on_generated'
 	minetest.after(0, function()
-		noise_object.noise_obj = minetest.get_perlin(noise_object.params, noise_object.chunk_size)
-		noise_object.noise_map_obj = minetest.get_perlin_map(noise_object.params, noise_object.chunk_size)
+		noise_object.noise_obj = core.get_value_noise(noise_object.params, noise_object.chunk_size)
+		noise_object.noise_map_obj = core.get_value_noise_map(noise_object.params, noise_object.chunk_size)
 	end)
 
 	return noise_object

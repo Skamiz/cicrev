@@ -53,5 +53,6 @@ player selects amount
 after each button press
 
 TODO: optional dependency on invchange detection, update players crafting formspec
+TODO: ADD on_craft CALLBACKS!!!
 
 ]]

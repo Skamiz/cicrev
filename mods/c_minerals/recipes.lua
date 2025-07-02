@@ -7,88 +7,82 @@ local function item_name(name)
 	return name_prefix .. name
 end
 
+if not c_recipes then return end
 
-fast_craft.register_condition("near_kiln", {
-	func = function(player)
-		local pos = player:get_pos()
-		return core.find_node_near(pos, 3, "cicrev:kiln", true)
-	end,
-	-- not yet used
-	description = "Player is near kiln.",
-	-- icon = *.png file or item name representing this condition
+c_recipes.register_recipe(item_name("ingot_copper"), {
+	description = "Copper Ingot",
+	outputs = {[item_name("ingot_copper")] = 1,},
+	inputs = {[item_name("ore_native_copper")] = 1,},
+	groups = {crafting_smelt = 1},
 })
-
--- ores to ingots
-fast_craft.register_craft({
-	output = {item_name("ingot_copper"), 1},
-	input = {
-		[item_name("ore_native_copper")] = 1,
-	},
-	conditions = {
-		["near_kiln"] = true,
-	}
+c_recipes.register_recipe(item_name("ingot_iron"), {
+	description = "Iron Ingot",
+	outputs = {[item_name("ingot_iron")] = 1,},
+	inputs = {[item_name("ore_hematite")] = 1,},
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("ingot_iron"), 1},
-	input = {
-		[item_name("ore_hematite")] = 1,
-	},
-	conditions = {
-		["near_kiln"] = true,
-	}
-})
-fast_craft.register_craft({
-	output = {item_name("ingot_steel"), 3},
-	input = {
+c_recipes.register_recipe(item_name("ingot_steel"), {
+	description = "Steel Ingot",
+	outputs = {[item_name("ingot_steel")] = 3,},
+	inputs = {
 		[item_name("ore_hematite")] = 3,
 		[item_name("ore_native_platinum")] = 1,
 	},
-	conditions = {
-		["near_kiln"] = true,
-	}
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("ingot_platinum"), 1},
-	input = {
-		[item_name("ore_native_platinum")] = 2,
-	},
-	conditions = {
-		["near_kiln"] = true,
-	}
+c_recipes.register_recipe(item_name("ingot_platinum"), {
+	description = "Platinum Ingot",
+	outputs = {[item_name("ingot_platinum")] = 1,},
+	inputs = {[item_name("ore_native_platinum")] = 2,},
+	groups = {crafting_smelt = 1},
 })
 
--- ingot to blocks
-fast_craft.register_craft({
-	output = {item_name("block_copper"), 1},
-	input = {[item_name("ingot_copper")] = 8,},
+c_recipes.register_recipe(item_name("block_copper"), {
+	description = "Copper Block",
+	outputs = {[item_name("block_copper")] = 1,},
+	inputs = {[item_name("ingot_copper")] = 8,},
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("block_iron"), 1},
-	input = {[item_name("ingot_iron")] = 8,},
+c_recipes.register_recipe(item_name("block_iron"), {
+	description = "Iron Block",
+	outputs = {[item_name("block_iron")] = 1,},
+	inputs = {[item_name("ingot_iron")] = 8,},
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("block_steel"), 1},
-	input = {[item_name("ingot_steel")] = 8,},
+c_recipes.register_recipe(item_name("block_steel"), {
+	description = "Steel Block",
+	outputs = {[item_name("block_steel")] = 1,},
+	inputs = {[item_name("ingot_steel")] = 8,},
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("block_platinum"), 1},
-	input = {[item_name("ingot_platinum")] = 8,},
+c_recipes.register_recipe(item_name("block_platinum"), {
+	description = "Platinum Block",
+	outputs = {[item_name("block_platinum")] = 1,},
+	inputs = {[item_name("ingot_platinum")] = 8,},
+	groups = {crafting_smelt = 1},
 })
 
--- blocks to ingost
-fast_craft.register_craft({
-	output = {item_name("ingot_copper"), 8},
-	input = {[item_name("block_copper")] = 1,},
+c_recipes.register_recipe(item_name("ingot_copper_8"), {
+	description = "Copper Ingots",
+	outputs = {[item_name("ingot_copper")] = 8,},
+	inputs = {[item_name("block_copper")] = 1,},
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("ingot_iron"), 8},
-	input = {[item_name("block_iron")] = 1,},
+c_recipes.register_recipe(item_name("ingot_iron_8"), {
+	description = "Iron Ingots",
+	outputs = {[item_name("ingot_iron")] = 8,},
+	inputs = {[item_name("block_iron")] = 1,},
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("ingot_steel"), 8},
-	input = {[item_name("block_steel")] = 1,},
+c_recipes.register_recipe(item_name("ingot_steel_8"), {
+	description = "Steel Ingots",
+	outputs = {[item_name("ingot_steel")] = 8,},
+	inputs = {[item_name("block_steel")] = 1,},
+	groups = {crafting_smelt = 1},
 })
-fast_craft.register_craft({
-	output = {item_name("ingot_platinum"), 8},
-	input = {[item_name("block_platinum")] = 1,},
+c_recipes.register_recipe(item_name("ingot_platinum_8"), {
+	description = "Platinum Ingots",
+	outputs = {[item_name("ingot_platinum")] = 8,},
+	inputs = {[item_name("block_platinum")] = 1,},
+	groups = {crafting_smelt = 1},
 })

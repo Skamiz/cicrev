@@ -5,4 +5,4 @@ noise_handler = {}
 
 dofile(modpath.."/util.lua")
 dofile(modpath.."/noise_object.lua")
-dofile(modpath.."/dynamic_noise.lua")
+-- dofile(modpath.."/dynamic_noise.lua")

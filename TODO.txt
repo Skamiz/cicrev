@@ -22,6 +22,15 @@ group:crafting_anvil, group:crafting_loom, ...
 TODO:
 =====
 
+super capacity storage
+	inventory where stacks go over max stack limit
+	use inventory callbacks to make stacks progaramatically larger then the stack limit can usually be
+	and smaller again, when moving stuff to other inventories
+
+mese as a by default liquid substance that has also a crystalized mese variant?
+
+maybe no shovels? technically the pickaxe does just as good a job in the sense of diggin as 'destroying'
+
 maybe for general formspec theme something light bluish?
 
 tree sap? for torches and as adhesive

@@ -73,16 +73,7 @@ minetest.register_tool("cicrev:mallet_wood", {
 	},
 	groups = {pickaxe = 1},
 })
-minetest.register_tool("cicrev:pickaxe_copper", {
-	description = "Copper Pickaxe",
-	inventory_image = "cicrev_pickaxe_copper.png",
-	tool_capabilities = {
-		groupcaps={
-			cracky = {times = {[1] = 5.00}, uses = 30, maxlevel = 0},
-		},
-	},
-	groups = {pickaxe = 1},
-})
+
 
 minetest.register_tool("cicrev:fire_stones", {
 	description = "Fire Stones",
@@ -96,4 +87,65 @@ minetest.register_tool("cicrev:fire_stones", {
 			return itemstack
 		end
 	end,
+})
+
+minetest.register_tool("cicrev:pickaxe_copper", {
+	description = "Copper Pickaxe",
+	inventory_image = "cicrev_pickaxe_copper.png",
+	tool_capabilities = {
+		groupcaps={
+			cracky = {times = {[1] = 5.00}, uses = 30, maxlevel = 0},
+		},
+	},
+	groups = {pickaxe = 1},
+})
+minetest.register_tool("cicrev:pickaxe_iron", {
+	description = "Iron Pickaxe",
+	inventory_image = "cicrev_pickaxe_iron.png",
+	tool_capabilities = {
+		groupcaps={
+			cracky = {times = {[1] = 4.00}, uses = 50, maxlevel = 0},
+		},
+	},
+	groups = {pickaxe = 1},
+})
+minetest.register_tool("cicrev:pickaxe_steel", {
+	description = "Steel Pickaxe",
+	inventory_image = "cicrev_pickaxe_steel.png",
+	tool_capabilities = {
+		groupcaps={
+			cracky = {times = {[1] = 3.00}, uses = 100, maxlevel = 0},
+		},
+	},
+	groups = {pickaxe = 1},
+})
+minetest.register_tool("cicrev:axe_copper", {
+	description = "Copper Axe",
+	inventory_image = "cicrev_axe_copper.png",
+	tool_capabilities = {
+		groupcaps={
+			choppy = {times = {[1] = 5.00}, uses = 30, maxlevel = 0},
+		},
+	},
+	groups = {axe = 1},
+})
+minetest.register_tool("cicrev:axe_iron", {
+	description = "Iron Axe",
+	inventory_image = "cicrev_axe_iron.png",
+	tool_capabilities = {
+		groupcaps={
+			choppy = {times = {[1] = 4.00}, uses = 50, maxlevel = 0},
+		},
+	},
+	groups = {axe = 1},
+})
+minetest.register_tool("cicrev:axe_steel", {
+	description = "Steel Axe",
+	inventory_image = "cicrev_axe_steel.png",
+	tool_capabilities = {
+		groupcaps={
+			choppy = {times = {[1] = 3.00}, uses = 100, maxlevel = 0},
+		},
+	},
+	groups = {axe = 1},
 })

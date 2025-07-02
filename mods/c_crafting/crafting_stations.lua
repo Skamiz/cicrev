@@ -62,7 +62,7 @@ core.register_node("c_crafting:workbench", {
 		get_craft_result = c_crafting.get_craft_result,
 		apply_craft_result = c_crafting.apply_craft_result,
 	},
-	groups = {["crafting_station"] = 1,},
+	groups = {crafting_station = 1,},
 })
 
 core.register_node("c_crafting:kiln", {

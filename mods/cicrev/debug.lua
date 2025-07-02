@@ -10,6 +10,25 @@ local storage = minetest.get_mod_storage()
 
 local switch = true
 
+local prepend_fs = {
+	-- "formspec_version[9]",
+	-- "size[8,8]",
+	-- "padding[0,0]",
+	"background9[0,0;0,0;cicrev_esc_background.png;true;8]",
+	-- "image[0,0;4,5.75;cicrev_fs_inset.png;4]",
+	"style_type[button;font=mono;border=false;bgimg_middle=4;padding=-4]",
+	"style_type[button;bgimg=cicrev_fs_button.png]",
+	-- "label[0.16,1.6;- Day: 55]",
+	-- "label[0.16,1.98;- Other custom Info.]",
+	-- "button[7,0;4,1;test_button;no callback possible]",
+}
+core.register_on_joinplayer(function(player)
+	player:set_formspec_prepend(table.concat(prepend_fs))
+end)
+
+-- core.register_on_player_receive_fields(function(player, formname, fields)
+-- 	print(dump(fields))
+-- end)
 
 local fs = {
 	"formspec_version[4]",
@@ -670,30 +689,30 @@ minetest.register_node("cicrev:tank", {
 })
 
 
-local all_items = {}
-for k, _ in pairs(core.registered_items) do
-	all_items[#all_items + 1] = k
-end
-for i = 1, 50 do
-	fast_craft.register_craft({
-		output = {all_items[math.random(#all_items)], math.random(5)},
-		input = {
-			["cicrev:thatch"] = math.ceil(i/10),
-		},
-	})
-
-	local outputs = {
-		[all_items[math.random(#all_items)]] = math.random(5),
-	}
-	local inputs = {
-		["cicrev:thatch"] = math.ceil(i/10),
-	}
-	
-	c_recipes.register_recipe("cicrev:recipe_" .. i, {
-		description = "Random recipe number " .. i,
-		inputs = inputs,
-		outputs = outputs,
-		groups = {["crafting_workbench"] = 1, ["randomized"] = 1},
-		-- on_craft = func(crafter),
-	})
-end
+-- local all_items = {}
+-- for k, _ in pairs(core.registered_items) do
+-- 	all_items[#all_items + 1] = k
+-- end
+-- for i = 1, 50 do
+-- 	fast_craft.register_craft({
+-- 		output = {all_items[math.random(#all_items)], math.random(5)},
+-- 		input = {
+-- 			["cicrev:thatch"] = math.ceil(i/10),
+-- 		},
+-- 	})
+--
+-- 	local outputs = {
+-- 		[all_items[math.random(#all_items)]] = math.random(5),
+-- 	}
+-- 	local inputs = {
+-- 		["cicrev:thatch"] = math.ceil(i/10),
+-- 	}
+--
+-- 	c_recipes.register_recipe("cicrev:recipe_" .. i, {
+-- 		description = "Random recipe number " .. i,
+-- 		inputs = inputs,
+-- 		outputs = outputs,
+-- 		groups = {["crafting_workbench"] = 1, ["randomized"] = 1},
+-- 		-- on_craft = func(crafter),
+-- 	})
+-- end
