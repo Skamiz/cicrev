@@ -21,34 +21,13 @@ end
 
 
 
-local blocks_per_chunk = tonumber(minetest.settings:get("chunksize")) or 5
+local blocks_per_chunk = tonumber(core.settings:get("chunksize")) or 5
 local side_lenght = blocks_per_chunk * 16
 
 -- Returns a noise object which combines the capacity of those returned by
--- 'minetest.get_perlin' and 'minetest.get_perlin_map',
+-- 'core.get_perlin' and 'core.get_perlin_map',
 -- and automatically maintains buffer tables for better performance.
 function noise_handler.get_noise_object(params, chunk_size)
-	local ft = noise_handler.flags_to_table(params.flags or "")
-	if ft.defaults == nil and ft.eased == nil then
-		ft.defaults = true
-	end
-	params.flags = noise_handler.table_to_flags(ft)
-
-
-	local amplitude = 0
-	for i = 1, params.octaves do
-		amplitude = amplitude + math.pow(params.persist, i - 1)
-	end
-	amplitude = amplitude * params.scale
-	local min = -amplitude + params.offset
-	local max =  amplitude + params.offset
-	if ft.absvalue then
-		if max < 0 then
-			max, min = -min, -max
-		elseif min < 0 then
-			min = 0
-		end
-	end
 
 	local noise_object = {
 		original_params = params,
@@ -61,9 +40,9 @@ function noise_handler.get_noise_object(params, chunk_size)
 		get_2d_map_flat = get_2d_map_flat,
 		get_3d_map_flat = get_3d_map_flat,
 
-		amplitude = amplitude,
-		min = min,
-		max = max,
+		-- amplitude = amplitude,
+		-- min = min,
+		-- max = max,
 
 		noise_obj = nil,
 		noise_map_obj = nil,
@@ -71,7 +50,7 @@ function noise_handler.get_noise_object(params, chunk_size)
 	-- initiate noise objects
 	-- 'ValueNoise()' isn't available during the mod loading stage
 	-- this runs before 'registered_on_generated'
-	minetest.after(0, function()
+	core.after(0, function()
 		noise_object.noise_obj = core.get_value_noise(noise_object.params, noise_object.chunk_size)
 		noise_object.noise_map_obj = core.get_value_noise_map(noise_object.params, noise_object.chunk_size)
 	end)

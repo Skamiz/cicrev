@@ -107,10 +107,10 @@ minetest.register_entity(modname .. ":pull_cart", {
 		end
 		pull_cart.players[player_name] = self
 
-		if player_properties then
-			player_properties.player_properties(player, slowdown)
-			player_properties.player_properties(player, weightdown)
-		else
+		-- if player_properties then
+		-- 	player_properties.player_properties(player, slowdown)
+		-- 	player_properties.player_properties(player, weightdown)
+		-- else
 			local po = player:get_physics_override()
 			po.speed = speed_multiplier
 			if offroad_cart then
@@ -119,7 +119,7 @@ minetest.register_entity(modname .. ":pull_cart", {
 				po.jump = 0.5
 			end
 			player:set_physics_override(po)
-		end
+		-- end
 	end,
 
 	_detach = function(self, player)
@@ -134,15 +134,15 @@ minetest.register_entity(modname .. ":pull_cart", {
 		local vel = self.object:get_velocity()
 		self.object:set_velocity({x=0,y=vel.y,z=0})
 
-		if player_properties then
-			player_properties.remove_effect(player,"speed", "pull_cart")
-			player_properties.remove_effect(player,"jump", "pull_cart")
-		else
+		-- if player_properties then
+		-- 	player_properties.remove_effect(player,"speed", "pull_cart")
+		-- 	player_properties.remove_effect(player,"jump", "pull_cart")
+		-- else
 			local po = player:get_physics_override()
 			po.speed = 1
 			po.jump = 1
 			player:set_physics_override(po)
-		end
+		-- end
 	end,
 
 	-- attaches an object with the appearance of the item in the first inventory slot

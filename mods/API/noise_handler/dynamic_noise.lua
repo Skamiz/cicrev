@@ -1,16 +1,16 @@
-local modname = minetest.get_current_modname()
+local modname = core.get_current_modname()
 local dynamic_noises = {}
 local noise_by_index = {}
 local original_np = {}
 noise_handler.noises = dynamic_noises
 
-local storage = minetest.get_mod_storage()
+local storage = core.get_mod_storage()
 
 local function update_dynamic_noise(name, params, chunk_size)
 	dynamic_noises[name] = noise_handler.get_noise_object(params, chunk_size)
 	dynamic_noises[name].name = name
 
-	storage:set_string(name, minetest.serialize(params))
+	storage:set_string(name, core.serialize(params))
 	print("[dynamic_noise]: updating noise: " .. name)
 end
 noise_handler.register_dynamic_noise = function(name, params, chunk_size)
@@ -22,7 +22,7 @@ noise_handler.register_dynamic_noise = function(name, params, chunk_size)
 	local changed = storage:get(name)
 	if changed then
 		print("[dynamic_noise]: loading noise params from previous sesion: " .. name)
-		update_dynamic_noise(name, minetest.deserialize(changed), chunk_size)
+		update_dynamic_noise(name, core.deserialize(changed), chunk_size)
 	end
 end
 
@@ -119,10 +119,10 @@ local function get_formspec(noise_name)
 	return table.concat(fs)
 end
 local function show_formspec(player, noise_name)
-	-- minetest.close_formspec(player:get_player_name(), modname ..":noise_config")
-	minetest.show_formspec(player:get_player_name(), modname ..":noise_config", get_formspec(noise_name))
+	-- core.close_formspec(player:get_player_name(), modname ..":noise_config")
+	core.show_formspec(player:get_player_name(), modname ..":noise_config", get_formspec(noise_name))
 end
-minetest.register_chatcommand("noise_config", {
+core.register_chatcommand("noise_config", {
 	-- params = "<name> <privilege>",
 	description = "Show dynamic noise configuration formspec.",
 	-- privs = {privs=true},
@@ -131,9 +131,9 @@ minetest.register_chatcommand("noise_config", {
 		-- local f = false
 		-- for _, _ in pairs(dynamic_noises) do f = true break end
 		-- if not f then
-		-- 	minetest.chat_send_player(name, "There are no dynamic noises registered.")
+		-- 	core.chat_send_player(name, "There are no dynamic noises registered.")
 		-- end
-		local player = minetest.get_player_by_name(name)
+		local player = core.get_player_by_name(name)
 		show_formspec(player)
 	end,
 })
@@ -142,7 +142,7 @@ minetest.register_chatcommand("noise_config", {
 
 local function print_table(t)
 	for k, v in pairs(t) do
-		minetest.chat_send_all(type(k) .. " : " .. tostring(k) .. " | " .. type(v) .. " : " .. tostring(v))
+		core.chat_send_all(type(k) .. " : " .. tostring(k) .. " | " .. type(v) .. " : " .. tostring(v))
 	end
 end
 
@@ -163,15 +163,15 @@ local all_flags = {
 	"absvalue",
 	"n0rmal",
 }
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= modname ..":noise_config" then return end
-	if fields.noise_list == "INV" then return end -- sometimes minetest sends junk data
-	minetest.chat_send_all("TAKE: " .. n .. " ---------------------")
+	if fields.noise_list == "INV" then return end -- sometimes core sends junk data
+	core.chat_send_all("TAKE: " .. n .. " ---------------------")
 	n = n + 1
 	print_table(fields)
 	print(dump(fields))
 	if fields.noise_list then
-		local event = minetest.explode_textlist_event(fields.noise_list)
+		local event = core.explode_textlist_event(fields.noise_list)
 		if event.type == "CHG" then
 			show_formspec(player, noise_by_index[event.index])
 			selected_noise_index = event.index
@@ -297,17 +297,17 @@ local function get_hud_string(player)
 	return table.concat(hud_string)
 end
 
-minetest.register_on_joinplayer(
+core.register_on_joinplayer(
 	function(player)
 		add_noise_hud(player)
 	end
 )
-minetest.register_on_leaveplayer(
+core.register_on_leaveplayer(
 	function(player, timed_out)
 		remove_noise_hud(player)
 	end
 )
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	for player, hud_info in pairs(huds) do
 		local new_pos = player:get_pos()
 		if new_pos:equals(hud_info.pos) then return end
@@ -315,4 +315,4 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
--- for i, player in pairs(minetest.get_connected_players()) do	print(player:get_player_name()) end
+-- for i, player in pairs(core.get_connected_players()) do	print(player:get_player_name()) end

@@ -18,7 +18,7 @@ the player back to where they were before going to sleep.
 
 
 
-##API
+## API
 
 c_sleep.sleeping_players = {
 	["player_name"] = true,

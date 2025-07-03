@@ -23,6 +23,39 @@ function noise_handler.table_to_flags(ft)
 	return table.concat(flags, ",")
 end
 
+function noise_handler.get_noise_meta(params)
+	local ft = noise_handler.flags_to_table(params.flags or "")
+	if ft.defaults == nil and ft.eased == nil then
+		ft.defaults = true
+	end
+	params.flags = noise_handler.table_to_flags(ft)
+
+
+	local amplitude = 0
+	for i = 1, params.octaves do
+		amplitude = amplitude + math.pow(params.persist, i - 1)
+	end
+	amplitude = amplitude * params.scale
+
+
+	local min = -amplitude + params.offset
+	local max =  amplitude + params.offset
+	if ft.absvalue then
+		if max < 0 then
+			max, min = -min, -max
+		elseif min < 0 then
+			min = 0
+		end
+	end
+
+	local noise_meta = {
+		amplitude = amplitude,
+		min = min,
+		max = max,
+	}
+
+	return noise_meta
+end
 
 
 local function lerp(a, b, ratio)
