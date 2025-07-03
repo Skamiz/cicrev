@@ -1,4 +1,4 @@
-### Sleep [c_sleep]
+# Sleep [c_sleep]
 
 An API mod for managing sleep.
 
@@ -28,7 +28,7 @@ c_sleep.sleeping_players = {
 - do not change directly!, only use for lookup, if necessary
 
 
-# Functions
+### Functions
 
 c_sleep.can_sleep(player)
 - returns boolean, and if 'false' a "reason" as a second argument
@@ -50,7 +50,7 @@ c_sleep.end_sleep(player)
 - unregisters player as asleep and calls 'on_sleep_end' and 'on_count_changed'
 callbacks
 
-# convenience funcitons
+### convenience funcitons
 c_sleep.wake_everyone_up()
 - calls 'c_sleep.end_sleep(player)' on all players
 
@@ -59,7 +59,7 @@ c_sleep.toggle_sleep(player)
 on whether player is awake or asleep
 
 
-# Callbacks
+### Callbacks
 
 c_sleep.register_on_sleep_start(function(player))
 - called when player sucessfully enters sleep state

@@ -1,4 +1,4 @@
-### Noise Handler [noise_handler]
+# Noise Handler [noise_handler]
 
 Utitlity mod that simplifies working with the builtin noise generators
 by collecting generating functions into one object and autamtically
@@ -13,7 +13,7 @@ noise_handler.get_noise_object(noise_parameters, chunk_size)
 - chunk_size, dimensions of noise maps
 optional, defaults to size of a mapgen chunk
 
-# Example:
+### Example:
 
 ```lua
 
