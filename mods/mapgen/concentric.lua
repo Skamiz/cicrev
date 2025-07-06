@@ -54,8 +54,8 @@ local np_2d = {
 	scale = 0.1,
 	spread = {x = 2111 * SCALE, y = 2111 * SCALE, z = 2111 * SCALE},
 	seed = 0,
-	octaves = 3,
-	persist = 0.7,
+	octaves = 5,
+	persist = 0.4,
 	lacunarity = 2.3,
 	flags = "noeased",
 }
@@ -183,3 +183,147 @@ minetest.register_on_generated(function(minp, maxp, chunkseed)
 	vm:write_to_map()
 	-- print(((minetest.get_us_time() - t0) / 1000) .. " ms" )
 end)
+
+
+c_cartography.register_data_map("height", {
+	width = 640,
+	height = 640,
+	generate_data = function(self, data_maps)
+		local data = {}
+		for x = 1, self.width do
+			for y = 1, self.height do
+				local sample_x = math.round(c_cartography.util.remap(1, self.width, -320, 320, x))
+				local sample_z = math.round(c_cartography.util.remap(1, self.width, -320, 320, y))
+				data[#data + 1] = get_terrain_height(sample_x, sample_z) * 5
+			end
+		end
+		return data
+	end,
+})
+
+c_cartography.register_data_map("normal", {
+	width = 640,
+	height = 640,
+	depends = {"height"},
+	generate_data = function(self, data_maps)
+		local up = vector.new(0, 1, 0)
+		local zero = vector.zero()
+		local height_map = data_maps["height"]
+		local height_data = height_map.data
+		local area = height_map.area
+
+		local data = {}
+
+		for i = 1, #height_data do
+			data[i] = up
+		end
+
+		local d_north = vector.new(0, 0, 1)
+		local d_south = vector.new(0, 0, -1)
+		local d_east = vector.new(1, 0, 0)
+		local d_west = vector.new(-1, 0, 0)
+
+		for i in area:iter(2, 1, 2, height_map.width - 1, 1, height_map.height - 1) do
+			local center_pos = area:position(i)
+
+			local north = height_data[area:indexp(center_pos + d_north)]
+			local south = height_data[area:indexp(center_pos + d_south)]
+			local east = height_data[area:indexp(center_pos + d_east)]
+			local west = height_data[area:indexp(center_pos + d_west)]
+
+			local normal = vector.new(-2 * (east - west), 4, -2 * (south - north))
+
+
+			data[i] = normal:normalize()
+		end
+
+		return data
+	end,
+})
+
+c_cartography.register_data_map("light", {
+	width = 640,
+	height = 640,
+	depends = {"normal"},
+	generate_data = function(self, data_maps)
+		local normal_map = data_maps["normal"]
+		local data = {}
+		local light_vec = vector.new(-1, 1, -1):normalize() -- points to sun
+
+		for i, normal in pairs(normal_map.data) do
+			local light = light_vec:dot(normal)
+			data[i] = light
+		end
+
+		return data
+	end,
+})
+
+c_cartography.register_page("height_map", {
+	description = "Height Map",
+	depends = {"height"},
+	get_page_fs = function(self, data_maps)
+		local height_map = data_maps["height"]
+		local width = height_map.width
+		local height = height_map.height
+
+		local color_data = c_cartography.util.draw_greyscale(height_map, height_map.min, height_map.max)
+		color_data = c_cartography.util.tilt(color_data, height_map, 45)
+		local color_string = c_cartography.util.build_image(color_data, width, height)
+		local image_fs = c_cartography.util.image_fs(color_string, 10, 10)
+
+		return image_fs
+	end,
+})
+c_cartography.register_page("normal_map", {
+	description = "Normal Map",
+	depends = {"normal"},
+	get_page_fs = function(self, data_maps)
+		local normal_map = data_maps["normal"]
+		-- local height_map = data_maps["height"]
+		local width = normal_map.width
+		local height = normal_map.height
+
+		local color_data = c_cartography.util.draw_normal(normal_map)
+		-- color_data = c_cartography.util.tilt(color_data, height_map, 45)
+		local color_string = c_cartography.util.build_image(color_data, width, height)
+		local image_fs = c_cartography.util.image_fs(color_string, 10, 10)
+
+		return image_fs
+	end,
+})
+c_cartography.register_page("shadow_map", {
+	description = "Shadow Map",
+	depends = {"light"},
+	get_page_fs = function(self, data_maps)
+		local light_map = data_maps["light"]
+		local width = light_map.width
+		local height = light_map.height
+
+		local color_data = c_cartography.util.draw_greyscale(light_map, light_map.min, light_map.max)
+		-- color_data = c_cartography.util.tilt(color_data, light_map, 45)
+		local color_string = c_cartography.util.build_image(color_data, width, height)
+		local image_fs = c_cartography.util.image_fs(color_string, 10, 10)
+
+		return image_fs
+	end,
+})
+
+c_cartography.register_page("terrain_map", {
+	description = "Terrain Map",
+	depends = {"height", "light"},
+	get_page_fs = function(self, data_maps)
+		local height_map = data_maps["height"]
+		local light_data = data_maps["light"].data
+		local width = height_map.width
+		local height = height_map.height
+
+		local color_data = c_cartography.util.draw_colored(height_map, height_map.min, 0, height_map.max)
+	 	color_data = c_cartography.util.apply_light(color_data, light_data)
+		color_data = c_cartography.util.tilt(color_data, height_map, 45)
+		local color_string = c_cartography.util.build_image(color_data, width, height)
+		local image_fs = c_cartography.util.image_fs(color_string, 10, 10)
+
+		return image_fs
+	end,
+})

@@ -7,13 +7,20 @@ mapgen.mod_storage = minetest.get_mod_storage()
 -- TODO: consider putting content ID's in their own file, maybe into the table 'c'
 
 dofile(modpath .. "/util.lua")
-dofile(modpath .. "/cartography.lua")
+
+minetest.set_mapgen_setting("water_level", "0", true)
+
+mapgen.delete_world = function()
+	local worldpath = minetest.get_worldpath()
+	minetest.rmdir(worldpath .. "/map.sqlite", false)
+end
+
 
 if mapgen.mod_storage:contains("mapgen_override") then
 	local override = mapgen.mod_storage:get_string("mapgen_override")
 	dofile(modpath .. "/" .. override  .. ".lua")
 else
-	dofile(modpath .. "/make_frame.lua")
+	-- dofile(modpath .. "/make_frame.lua")
 	-- dofile(modpath .. "/flat.lua")
 
 	-- dofile(modpath .. "/mount_meru.lua")
@@ -38,7 +45,7 @@ else
 	-- dofile(modpath .. "/mountains.lua")
 	-- dofile(modpath .. "/plateaus.lua")
 	-- dofile(modpath .. "/offset.lua")
-	-- dofile(modpath .. "/concentric.lua")
+	dofile(modpath .. "/concentric.lua")
 	-- dofile(modpath .. "/mapgen_env.lua")
 	-- minetest.register_mapgen_script(modpath .. "/mapgen_env.lua")
 
@@ -109,10 +116,3 @@ minetest.register_chatcommand("mapgen_override", {
 		mapgen.mod_storage:set_string("mapgen_override", param)
 	end,
 })
-
-minetest.set_mapgen_setting("water_level", "0", true)
-
-mapgen.delete_world = function()
-	local worldpath = minetest.get_worldpath()
-	minetest.rmdir(worldpath .. "/map.sqlite", false)
-end

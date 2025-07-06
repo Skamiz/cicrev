@@ -14,6 +14,8 @@ shape groups: group:shape_slab, group:shape_ingot, ...
 category groups: group:category_tool, group:category_(food/consumable?), group:category_ ...
 other: group:storage, group:creative
 group:technical(maybe rename?) for items that shouldn't/aren't usefull to be acessible even in creative
+group:air, - air and nodes that can safely be treated as air
+group:gas, group:liquid, group:solid   ?
 
 for recipes:
 group:crafting_anvil, group:crafting_loom, ...
@@ -21,6 +23,8 @@ group:crafting_anvil, group:crafting_loom, ...
 =====
 TODO:
 =====
+
+under water lakes at the bottom of the ocean
 
 super capacity storage
 	inventory where stacks go over max stack limit
