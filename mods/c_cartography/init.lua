@@ -5,12 +5,14 @@ cartography.modname = core.get_current_modname()
 cartography.modpath = core.get_modpath(cartography.modname)
 cartography.mod_storage = core.get_mod_storage()
 
-cartography.color = dofile(cartography.modpath .. "/color.lua")
+cartography.Color, cartography.Gradient = dofile(cartography.modpath .. "/color.lua")
+cartography.Image = dofile(cartography.modpath .. "/image.lua")
 dofile(cartography.modpath .. "/util.lua")
 dofile(cartography.modpath .. "/data_maps.lua")
 dofile(cartography.modpath .. "/pages.lua")
 dofile(cartography.modpath .. "/formspecs.lua")
 dofile(cartography.modpath .. "/map_item.lua")
+dofile(cartography.modpath .. "/builtin.lua")
 
 
 

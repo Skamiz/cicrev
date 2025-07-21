@@ -13,7 +13,7 @@ data_map = {
 cartography.registered_data_maps = {}
 cartography.register_data_map = function(name, def)
 	def.name = name
-	def.area = VoxelArea(vector.new(1, 1, 1), vector.new(def.width, 1, def.height))
+	def.area = VoxelArea(vector.new(1, 0, 1), vector.new(def.width, 0, def.height))
 	cartography.registered_data_maps[name] = def
 end
 
@@ -30,8 +30,10 @@ cartography.generate_data_maps = function()
 	local t0 = core.get_us_time()
 
 	local maps_to_generate = {}
-	for name, def in pairs(cartography.registered_data_maps) do
-		maps_to_generate[name] = def
+	for name, data_map in pairs(cartography.registered_data_maps) do
+		maps_to_generate[name] = data_map
+		-- dump old data loaded from storage
+		data_map.data = nil
 	end
 
 	local loaded_something = true
